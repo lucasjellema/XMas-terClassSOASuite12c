@@ -1,0 +1,40 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="MovieSearcherService"
+     targetNamespace="MyMovieSearcher"
+     xmlns:tns="MyMovieSearcher"
+     xmlns:inp1="MovieSearcher"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="MovieSearcher" schemaLocation="Resources/Movie.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="requestMessage">
+        <wsdl:part name="part1" element="inp1:MovieSearchRequest"/>
+    </wsdl:message>
+    <wsdl:message name="replyMessage">
+        <wsdl:part name="part1" element="inp1:Movie"/>
+    </wsdl:message>
+    <wsdl:portType name="MyMovieSearcherService">
+        <wsdl:operation name="getMovieByTitle">
+            <wsdl:input message="tns:requestMessage"/>
+            <wsdl:output message="tns:replyMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="MyMovieSearcherService_bind" type="tns:MyMovieSearcherService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getMovieByTitle">
+            <soap:operation style="document" soapAction="getMovieByTitle"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="MyMovieSearcher"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" namespace="MyMovieSearcher"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>

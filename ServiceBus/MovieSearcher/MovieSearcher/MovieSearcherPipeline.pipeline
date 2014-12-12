@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con:wsdl ref="MovieSearcher/MovieSearcherService"/>
+            <con:binding>
+                <con:name>MyMovieSearcherService_bind</con:name>
+                <con:namespace>MyMovieSearcher</con:namespace>
+            </con:binding>
+        </con:binding>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:router>
+        <con:pipeline type="request" name="request-7f000001.1c687155.0.14a34f02655.N7fe9">
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7fe7" name="CallIMDBRestAPIToFetchMovie">
+                <con:context>
+                    <con1:userNsDecl prefix="mov" namespace="MovieSearcher"/>
+                </con:context>
+                <con:actions>
+                    <con2:assign varName="title">
+                        <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7fa3</con1:id>
+                        <con2:expr>
+                            <con1:xqueryText>fn:replace($body/*[1]/mov:Title/text(), ' ' , '+')</con1:xqueryText>
+                        </con2:expr>
+                    </con2:assign>
+                    <con2:wsCallout>
+                        <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7fb0</con1:id>
+                        <con2:service ref="MovieSearcher/IMDBBusinessService" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con2:request>
+                            <con2:payload wrapped="false">requestBody</con2:payload>
+                        </con2:request>
+                        <con2:response>
+                            <con2:payload wrapped="false">responseBody</con2:payload>
+                        </con2:response>
+                        <con2:requestTransform>
+                            <con2:insert varName="outbound">
+                                <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7fa9</con1:id>
+                                <con2:location>
+                                    <con1:xpathText>./ctx:transport/ctx:request</con1:xpathText>
+                                </con2:location>
+                                <con2:where>first-child</con2:where>
+                                <con2:expr>
+                                    <con1:xqueryText>&lt;http:http-method>GET&lt;/http:http-method></con1:xqueryText>
+                                </con2:expr>
+                            </con2:insert>
+                            <con2:insert varName="outbound">
+                                <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7fa6</con1:id>
+                                <con2:location>
+                                    <con1:xpathText>./ctx:transport/ctx:request</con1:xpathText>
+                                </con2:location>
+                                <con2:where>first-child</con2:where>
+                                <con2:expr>
+                                    <con1:xqueryText>&lt;http:relative-URI>title/?q={$title}&lt;/http:relative-URI></con1:xqueryText>
+                                </con2:expr>
+                            </con2:insert>
+                        </con2:requestTransform>
+                        <con2:responseTransform/>
+                    </con2:wsCallout>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="response-7f000001.1c687155.0.14a34f02655.N7fe8">
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7fe6" name="TurnJSONResponseToXMLandXForm">
+                <con:context/>
+                <con:actions>
+                    <con2:nxsdTranslation>
+                        <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f9f</con1:id>
+                        <con2:type>Native-To-XML</con2:type>
+                        <con2:sourceExpr>
+                            <con1:xqueryText>$responseBody</con1:xqueryText>
+                        </con2:sourceExpr>
+                        <con2:nxsd ref="MovieSearcher/Resources/nxsd_imbdMovieResponse"/>
+                        <con2:schemaElement xmlns:imd="http://TargetNamespace.com/IMDBRestAPI_Operation1_response">imd:Movie</con2:schemaElement>
+                        <con2:assign-variable>movieInXML</con2:assign-variable>
+                    </con2:nxsdTranslation>
+                    <con2:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f9c</con1:id>
+                        <con2:expr>
+                            <con1:xsltTransform>
+                                <con1:resource ref="MovieSearcher/Resources/MovieinJSONderivedNXSD_to_MovieResponse"/>
+                                <con1:input>$movieInXML</con1:input>
+                            </con1:xsltTransform>
+                        </con2:expr>
+                    </con2:replace>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7f9b" name="FetchPosterBinaryImage">
+                <con:context>
+                    <con1:userNsDecl prefix="mov" namespace="MovieSearcher"/>
+                    <con1:userNsDecl prefix="nativeMovie" namespace="http://TargetNamespace.com/IMDBRestAPI_Operation1_response"/>
+                </con:context>
+                <con:actions>
+                    <con2:wsCallout>
+                        <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f95</con1:id>
+                        <con2:service ref="MovieSearcher/IMDBPosterServiceBS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con2:request>
+                            <con2:payload wrapped="false">header</con2:payload>
+                        </con2:request>
+                        <con2:response>
+                            <con2:payload wrapped="false">posterImage</con2:payload>
+                        </con2:response>
+                        <con2:requestTransform>
+                            <con2:assign varName="posterURL">
+                                <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f98</con1:id>
+                                <con2:expr>
+                                    <con1:xqueryText>fn:substring-after($movieInXML/nativeMovie:data/nativeMovie:poster/text(), 'url=')</con1:xqueryText>
+                                </con2:expr>
+                            </con2:assign>
+                            <con2:insert varName="outbound">
+                                <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f8f</con1:id>
+                                <con2:location>
+                                    <con1:xpathText>./ctx:transport/ctx:request</con1:xpathText>
+                                </con2:location>
+                                <con2:where>first-child</con2:where>
+                                <con2:expr>
+                                    <con1:xqueryText>&lt;http:http-method>GET&lt;/http:http-method></con1:xqueryText>
+                                </con2:expr>
+                            </con2:insert>
+                            <con2:insert varName="outbound">
+                                <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f8c</con1:id>
+                                <con2:location>
+                                    <con1:xpathText>./ctx:transport/ctx:request</con1:xpathText>
+                                </con2:location>
+                                <con2:where>first-child</con2:where>
+                                <con2:expr>
+                                    <con1:xqueryText>&lt;http:relative-URI>img/?url={$posterURL}&lt;/http:relative-URI></con1:xqueryText>
+                                </con2:expr>
+                            </con2:insert>
+                        </con2:requestTransform>
+                        <con2:responseTransform>
+                            <con2:replace varName="body" contents-only="true">
+                                <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f88</con1:id>
+                                <con2:location>
+                                    <con1:xpathText>./mov:Movie/mov:poster</con1:xpathText>
+                                </con2:location>
+                                <con2:expr>
+                                    <con1:xqueryText>$posterImage/ctx:binary-content</con1:xqueryText>
+                                </con2:expr>
+                            </con2:replace>
+                            <con2:replace varName="attachments" contents-only="true">
+                                <con1:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f82</con1:id>
+                                <con2:location>
+                                    <con1:xpathText>./ctx:attachment/ctx:body</con1:xpathText>
+                                </con2:location>
+                                <con2:expr>
+                                    <con1:xqueryText>$posterImage</con1:xqueryText>
+                                </con2:expr>
+                            </con2:replace>
+                        </con2:responseTransform>
+                    </con2:wsCallout>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:flow>
+            <con:pipeline-node name="PipelinePairNode1">
+                <con:request>request-7f000001.1c687155.0.14a34f02655.N7fe9</con:request>
+                <con:response>response-7f000001.1c687155.0.14a34f02655.N7fe8</con:response>
+            </con:pipeline-node>
+        </con:flow>
+        <con:partner-links/>
+    </con:router>
+</con:pipelineEntry>

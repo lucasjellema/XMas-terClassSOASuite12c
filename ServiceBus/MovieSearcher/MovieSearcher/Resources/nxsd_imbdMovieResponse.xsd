@@ -1,0 +1,36 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://TargetNamespace.com/IMDBRestAPI_Operation1_response" targetNamespace="http://TargetNamespace.com/IMDBRestAPI_Operation1_response" elementFormDefault="qualified" xmlns:nxsd="http://xmlns.oracle.com/pcbpel/nxsd" nxsd:version="JSON" nxsd:encoding="US-ASCII">
+   <xsd:element name="Movie">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="status" type="xsd:string"/>
+            <xsd:element name="code" type="xsd:integer"/>
+            <xsd:element name="data">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="imdbEndPoint" type="xsd:string"/>
+                     <xsd:element name="imdbId" type="xsd:string"/>
+                     <xsd:element name="title" type="xsd:string"/>
+                     <xsd:element name="year" type="xsd:integer"/>
+                     <xsd:element name="rating" type="xsd:double"/>
+                     <xsd:element name="description" type="xsd:string"/>
+                     <xsd:element name="cast" maxOccurs="unbounded" type="xsd:string"/>
+                     <xsd:element name="imdbUrl" type="xsd:string"/>
+                     <xsd:element name="country" type="xsd:string"/>
+                     <xsd:element name="releaseDate" type="xsd:string"/>
+                     <xsd:element name="directors" type="xsd:string"/>
+                     <xsd:element name="writers" maxOccurs="unbounded" type="xsd:string"/>
+                     <xsd:element name="genres" maxOccurs="unbounded" type="xsd:string"/>
+                     <xsd:element name="poster" type="xsd:string"/>
+                     <xsd:element name="runningTime" type="xsd:string"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+<xsd:annotation xmlns="">
+      <xsd:appinfo>NXSDSAMPLE=</xsd:appinfo>
+      <xsd:appinfo>USEHEADER=false</xsd:appinfo>
+   </xsd:annotation>
+</xsd:schema>

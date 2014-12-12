@@ -1,0 +1,30 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<application xmlns:soa="http://www.oracle.com/soa/rest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://xmlns.oracle.com/MovieSearcher/MovieSearcher/IMDBRestAPI" xmlns="http://wadl.dev.java.net/2009/02">
+   <doc title="IMDBRestAPI">RestReference</doc>
+   <grammars>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://TargetNamespace.com/IMDBRestAPI_Operation1_response" schemaLocation="nxsd_imbdMovieResponse.xsd"/>
+        </xsd:schema>
+      <schema targetNamespace="http://xmlns.oracle.com/MovieSearcher/MovieSearcher/IMDBRestAPI" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+            <element name="getMovieByTitle_params">
+                <complexType>
+                    <sequence>
+                        <element name="q" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+   </grammars>
+   <resources>
+      <resource path="/get/title/">
+         <method name="GET" soa:wsdlOperation="getMovieByTitle">
+            <request>
+               <param name="q" style="query" soa:expression="$msg.request/tns:q" default="" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <representation mediaType="application/json" element="cns:Movie" xmlns:cns="http://TargetNamespace.com/IMDBRestAPI_Operation1_response"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>
