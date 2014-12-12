@@ -1,0 +1,32 @@
+<wsdl:definitions
+     name="retrieveEmployees"
+     targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/RESTfulHRM/RESTfulHRM/retrieveEmployees"
+     xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/RESTfulHRM/RESTfulHRM/retrieveEmployees"
+     xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
+     xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/retrieveEmployees"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+  <plt:partnerLinkType name="retrieveEmployees_plt" >
+    <plt:role name="retrieveEmployees_role" >
+      <plt:portType name="tns:retrieveEmployees_ptt" />
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" >
+        <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/retrieveEmployees" schemaLocation="retrieveEmployees_table.xsd" />
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="retrieveEmployeesSelect_inputParameters">
+        <wsdl:part name="retrieveEmployeesSelect_inputParameters" element="top:retrieveEmployeesSelect_param_lastName_paramJobInputParameters"/>
+    </wsdl:message>
+    <wsdl:message name="EmployeesCollection_msg">
+        <wsdl:part name="EmployeesCollection" element="top:EmployeesCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="retrieveEmployees_ptt">
+        <wsdl:operation name="retrieveEmployeesSelect">
+            <wsdl:input message="tns:retrieveEmployeesSelect_inputParameters"/>
+            <wsdl:output message="tns:EmployeesCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

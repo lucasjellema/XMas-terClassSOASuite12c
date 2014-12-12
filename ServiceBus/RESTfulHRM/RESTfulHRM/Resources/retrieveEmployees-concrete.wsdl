@@ -1,0 +1,15 @@
+<wsdl:definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/RESTfulHRM/RESTfulHRM/retrieveEmployees" name="retrieveEmployees-concrete" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <wsdl:import location="retrieveEmployees.wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/RESTfulHRM/RESTfulHRM/retrieveEmployees"/>
+    <wsdl:binding name="retrieveEmployees_ptt-binding" type="ret:retrieveEmployees_ptt" xmlns:ret="http://xmlns.oracle.com/pcbpel/adapter/db/RESTfulHRM/RESTfulHRM/retrieveEmployees">
+        <soap:binding style="document" transport="http://www.bea.com/wli/sb/transports/jca"/>
+        <wsdl:operation name="retrieveEmployeesSelect">
+            <soap:operation soapAction="retrieveEmployeesSelect"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>

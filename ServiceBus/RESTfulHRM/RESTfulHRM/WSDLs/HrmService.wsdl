@@ -1,0 +1,43 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<definitions
+     name="HrmService"
+     targetNamespace="myspace.com/hrm"
+     xmlns:my="myspace.com/hrm"
+     xmlns="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:inp2="myspace.com/hrm"
+     xmlns:inp1="myspace.com/hrm"
+     xmlns:tns="myspace.com/hrm"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <types>
+    <xsd:schema elementFormDefault="qualified">
+            <xsd:import namespace="myspace.com/hrm"
+                        schemaLocation="../Schemas/HrmService.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="requestMessage">
+        <part name="in" element="my:EmployeeRetrievalParameters"/>
+    </message>
+    <message name="replyMessage">
+        <part name="out" element="my:EmployeeList"/>
+    </message>
+    <portType name="HrmService">
+        <operation name="retrieveEmployees">
+            <input message="inp2:requestMessage"/>
+            <output message="inp2:replyMessage"/>
+        </operation>
+    </portType>
+    <binding name="HrmService_SOAP11_binding" type="inp2:HrmService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="retrieveEmployees">
+            <soap:operation style="document" soapAction="retrieveEmployees"/>
+            <input>
+                <soap:body use="literal" namespace="myspace.com/hrm"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="myspace.com/hrm"/>
+            </output>
+        </operation>
+    </binding>
+</definitions>

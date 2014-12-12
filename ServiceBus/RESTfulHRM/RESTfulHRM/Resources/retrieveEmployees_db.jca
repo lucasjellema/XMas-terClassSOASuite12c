@@ -1,0 +1,14 @@
+<adapter-config name="retrieveEmployees" adapter="db" wsdlLocation="retrieveEmployees.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory UIConnectionName="HR_LOCAL" location="eis/db/hr"/>
+  <endpoint-interaction portType="retrieveEmployees_ptt" operation="retrieveEmployeesSelect">
+    <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+      <property name="DescriptorName" value="retrieveEmployees.Employees"/>
+      <property name="QueryName" value="retrieveEmployeesSelect"/>
+      <property name="MappingsMetaDataURL" value="retrieveEmployees-or-mappings.xml"/>
+      <property name="ReturnSingleResultSet" value="false"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

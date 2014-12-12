@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hrm="myspace.com/hrm"
+            targetNamespace="myspace.com/hrm" elementFormDefault="qualified">
+    <xsd:element name="EmployeeList" type="hrm:employeeListType"/>
+    <xsd:element name="EmployeeRetrievalParameters">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Surname" type="xsd:string"/>
+                <xsd:element name="Job" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:complexType name="employeeListType">
+        <xsd:sequence>
+            <xsd:element name="Employees" type="hrm:employeeType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="employeeType">
+        <xsd:sequence>
+            <xsd:element name="FirstName" type="xsd:string"/>
+            <xsd:element name="Surname" type="xsd:string"/>
+            <xsd:element name="Salary" type="xsd:decimal"/>
+            <xsd:element name="Hiredate" type="xsd:date"/>
+            <xsd:element name="Department" type="xsd:string"/>
+            <xsd:element name="JobTitle" type="xsd:string"/>
+            <xsd:element name="EmailAddress" type="xsd:string"/>
+            <xsd:element name="EmployeeNumber" type="xsd:int"/>
+            <xsd:element name="ManagerName" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
