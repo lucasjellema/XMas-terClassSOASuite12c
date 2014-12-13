@@ -1,0 +1,22 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<application xmlns:soa="http://www.oracle.com/soa/rest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:my="myspace.com/hrm" xmlns="http://wadl.dev.java.net/2009/02">
+   <doc title="HrmService">REST-style HRM service for retrieving employees</doc>
+   <grammars>
+      <xsd:schema elementFormDefault="qualified" xmlns:my="myspace.com/hrm" xmlns:inp2="myspace.com/hrm" xmlns:inp1="myspace.com/hrm" xmlns:tns="myspace.com/hrm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+            <xsd:import namespace="myspace.com/hrm" schemaLocation="../Schemas/HrmService.xsd"/>
+        </xsd:schema>
+   </grammars>
+   <resources>
+      <resource path="/employees">
+         <method name="GET" soa:wsdlOperation="retrieveEmployees">
+            <request>
+               <param name="Surname" style="query" soa:expression="$msg.in/my:Surname" default="" type="xsd:string"/>
+               <param name="Job" style="query" soa:expression="$msg.in/my:Job" default="" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <representation mediaType="application/json" element="cns:EmployeeList" xmlns:cns="myspace.com/hrm"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con:wsdl ref="RESTfulHRM/Resources/HumanCapitalService"/>
+            <con:binding>
+                <con:name>HumanCapitalService_ptt-binding</con:name>
+                <con:namespace>http://xmlns.oracle.com/RESTfulHRM/RESTfulHRM/HumanCapitalService</con:namespace>
+            </con:binding>
+        </con:binding>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:router>
+        <con:pipeline type="request" name="request-7f000001.1c687155.0.14a34f02655.N7ff4">
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7ff2" name="Stage1">
+                <con:context/>
+                <con:actions>
+                    <con1:replace varName="body" contents-only="true">
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7fee</con2:id>
+                        <con1:expr>
+                            <con2:xsltTransform>
+                                <con2:resource ref="RESTfulHRM/Transformations/HumanCapitalURLParams_to_EmployeesRetrievalParams"/>
+                                <con2:input>$body/*[1]</con2:input>
+                            </con2:xsltTransform>
+                        </con1:expr>
+                    </con1:replace>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="response-7f000001.1c687155.0.14a34f02655.N7ff3">
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7ff1" name="Stage1">
+                <con:context/>
+                <con:actions>
+                    <con1:replace varName="body" contents-only="true">
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7feb</con2:id>
+                        <con1:expr>
+                            <con2:xsltTransform>
+                                <con2:resource ref="RESTfulHRM/Transformations/EmployeeSet_to_HumanCapitalnXSDJson"/>
+                                <con2:input>$body/*[1]</con2:input>
+                            </con2:xsltTransform>
+                        </con1:expr>
+                    </con1:replace>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:flow>
+            <con:pipeline-node name="PipelinePairNode1">
+                <con:request>request-7f000001.1c687155.0.14a34f02655.N7ff4</con:request>
+                <con:response>response-7f000001.1c687155.0.14a34f02655.N7ff3</con:response>
+            </con:pipeline-node>
+            <con:route-node name="RouteNode1" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config">
+                <con:context/>
+                <con:actions>
+                    <con1:route>
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7ff5</con2:id>
+                        <con1:service ref="RESTfulHRM/HrmServicePipeline" xsi:type="ref:PipelineRef" xmlns:ref="http://www.bea.com/wli/sb/pipeline/config"/>
+                        <con1:operation>retrieveEmployees</con1:operation>
+                        <con1:outboundTransform/>
+                        <con1:responseTransform/>
+                    </con1:route>
+                </con:actions>
+            </con:route-node>
+        </con:flow>
+    </con:router>
+</con:pipelineEntry>

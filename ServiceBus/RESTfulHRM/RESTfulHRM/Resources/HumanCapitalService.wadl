@@ -1,0 +1,33 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<application xmlns:soa="http://www.oracle.com/soa/rest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://xmlns.oracle.com/RESTfulHRM/RESTfulHRM/HumanCapitalService" xmlns="http://wadl.dev.java.net/2009/02">
+   <doc title="HumanCapitalService">Pure RestService providing HCM related data</doc>
+   <grammars>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://TargetNamespace.com/HumanCapitalService_getColleagues_response" schemaLocation="nxsd_jsonEmployeeList.xsd"/>
+        </xsd:schema>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.oracle.com/RESTfulHRM/RESTfulHRM/HumanCapitalService" elementFormDefault="qualified">
+            <element name="getColleagues_params">
+                <complexType>
+                    <sequence>
+                        <element name="lastname" type="string"/>
+                        <element name="jobtitle" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+   </grammars>
+   <resources>
+      <resource path="/colleagues">
+         <method name="GET" soa:wsdlOperation="getColleagues">
+            <doc title="GET getColleagues">retrieve a list of colleagues based on two search parameters</doc>
+            <request>
+               <param name="lastname" style="query" soa:expression="$msg.request/tns:lastname" default="" type="xsd:string"/>
+               <param name="jobtitle" style="query" soa:expression="$msg.request/tns:jobtitle" default="" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <representation mediaType="application/json" element="cns:Employees" xmlns:cns="http://TargetNamespace.com/HumanCapitalService_getColleagues_response"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>

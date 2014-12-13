@@ -1,0 +1,13 @@
+{
+  "Employees" : [ {
+    "FirstName" : "FirstName1",
+    "Surname" : "Surname2",
+    "Salary" : 3,
+    "Hiredate" : "2014-12-12",
+    "Department" : "Department4",
+    "JobTitle" : "JobTitle5",
+    "EmailAddress" : "EmailAddress6",
+    "EmployeeNumber" : 7,
+    "ManagerName" : "ManagerName8"
+  } ]
+}
