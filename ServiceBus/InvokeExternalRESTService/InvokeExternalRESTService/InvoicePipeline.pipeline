@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con:wsdl ref="InvokeExternalRESTService/InvoiceService"/>
+            <con:binding>
+                <con:name>InvoiceService_bind</con:name>
+                <con:namespace>http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/InvoiceService</con:namespace>
+            </con:binding>
+        </con:binding>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:router>
+        <con:pipeline type="request" name="request-7f000001.1c687155.0.14a34f02655.N7f51">
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7f4f" name="prepareForGetInvoice">
+                <con:context/>
+                <con:actions>
+                    <con1:replace varName="body" contents-only="true">
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f48</con2:id>
+                        <con1:expr>
+                            <con2:xsltTransform>
+                                <con2:resource ref="InvokeExternalRESTService/Resources/InvoiceIdentifier_to_getInvoiceRequest"/>
+                                <con2:input>$body/*[1]</con2:input>
+                            </con2:xsltTransform>
+                        </con1:expr>
+                    </con1:replace>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="response-7f000001.1c687155.0.14a34f02655.N7f50">
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7f4e" name="XFormGetInvoiceResult">
+                <con:context/>
+                <con:actions>
+                    <con1:replace varName="body" contents-only="true">
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f45</con2:id>
+                        <con1:expr>
+                            <con2:xsltTransform>
+                                <con2:resource ref="InvokeExternalRESTService/Resources/getInvoiceResponse_to_Invoice"/>
+                                <con2:input>$body/*[1]</con2:input>
+                            </con2:xsltTransform>
+                        </con1:expr>
+                    </con1:replace>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7f44" name="GetCustomerAndAddToInvoice">
+                <con:context>
+                    <con2:userNsDecl prefix="inv" namespace="my.org/invoice"/>
+                </con:context>
+                <con:actions>
+                    <con1:assign varName="customerIdentifier">
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f40</con2:id>
+                        <con1:expr>
+                            <con2:xqueryText>$body/inv:Invoice/inv:Customer/inv:Identifier/text()</con2:xqueryText>
+                        </con1:expr>
+                    </con1:assign>
+                    <con1:wsCallout>
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f3d</con2:id>
+                        <con1:service ref="InvokeExternalRESTService/OrderManagement" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con1:operation>getCustomer</con1:operation>
+                        <con1:request>
+                            <con1:body wrapped="false">getCustomerRequest</con1:body>
+                        </con1:request>
+                        <con1:response>
+                            <con1:body wrapped="false">getCustomerResponse</con1:body>
+                        </con1:response>
+                        <con1:requestTransform>
+                            <con1:assign varName="getCustomerRequest">
+                                <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f3a</con2:id>
+                                <con1:expr>
+                                    <con2:xqueryText>&lt;ord:getCustomer_params xmlns:ord="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement">
+    &lt;ord:customerId>{$customerIdentifier}&lt;/ord:customerId>
+&lt;/ord:getCustomer_params></con2:xqueryText>
+                                </con1:expr>
+                            </con1:assign>
+                        </con1:requestTransform>
+                        <con1:responseTransform>
+                            <con1:assign varName="customer">
+                                <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f34</con2:id>
+                                <con1:expr>
+                                    <con2:xsltTransform>
+                                        <con2:resource ref="InvokeExternalRESTService/Resources/getCustomerResponse_to_InvoiceCustomer"/>
+                                        <con2:input>$getCustomerResponse</con2:input>
+                                    </con2:xsltTransform>
+                                </con1:expr>
+                            </con1:assign>
+                            <con1:replace varName="body" contents-only="false">
+                                <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f37</con2:id>
+                                <con1:location>
+                                    <con2:xpathText>./inv:Invoice/inv:Customer</con2:xpathText>
+                                </con1:location>
+                                <con1:expr>
+                                    <con2:xqueryText>$customer/inv:Customer</con2:xqueryText>
+                                </con1:expr>
+                            </con1:replace>
+                        </con1:responseTransform>
+                    </con1:wsCallout>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-7f000001.1c687155.0.14a34f02655.N7f43" name="GetItemsAndAddToInvoice">
+                <con:context>
+                    <con2:userNsDecl prefix="inv" namespace="my.org/invoice"/>
+                </con:context>
+                <con:actions>
+                    <con1:wsCallout>
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f31</con2:id>
+                        <con1:service ref="InvokeExternalRESTService/OrderManagement" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con1:operation>getItems</con1:operation>
+                        <con1:request>
+                            <con1:body wrapped="false">getItemsRequest</con1:body>
+                        </con1:request>
+                        <con1:response>
+                            <con1:body wrapped="false">getItemsResponse</con1:body>
+                        </con1:response>
+                        <con1:requestTransform>
+                            <con1:assign varName="getItemsRequest">
+                                <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f2e</con2:id>
+                                <con1:expr>
+                                    <con2:xqueryText>&lt;ord:getItems_params xmlns:ord="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement">
+    &lt;ord:invoiceId>{$body/inv:Invoice/inv:Identifier}&lt;/ord:invoiceId>
+&lt;/ord:getItems_params></con2:xqueryText>
+                                </con1:expr>
+                            </con1:assign>
+                        </con1:requestTransform>
+                        <con1:responseTransform>
+                            <con1:assign varName="items">
+                                <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f2b</con2:id>
+                                <con1:expr>
+                                    <con2:xsltTransform>
+                                        <con2:resource ref="InvokeExternalRESTService/Resources/getItemsResponse_to_InvoiceItems"/>
+                                        <con2:input>$getItemsResponse</con2:input>
+                                    </con2:xsltTransform>
+                                </con1:expr>
+                            </con1:assign>
+                            <con1:insert varName="body">
+                                <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f25</con2:id>
+                                <con1:location>
+                                    <con2:xpathText>$body/inv:Invoice/inv:Customer</con2:xpathText>
+                                </con1:location>
+                                <con1:where>after</con1:where>
+                                <con1:expr>
+                                    <con2:xqueryText>$items/inv:Items</con2:xqueryText>
+                                </con1:expr>
+                            </con1:insert>
+                        </con1:responseTransform>
+                    </con1:wsCallout>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:flow>
+            <con:pipeline-node name="PipelinePairNode1">
+                <con:request>request-7f000001.1c687155.0.14a34f02655.N7f51</con:request>
+                <con:response>response-7f000001.1c687155.0.14a34f02655.N7f50</con:response>
+            </con:pipeline-node>
+            <con:route-node name="CallGetInvoiceBS">
+                <con:context/>
+                <con:actions>
+                    <con3:route>
+                        <con2:id>_ActionId-7f000001.1c687155.0.14a34f02655.N7f4b</con2:id>
+                        <con3:service ref="InvokeExternalRESTService/OrderManagement" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con3:operation>getInvoice</con3:operation>
+                        <con3:outboundTransform/>
+                        <con3:responseTransform/>
+                    </con3:route>
+                </con:actions>
+            </con:route-node>
+        </con:flow>
+    </con:router>
+</con:pipelineEntry>

@@ -1,0 +1,134 @@
+<wsdl:definitions name="OrderManagement" targetNamespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" xmlns:tns="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <plnk:partnerLinkType name="OrderManagement">
+        <plnk:role name="OrderManagementProvider" portType="tns:OrderManagement_ptt"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="nxsd_Product.xsd"/>
+        </xsd:schema>
+        <schema targetNamespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+            <element name="getProduct_params">
+                <complexType>
+                    <sequence>
+                        <element name="productId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="nxsd_Invoice.xsd"/>
+        </xsd:schema>
+        <schema targetNamespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+            <element name="getInvoice_params">
+                <complexType>
+                    <sequence>
+                        <element name="invoiceId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="nxsd_Customer.xsd"/>
+        </xsd:schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="nxsd_Items.xsd"/>
+        </xsd:schema>
+        <schema targetNamespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+            <element name="getCustomer_params">
+                <complexType>
+                    <sequence>
+                        <element name="customerId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="getItems_params">
+                <complexType>
+                    <sequence>
+                        <element name="invoiceId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="getProduct_inputMessage">
+        <wsdl:part name="request" element="tns:getProduct_params"/>
+    </wsdl:message>
+    <wsdl:message name="getProduct_outputMessage">
+        <wsdl:part name="reply" element="PRODUCT"/>
+    </wsdl:message>
+    <wsdl:message name="getInvoice_inputMessage">
+        <wsdl:part name="request" element="tns:getInvoice_params"/>
+    </wsdl:message>
+    <wsdl:message name="getInvoice_outputMessage">
+        <wsdl:part name="reply" element="INVOICE"/>
+    </wsdl:message>
+    <wsdl:message name="getCustomer_inputMessage">
+        <wsdl:part name="request" element="tns:getCustomer_params"/>
+    </wsdl:message>
+    <wsdl:message name="getCustomer_outputMessage">
+        <wsdl:part name="reply" element="CUSTOMER"/>
+    </wsdl:message>
+    <wsdl:message name="getItems_inputMessage">
+        <wsdl:part name="request" element="tns:getItems_params"/>
+    </wsdl:message>
+    <wsdl:message name="getItems_outputMessage">
+        <wsdl:part name="reply" element="ITEM"/>
+    </wsdl:message>
+    <wsdl:portType name="OrderManagement_ptt">
+        <wsdl:operation name="getProduct">
+            <wsdl:input message="tns:getProduct_inputMessage"/>
+            <wsdl:output message="tns:getProduct_outputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getInvoice">
+            <wsdl:input message="tns:getInvoice_inputMessage"/>
+            <wsdl:output message="tns:getInvoice_outputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getCustomer">
+            <wsdl:input message="tns:getCustomer_inputMessage"/>
+            <wsdl:output message="tns:getCustomer_outputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getItems">
+            <wsdl:input message="tns:getItems_inputMessage"/>
+            <wsdl:output message="tns:getItems_outputMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="OrderManagement_ptt-binding" type="tns:OrderManagement_ptt">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getProduct">
+            <soap:operation soapAction="getProduct"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getInvoice">
+            <soap:operation soapAction="getInvoice"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getCustomer">
+            <soap:operation soapAction="getCustomer"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getItems">
+            <soap:operation soapAction="getItems"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>

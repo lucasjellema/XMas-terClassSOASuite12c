@@ -1,0 +1,34 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:nxsd="http://xmlns.oracle.com/pcbpel/nxsd" nxsd:encoding="US-ASCII">
+   <xsd:element name="ITEM">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="INVOICEID" maxOccurs="unbounded">
+               <xsd:complexType>
+                  <xsd:simpleContent>
+                     <xsd:extension base="xsd:integer">
+                        <xsd:attribute name="href" type="xsd:string"/>
+                     </xsd:extension>
+                  </xsd:simpleContent>
+               </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="ITEM" maxOccurs="unbounded" type="xsd:integer"/>
+            <xsd:element name="PRODUCTID" maxOccurs="unbounded">
+               <xsd:complexType>
+                  <xsd:simpleContent>
+                     <xsd:extension base="xsd:integer">
+                        <xsd:attribute name="href" type="xsd:string"/>
+                     </xsd:extension>
+                  </xsd:simpleContent>
+               </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="QUANTITY" maxOccurs="unbounded" type="xsd:integer"/>
+            <xsd:element name="COST" maxOccurs="unbounded" type="xsd:double"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+<xsd:annotation>
+      <xsd:appinfo>NXSDSAMPLE=</xsd:appinfo>
+      <xsd:appinfo>USEHEADER=false</xsd:appinfo>
+   </xsd:annotation>
+</xsd:schema>

@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:nxsd="http://xmlns.oracle.com/pcbpel/nxsd" nxsd:encoding="US-ASCII">
+   <xsd:element name="CUSTOMER">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="ID" type="xsd:integer"/>
+            <xsd:element name="FIRSTNAME" type="xsd:string"/>
+            <xsd:element name="LASTNAME" type="xsd:string"/>
+            <xsd:element name="STREET" type="xsd:string"/>
+            <xsd:element name="CITY" type="xsd:string"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+<xsd:annotation>
+      <xsd:appinfo>NXSDSAMPLE=</xsd:appinfo>
+      <xsd:appinfo>USEHEADER=false</xsd:appinfo>
+   </xsd:annotation>
+</xsd:schema>

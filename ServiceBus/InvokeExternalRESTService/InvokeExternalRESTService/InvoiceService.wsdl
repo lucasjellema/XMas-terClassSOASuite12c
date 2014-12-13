@@ -1,0 +1,40 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="InvoiceService"
+     targetNamespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/InvoiceService"
+     xmlns:tns="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/InvoiceService"
+     xmlns:inp1="my.org/invoice"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="my.org/invoice" schemaLocation="InvoiceService.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="requestMessage">
+        <wsdl:part name="part1" element="inp1:InvoiceIdentifier"/>
+    </wsdl:message>
+    <wsdl:message name="replyMessage">
+        <wsdl:part name="part1" element="inp1:Invoice"/>
+    </wsdl:message>
+    <wsdl:portType name="InvoiceService">
+        <wsdl:operation name="getInvoice">
+            <wsdl:input message="tns:requestMessage"/>
+            <wsdl:output message="tns:replyMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="InvoiceService_bind" type="tns:InvoiceService">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getInvoice">
+            <soap:operation style="document" soapAction="getInvoice"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/InvoiceService"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" namespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/InvoiceService"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>

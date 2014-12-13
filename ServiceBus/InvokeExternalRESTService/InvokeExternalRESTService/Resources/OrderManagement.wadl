@@ -1,0 +1,95 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<application xmlns:soa="http://www.oracle.com/soa/rest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" xmlns="http://wadl.dev.java.net/2009/02">
+   <doc title="OrderManagement">RestReference</doc>
+   <grammars>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="nxsd_Product.xsd"/>
+        </xsd:schema>
+      <schema targetNamespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+            <element name="getProduct_params">
+                <complexType>
+                    <sequence>
+                        <element name="productId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="nxsd_Invoice.xsd"/>
+        </xsd:schema>
+      <schema targetNamespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+            <element name="getInvoice_params">
+                <complexType>
+                    <sequence>
+                        <element name="invoiceId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="nxsd_Customer.xsd"/>
+        </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="nxsd_Items.xsd"/>
+        </xsd:schema>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.oracle.com/InvokeExternalRESTService/InvokeExternalRESTService/OrderManagement" elementFormDefault="qualified">
+            <element name="getCustomer_params">
+                <complexType>
+                    <sequence>
+                        <element name="customerId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="getItems_params">
+                <complexType>
+                    <sequence>
+                        <element name="invoiceId" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+   </grammars>
+   <resources>
+      <resource path="/PRODUCT/{productId}">
+         <method name="GET" soa:wsdlOperation="getProduct">
+            <doc title="GET getProduct">Retrieve Product Details</doc>
+            <request>
+               <param name="productId" style="template" soa:expression="$msg.request/tns:productId" default="" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <ns0:representation mediaType="application/xml" element="PRODUCT" xmlns="" xmlns:ns0="http://wadl.dev.java.net/2009/02"/>
+            </response>
+         </method>
+      </resource>
+      <resource path="/INVOICE/{invoiceId}">
+         <method name="GET" soa:wsdlOperation="getInvoice">
+            <request>
+               <param name="invoiceId" style="template" soa:expression="$msg.request/tns:invoiceId" default="" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <ns0:representation mediaType="application/xml" element="INVOICE" xmlns="" xmlns:ns0="http://wadl.dev.java.net/2009/02"/>
+            </response>
+         </method>
+      </resource>
+      <resource path="/CUSTOMER/{customerId}">
+         <method name="GET" soa:wsdlOperation="getCustomer">
+            <request>
+               <param name="customerId" style="template" soa:expression="$msg.request/tns:customerId" default="" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <ns0:representation mediaType="application/xml" element="CUSTOMER" xmlns="" xmlns:ns0="http://wadl.dev.java.net/2009/02"/>
+            </response>
+         </method>
+      </resource>
+      <resource path="/ITEM/{invoiceId}">
+         <method name="GET" soa:wsdlOperation="getItems">
+            <request>
+               <param name="invoiceId" style="template" soa:expression="$msg.request/tns:invoiceId" default="" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <ns0:representation mediaType="application/xml" element="ITEM" xmlns="" xmlns:ns0="http://wadl.dev.java.net/2009/02"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>
