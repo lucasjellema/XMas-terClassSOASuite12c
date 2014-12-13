@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="XMasterclassSOASuite12c_LDAP" resourceRoot="" soapui-version="5.0.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="search_pttBinding" type="wsdl" bindingName="{http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/ReadLDAPEntry}search_pttBinding" soapVersion="1_1" anonymous="optional" definition="http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/ReadFromLDAP_2?WSDL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/ReadFromLDAP_2?WSDL"><con:part><con:url>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/ReadFromLDAP_2?WSDL</con:url><con:content><![CDATA[<wsdl:definitions name="ReadLDAPEntry" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/ReadLDAPEntry" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/ReadLDAPEntry" xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:imp1="http://platform.integration.oracle/blocks/adapter/fw/metadata/ReadLDAPEntry" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:documentation>
+    <abstractWSDL>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite!1.0/WSDLs/ReadLDAPEntry.wsdl</abstractWSDL>
+  </wsdl:documentation>
+  <plt:partnerLinkType name="search_plt">
+    <plt:role name="search_role">
+      <plt:portType name="tns:search_ptt"/>
+    </plt:role>
+  </plt:partnerLinkType>
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://platform.integration.oracle/blocks/adapter/fw/metadata/ReadLDAPEntry" schemaLocation="http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/ReadFromLDAP_2?XSD=../Schemas/ReadLDAPEntry.xsd"/>
+    </schema>
+  </wsdl:types>
+  <wsdl:message name="search_request_msg">
+    <wsdl:part name="body" element="imp1:searchRequest"/>
+  </wsdl:message>
+  <wsdl:message name="search_response_msg">
+    <wsdl:part name="body" element="imp1:searchResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="search_ptt">
+    <wsdl:operation name="search">
+      <wsdl:input message="tns:search_request_msg"/>
+      <wsdl:output message="tns:search_response_msg"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="search_pttBinding" type="tns:search_ptt">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="search">
+      <soap:operation style="document" soapAction="search"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ReadFromLDAP">
+    <wsdl:port name="search_pt" binding="tns:search_pttBinding">
+      <soap:address location="http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/ReadFromLDAP_2"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/ReadFromLDAP_2?XSD=../Schemas/ReadLDAPEntry.xsd</con:url><con:content><![CDATA[<schema targetNamespace="http://platform.integration.oracle/blocks/adapter/fw/metadata/ReadLDAPEntry" elementFormDefault="unqualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://platform.integration.oracle/blocks/adapter/fw/metadata/ReadLDAPEntry">
+  <element name="searchRequest">
+    <complexType>
+      <sequence>
+        <element name="baseDN" type="string" default="ou=ExternalStaff,o=saibot.airport"/>
+        <element name="searchFilter" type="string" default="(objectClass=*)"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="searchResponse">
+    <complexType>
+      <sequence>
+        <element name="entriesReturned" type="string" minOccurs="0"/>
+        <element name="referral" type="anyURI" minOccurs="0" maxOccurs="unbounded"/>
+        <element name="searchResultEntry" maxOccurs="unbounded" minOccurs="0">
+          <complexType>
+            <sequence>
+              <element name="employeeNumber" type="string"/>
+              <element name="mail" type="tns:multiValueAttribute"/>
+              <element name="manager" type="tns:multiValueAttribute"/>
+              <element name="mobile" type="tns:multiValueAttribute"/>
+              <element name="ou" type="tns:multiValueAttribute"/>
+            </sequence>
+            <attribute name="index" type="integer"/>
+            <attribute name="dn" type="string"/>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="multiValueAttribute">
+    <sequence>
+      <element name="value" type="string" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/ReadFromLDAP_2</con:endpoint></con:endpoints><con:operation isOneWay="false" action="search" name="search" bindingOperationName="search" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="SearchHarryBobson"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/ReadFromLDAP_2</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:read="http://platform.integration.oracle/blocks/adapter/fw/metadata/ReadLDAPEntry">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <read:searchRequest>
+         <baseDN>ou=ExternalStaff,o=saibot.airport</baseDN>
+         <searchFilter>(&amp;(objectClass=person)(uid=Harry.Bobson))</searchFilter>
+      </read:searchRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="search"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="LdapServiceBinding" type="wsdl" bindingName="{http://oracle.com/sca/soapservice/LDAPAccessor/LDAPAccessor/LdapService}LdapServiceBinding" soapVersion="1_1" anonymous="optional" definition="http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService?WSDL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService?WSDL"><con:part><con:url>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService?WSDL</con:url><con:content><![CDATA[<wsdl:definitions name="LdapService" targetNamespace="http://oracle.com/sca/soapservice/LDAPAccessor/LDAPAccessor/LdapService" xmlns:tns="http://oracle.com/sca/soapservice/LDAPAccessor/LDAPAccessor/LdapService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sec="saibot.airport/security" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:documentation>
+    <abstractWSDL>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite!1.0/WSDLs/LdapService.wsdl</abstractWSDL>
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="saibot.airport/security" schemaLocation="http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService?XSD=../Schemas/LdapService.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="requestMessage">
+    <wsdl:part name="part1" element="sec:UserAccountRequest"/>
+  </wsdl:message>
+  <wsdl:message name="findUserRequestMessage">
+    <wsdl:part name="part1" element="sec:FindUserAccountRequest"/>
+  </wsdl:message>
+  <wsdl:message name="findUserResponseMessage">
+    <wsdl:part name="part1" element="sec:FindUserAccountResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="LdapService">
+    <wsdl:operation name="addUserAccount">
+      <wsdl:input message="tns:requestMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="findUserAccount">
+      <wsdl:input message="tns:findUserRequestMessage"/>
+      <wsdl:output message="tns:findUserResponseMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LdapServiceBinding" type="tns:LdapService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="addUserAccount">
+      <soap:operation style="document" soapAction="addUserAccount"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="findUserAccount">
+      <soap:operation style="document" soapAction="findUserAccount"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LDAPService">
+    <wsdl:port name="LdapService_pt" binding="tns:LdapServiceBinding">
+      <soap:address location="http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService?XSD=../Schemas/LdapService.xsd</con:url><con:content><![CDATA[<xsd:schema targetNamespace="saibot.airport/security" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="saibot.airport/security" xmlns:sec="saibot.airport/security">
+  <xsd:element name="UserAccountRequest" type="sec:userAccount"/>
+  <xsd:element name="FindUserAccountRequest" type="sec:userAccountSearchDetails"/>
+  <xsd:element name="FindUserAccountResponse" type="sec:userAccount"/>
+  <xsd:complexType name="userAccountSearchDetails">
+    <xsd:sequence>
+      <xsd:element name="UserId" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="userAccount">
+    <xsd:sequence>
+      <xsd:element name="UserId" type="xsd:string"/>
+      <xsd:element name="GivenName" type="xsd:string"/>
+      <xsd:element name="Password" type="xsd:string"/>
+      <xsd:element name="EmailAddress" type="xsd:string"/>
+      <xsd:element name="EmployeeNumber" type="xsd:string"/>
+      <xsd:element name="OrganizationUnit" type="xsd:string"/>
+      <xsd:element name="ManagerId" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="MobileTelephone" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="addUserAccount" name="addUserAccount" bindingOperationName="addUserAccount" type="One-Way" inputName="" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="createHendrikIdo"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sec="saibot.airport/security">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <sec:UserAccountRequest>
+         <sec:UserId>hendrik.ido</sec:UserId>
+         <sec:GivenName>Hendrik Ido Ambacht</sec:GivenName>
+         <sec:Password>hendrikGeheim1234%%</sec:Password>
+         <sec:EmailAddress>hendrik.ido@airbrush.com</sec:EmailAddress>
+         <sec:EmployeeNumber>91873271</sec:EmployeeNumber>
+         <sec:OrganizationUnit>Airbrush</sec:OrganizationUnit>
+         <!--Optional:-->
+         <sec:ManagerId>Harry.Bobson</sec:ManagerId>
+         <sec:MobileTelephone>+99817235617</sec:MobileTelephone>
+      </sec:UserAccountRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="addUserAccount"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="findUserAccount" name="findUserAccount" bindingOperationName="findUserAccount" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="findHarry"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://soa2admin2.example.com:8001/soa-infra/services/default/LDAPInteractorSOAComposite/LDAPService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sec="saibot.airport/security">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <sec:FindUserAccountRequest>
+         <sec:UserId>harry.bobson</sec:UserId>
+      </sec:FindUserAccountRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="findUserAccount"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>

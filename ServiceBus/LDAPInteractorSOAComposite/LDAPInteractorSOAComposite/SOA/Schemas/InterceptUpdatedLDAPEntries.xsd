@@ -1,0 +1,36 @@
+<?xml version= "1.0" encoding= "UTF-8" ?>
+<schema targetNamespace="http://platform.integration.oracle/blocks/adapter/fw/metadata/InterceptUpdatedLDAPEntries"
+            xmlns="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://platform.integration.oracle/blocks/adapter/fw/metadata/InterceptUpdatedLDAPEntries"
+            elementFormDefault="unqualified">
+  <element name="entryChangeNotificationResponse">
+     <complexType>
+         <sequence>
+             <element name="eventsReturned" type="string" minOccurs="0"/>
+             <element name="changedEntry" maxOccurs="unbounded" minOccurs="0">
+                 <complexType>
+                     <sequence>
+                       <element name="cn" type="tns:multiValueAttribute"/>
+                       <element name="employeeNumber" type="string"/>
+                       <element name="givenName" type="tns:multiValueAttribute"/>
+                       <element name="mail" type="tns:multiValueAttribute"/>
+                       <element name="manager" type="tns:multiValueAttribute"/>
+                       <element name="ou" type="tns:multiValueAttribute"/>
+                       <element name="modifyTimestamp" type="string"/>
+                       <element name="createTimestamp" type="string"/>
+                     </sequence>
+                     <attribute name="index" type="integer"/>
+                     <attribute name="dn" type="string"/>
+                     <attribute name="changeType" type="string"/>
+                     <attribute name="changeTime" type="string"/>
+                 </complexType>
+             </element>
+         </sequence>
+     </complexType>
+  </element>
+<complexType name="multiValueAttribute">
+   <sequence>
+       <element name="value" type="string" maxOccurs="unbounded"/>
+   </sequence>
+</complexType>
+</schema>

@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<definitions xmlns="http://schemas.oracle.com/events/edl" targetNamespace="http://xmlns.oracle.com/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/LdapEvents">
+   <schema-import location="../Schemas/InterceptUpdatedLDAPEntries.xsd" namespace="http://platform.integration.oracle/blocks/adapter/fw/metadata/InterceptUpdatedLDAPEntries"/>
+   <event-definition name="LdapModification">
+      <content xmlns:ns1="http://platform.integration.oracle/blocks/adapter/fw/metadata/InterceptUpdatedLDAPEntries" element="ns1:entryChangeNotificationResponse"/>
+   </event-definition>
+</definitions>

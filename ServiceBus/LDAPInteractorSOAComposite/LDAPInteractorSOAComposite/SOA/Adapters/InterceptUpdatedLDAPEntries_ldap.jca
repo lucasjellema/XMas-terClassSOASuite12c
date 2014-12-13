@@ -1,0 +1,21 @@
+<adapter-config name="InterceptUpdatedLDAPEntries" adapter="ldap" wsdlLocation="../WSDLs/InterceptUpdatedLDAPEntries.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/ldap/SaibotLdap"/>
+  <endpoint-activation portType="entryChangeNotification_ptt" operation="entryChangeNotification">
+    <activation-spec className="oracle.tip.adapter.ldap.inbound.LdapEntryChangeActivationSpec">
+      <property name="EventScope" value="wholeSubtree"/>
+      <property name="TimeLimit" value="10"/>
+      <property name="SearchFilter" value="(objectClass=*)"/>
+      <property name="PollingInterval" value="10"/>
+      <property name="NotificationStrategy" value="TimeStampBased"/>
+      <property name="ReturnAttributes" value="createTimestamp,modifyTimestamp,cn,employeeNumber,givenName,mail,manager,ou"/>
+      <property name="BaseDN" value="ou=ExternalStaff,o=saibot.airport"/>
+      <property name="PageSize" value="0"/>
+      <property name="SizeLimit" value="1000"/>
+      <property name="EventType" value="all"/>
+      <property name="ReturnAttributesDelimiter" value=","/>
+      <property name="TypesOnly" value="false"/>
+    </activation-spec>
+  </endpoint-activation>
+
+</adapter-config>

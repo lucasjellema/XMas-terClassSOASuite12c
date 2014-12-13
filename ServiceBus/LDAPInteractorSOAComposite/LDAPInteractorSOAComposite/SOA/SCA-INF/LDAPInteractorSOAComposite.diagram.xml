@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dgm:gDiagram xmlns:dgm="http://xmlns.oracle.com/sca/soadgm">
+    <dgm:gService name="ReadFromLDAP_2">
+        <dgm:body borderWidth="2" arcRad="20" X="21" Y="41" width="137" height="84">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="11" Y="34" width="156" height="98">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:outputPort name="ReadFromLDAP_2" X="127" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/ReadLDAPEntry#wsdl.interface(search_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/soap_service_20x20.png" X="20" Y="4" width="20" height="20"/>
+        <dgm:operations>
+            <dgm:item>search</dgm:item>
+        </dgm:operations>
+    </dgm:gService>
+    <dgm:gService name="LDAPService">
+        <dgm:body borderWidth="2" arcRad="20" X="21" Y="321" width="137" height="96">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="11" Y="314" width="156" height="110">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:outputPort name="LDAPService" X="127" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://oracle.com/sca/soapservice/LDAPAccessor/LDAPAccessor/LdapService#wsdl.interface(LdapService)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/soap_service_20x20.png" X="20" Y="4" width="20" height="20"/>
+        <dgm:operations>
+            <dgm:item>addUserAccount</dgm:item>
+            <dgm:item>findUserAccount</dgm:item>
+        </dgm:operations>
+    </dgm:gService>
+    <dgm:gService name="InterceptUpdatedLDAPEntries">
+        <dgm:body borderWidth="2" arcRad="20" X="21" Y="166" width="137" height="84">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="11" Y="159" width="156" height="98">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:outputPort name="InterceptUpdatedLDAPEntries" X="127" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/InterceptUpdatedLDAPEntries#wsdl.interface(entryChangeNotification_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/ldap_adapter_20x20.png" X="20" Y="4" width="20" height="20"/>
+        <dgm:operations>
+            <dgm:item>entryChangeNotification</dgm:item>
+        </dgm:operations>
+    </dgm:gService>
+    <dgm:gReference name="ReadLDAPEntry">
+        <dgm:body borderWidth="2" arcRad="20" X="838" Y="99" width="136" height="84">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="828" Y="92" width="156" height="98">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="ReadLDAPEntry" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/ReadLDAPEntry#wsdl.interface(search_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/ldap_adapter_20x20.png" X="27" Y="4" width="20" height="20"/>
+        <dgm:operations>
+            <dgm:item>search</dgm:item>
+        </dgm:operations>
+    </dgm:gReference>
+    <dgm:gReference name="CreateLDAPEntry">
+        <dgm:body borderWidth="2" arcRad="20" X="838" Y="236" width="136" height="84">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="828" Y="229" width="156" height="98">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="CreateLDAPEntry" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/CreateLDAPEntry#wsdl.interface(add_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/ldap_adapter_20x20.png" X="27" Y="4" width="20" height="20"/>
+        <dgm:operations>
+            <dgm:item>add</dgm:item>
+        </dgm:operations>
+    </dgm:gReference>
+    <dgm:gComponent name="ReadFromLDAP">
+        <dgm:body borderWidth="2" arcRad="20" X="426" Y="26" width="130" height="61">
+            <dgm:borderColor r="128" g="92" b="148"/>
+            <dgm:lightBgColor r="208" g="169" b="227"/>
+            <dgm:darkBgColor r="183" g="132" b="212"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="416" Y="19" width="150" height="77">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="ReadFromLDAP" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/ReadLDAPEntry#wsdl.interface(search_ptt)"/>
+        <dgm:outputPort name="ReadLDAPEntry" X="120" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/ReadLDAPEntry#wsdl.interface(search_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/mediator/resource/image/mediator_20x20.png" X="10" Y="4" width="20" height="20"/>
+    </dgm:gComponent>
+    <dgm:gComponent name="LDAPServiceMediator">
+        <dgm:body borderWidth="2" arcRad="20" X="625" Y="196" width="130" height="86">
+            <dgm:borderColor r="128" g="92" b="148"/>
+            <dgm:lightBgColor r="208" g="169" b="227"/>
+            <dgm:darkBgColor r="183" g="132" b="212"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="615" Y="189" width="150" height="102">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="LDAPServiceMediator" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://oracle.com/sca/soapservice/LDAPAccessor/LDAPAccessor/LdapService#wsdl.interface(LdapService)"/>
+        <dgm:outputPort name="ReadLDAPEntry" X="120" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/ReadLDAPEntry#wsdl.interface(search_ptt)"/>
+        <dgm:outputPort name="CreateLDAPEntry" X="120" Y="40" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/CreateLDAPEntry#wsdl.interface(add_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/mediator/resource/image/mediator_20x20.png" X="10" Y="4" width="20" height="20"/>
+    </dgm:gComponent>
+    <dgm:gComponent name="InterceptLdapUpdate">
+        <dgm:body borderWidth="2" arcRad="20" X="227" Y="111" width="130" height="110">
+            <dgm:borderColor r="128" g="92" b="148"/>
+            <dgm:lightBgColor r="208" g="169" b="227"/>
+            <dgm:darkBgColor r="183" g="132" b="212"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="217" Y="104" width="150" height="126">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="InterceptLdapUpdate" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ldap/LDAPInteractorSOAComposite/LDAPInteractorSOAComposite/InterceptUpdatedLDAPEntries#wsdl.interface(entryChangeNotification_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/mediator/resource/image/mediator_20x20.png" X="23" Y="4" width="20" height="20"/>
+        <dgm:publishEvents>
+            <dgm:item>LdapModification</dgm:item>
+        </dgm:publishEvents>
+        <dgm:publishPort name="" X="120" Y="40" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/circleEvent.png"/>
+    </dgm:gComponent>
+    <dgm:gWireLink source="ReadFromLDAP/ReadLDAPEntry" target="ReadLDAPEntry" width="2">
+        <dgm:gSegment X1="566" Y1="51" X2="804" Y2="51"/>
+        <dgm:gSegment X1="804" Y1="51" X2="804" Y2="109"/>
+        <dgm:gSegment X1="804" Y1="109" X2="828" Y2="109"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="ReadFromLDAP_2" target="ReadFromLDAP/ReadFromLDAP" width="2">
+        <dgm:gSegment X1="168" Y1="51" X2="416" Y2="51"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="LDAPService" target="LDAPServiceMediator/LDAPServiceMediator" width="2">
+        <dgm:gSegment X1="168" Y1="331" X2="590" Y2="331"/>
+        <dgm:gSegment X1="590" Y1="331" X2="590" Y2="221"/>
+        <dgm:gSegment X1="590" Y1="221" X2="615" Y2="221"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="LDAPServiceMediator/ReadLDAPEntry" target="ReadLDAPEntry" width="2">
+        <dgm:gSegment X1="765" Y1="221" X2="789" Y2="221"/>
+        <dgm:gSegment X1="789" Y1="221" X2="789" Y2="109"/>
+        <dgm:gSegment X1="789" Y1="109" X2="828" Y2="109"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="LDAPServiceMediator/CreateLDAPEntry" target="CreateLDAPEntry" width="2">
+        <dgm:gSegment X1="765" Y1="246" X2="828" Y2="246"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="InterceptUpdatedLDAPEntries" target="InterceptLdapUpdate/InterceptLdapUpdate" width="2">
+        <dgm:gSegment X1="168" Y1="176" X2="192" Y2="176"/>
+        <dgm:gSegment X1="192" Y1="176" X2="192" Y2="136"/>
+        <dgm:gSegment X1="192" Y1="136" X2="217" Y2="136"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+</dgm:gDiagram>
