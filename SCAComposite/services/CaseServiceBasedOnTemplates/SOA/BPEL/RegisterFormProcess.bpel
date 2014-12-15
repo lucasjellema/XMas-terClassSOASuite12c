@@ -1,0 +1,324 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<process name="RegisterFormProcess" targetNamespace="http://xmlns.amis.nl/edesk/webformservice/registerformprocess"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.amis.nl/edesk/webformservice/registerformprocess"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:frms="http://xmlns.amis.nl/edesk/webformservice" xmlns:frm="http://xmlns.amis.nl/edesk/frm/0200"
+         xmlns:com="http://xmlns.amis.nl/edesk/common"
+         xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/db/Integratie/CaseService_1.0/RegisterCaseDbAdapter"
+         xmlns:ns9="http://xmlns.oracle.com/pcbpel/adapter/db/sp/RegisterCaseDbAdapter"
+         xmlns:ns10="http://xmlns.oracle.com/pcbpel/adapter/db/Integratie/CaseService_1.0/UpdateCaseDbAdapter"
+         xmlns:ns11="http://xmlns.oracle.com/pcbpel/adapter/db/sp/UpdateCaseDbAdapter"
+         xmlns:ns12="http://xmlns.oracle.com/pcbpel/adapter/db/Integratie/CaseService_1.0/GetByReferenceDbAdapter"
+         xmlns:ns13="http://xmlns.oracle.com/pcbpel/adapter/db/sp/GetByReferenceDbAdapter"
+  
+  <import namespace="http://xmlns.amis.nl/edesk/documentservice" location="../WSDLs/documentServiceWrapper.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import namespace="http://xmlns.amis.nl/edesk/webformservice"
+          location="oramds:/apps/WebFormEOL/WSDL/webformService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import namespace="http://schemas.oracle.com/bpel/extension" location="../WSDLs/RuntimeFault.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import namespace="http://xmlns.amis.nl/edesk/webformservice" location="../WSDLs/webformServiceWrapper.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <partnerLink name="FormService" partnerLinkType="frms:RegisterFormProcess" myRole="FormService"/>
+    <partnerLink name="RegisterCaseDbAdapter" partnerLinkType="ns5:RegisterCaseDbAdapter_plt"
+                 partnerRole="RegisterCaseDbAdapter_role"/>
+    <partnerLink name="UpdateCaseDbAdapter" partnerLinkType="ns10:UpdateCaseDbAdapter_plt"
+                 partnerRole="UpdateCaseDbAdapter_role"/>
+    <partnerLink name="GetByReferenceDbAdapter" partnerLinkType="ns12:GetByReferenceDbAdapter_plt"
+                 partnerRole="GetByReferenceDbAdapter_role"/>
+  </partnerLinks>
+  <variables>
+    <variable name="inputVariable" messageType="frms:RegisterFormRequest"/>
+    <variable name="outputVariable" messageType="frms:RegisterFormResponse"/>
+    <variable name="serviceFault" messageType="frms:FormserviceFaultMessage"/>
+  </variables>
+  <faultHandlers>
+    <catch faultName="frms:fault">
+      <reply name="replyFault" faultName="frms:fault" variable="serviceFault" partnerLink="FormService"
+             portType="frms:FormService" operation="RegisterForm"/>
+    </catch>
+    <catch faultName="bpel:invalidVariables" faultVariable="runtimeFault" faultMessageType="bpelx:RuntimeFaultMessage">
+      <sequence name="invalidVariables">
+        <assign name="assignFault">
+          <copy>
+            <from>"SOA-20401"</from>
+            <to>$serviceFault.fault/frm:serviceFault/com:faultCode</to>
+          </copy>
+          <copy>
+            <from>concat(ora:getFaultName(), ": Error when validating input message.")</from>
+            <to>$serviceFault.fault/frm:serviceFault/com:faultMessage</to>
+          </copy>
+          <copy>
+            <from>ora:getFaultAsString()</from>
+            <to>$serviceFault.fault/frm:serviceFault/com:faultDetails</to>
+          </copy>
+        </assign>
+        <reply name="replyFault" variable="serviceFault" partnerLink="FormService" portType="frms:FormService"
+               operation="RegisterForm" faultName="frms:fault"/>
+      </sequence>
+    </catch>
+    <catchAll>
+      <sequence name="catchAll">
+        <assign name="assignFault">
+          <copy>
+            <from>"SOA-20404"</from>
+            <to>$serviceFault.fault/frm:serviceFault/com:faultCode</to>
+          </copy>
+          <copy>
+            <from>concat("Uncatched exception ", ora:getFaultName(), " occured!")</from>
+            <to>$serviceFault.fault/frm:serviceFault/com:faultMessage</to>
+          </copy>
+          <copy>
+            <from>ora:getFaultAsString()</from>
+            <to>$serviceFault.fault/frm:serviceFault/com:faultDetails</to>
+          </copy>
+        </assign>
+        <reply name="replyFault" faultName="frms:fault" variable="serviceFault" partnerLink="FormService"
+               portType="frms:FormService" operation="RegisterForm"/>
+      </sequence>
+    </catchAll>
+  </faultHandlers>
+  <sequence name="main">
+    <receive name="receiveInput" partnerLink="FormService" portType="frms:FormService" operation="RegisterForm"
+             variable="inputVariable" createInstance="yes"/>
+    <validate name="validateInput" variables="inputVariable"/>
+    <scope name="CreateNewCase">
+      <variables>
+        <variable name="registerCaseDbInput" messageType="ns5:args_in_msg"/>
+        <variable name="registerCaseDbOutput" messageType="ns5:args_out_msg"/>
+        <variable name="getCaseDbInput" messageType="ns12:args_in_msg"/>
+        <variable name="getCaseDbOutput" messageType="ns12:args_out_msg"/>
+      </variables>
+      <sequence name="createNewCase">
+        <if name="IfNewCase">
+          <documentation>
+            <![CDATA[NoCaseIdFound]]>
+          </documentation>
+          <condition>count($inputVariable.payload/com:intakeDetails/com:caseid) = 0</condition>
+          <sequence name="noCaseIdFound">
+            <scope name="RegisterNewCase">
+              <sequence name="registerNewCase">
+                <assign name="assignCase">
+                  <copy>
+                    <from>ora:generateGUID()</from>
+                    <to>$registerCaseDbInput.InputParameters/ns9:P_REGISTER_I/ns9:CASE_REFERENCE</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes">
+                    <from>$inputVariable.payload/com:intakeDetails/com:casetype</from>
+                    <to>$registerCaseDbInput.InputParameters/ns9:P_REGISTER_I/ns9:CASE_TYPE</to>
+                  </copy>
+                  <copy ignoreMissingFromData="yes">
+                    <from>$inputVariable.payload/com:intakeDetails/com:casetypeVersion</from>
+                    <to>$registerCaseDbInput.InputParameters/ns9:P_REGISTER_I/ns9:CASE_VERSION</to>
+                  </copy>
+                  <copy>
+                    <from>$inputVariable.payload/com:intakeDetails/com:intakeId</from>
+                    <to>$registerCaseDbInput.InputParameters/ns9:P_REGISTER_I/ns9:INTAKE_ID</to>
+                  </copy>
+                  <copy>
+                    <from>$inputVariable.payload/com:intakeDetails/com:intakeDate</from>
+                    <to>$registerCaseDbInput.InputParameters/ns9:P_REGISTER_I/ns9:INTAKE_DATE</to>
+                  </copy>
+                  <copy>
+                    <from>ora:getContentAsString($inputVariable.payload/frm:webform)</from>
+                    <to>$registerCaseDbInput.InputParameters/ns9:P_REGISTER_I/ns9:CASE_XML</to>
+                  </copy>
+                  <copy>
+                    <from>"N"</from>
+                    <to>$registerCaseDbInput.InputParameters/ns9:P_REGISTER_I/ns9:HAS_DOCUMENTS</to>
+                  </copy>
+                </assign>
+                <invoke name="invokeRegisterCase" partnerLink="RegisterCaseDbAdapter"
+                        portType="ns5:RegisterCaseDbAdapter_ptt" operation="RegisterCaseDbAdapter"
+                        inputVariable="registerCaseDbInput" outputVariable="registerCaseDbOutput"
+                        bpelx:invokeAsDetail="no"/>
+                <assign name="assignCaseRef">
+                  <copy bpelx:insertMissingToData="yes">
+                    <from>$registerCaseDbOutput.OutputParameters/ns9:P_REGISTER_O/ns9:CASE_REFERENCE</from>
+                    <to>$inputVariable.payload/com:intakeDetails/com:caseid</to>
+                  </copy>
+                </assign>
+              </sequence>
+            </scope>
+          </sequence>
+          <else>
+            <documentation>
+              <![CDATA[CheckCase]]>
+            </documentation>
+            <sequence name="checkCaseExists">
+              <scope name="GetExistingCase">
+                <sequence name="getExistingCase">
+                  <assign name="assignCaseRef">
+                    <copy>
+                      <from>$inputVariable.payload/com:intakeDetails/com:caseid</from>
+                      <to>$getCaseDbInput.InputParameters/ns13:P_CASE_REFERENCE</to>
+                    </copy>
+                  </assign>
+                  <invoke name="invokeGetCaseDb" partnerLink="GetByReferenceDbAdapter"
+                          portType="ns12:GetByReferenceDbAdapter_ptt" operation="GetByReferenceDbAdapter"
+                          inputVariable="getCaseDbInput" outputVariable="getCaseDbOutput" bpelx:invokeAsDetail="no"/>
+                </sequence>
+              </scope>
+              <scope name="UpdateCase">
+                <variables>
+                  <variable name="caseRef" type="xsd:string">
+                    <from variable="inputVariable" part="payload"><query>com:intakeDetails/com:caseid</query></from>
+                  </variable>
+                  <variable name="hasDocs" type="xsd:string">
+                    <from>"N"</from>
+                  </variable>
+                  <variable name="caseXml" type="xsd:string">
+                    <from>ora:getContentAsString($inputVariable.payload/frm:webform)</from>
+                  </variable>
+                  <variable name="updateCaseDbInput" messageType="ns10:args_in_msg"/>
+                  <variable name="updateCaseDbOutput" messageType="ns10:args_out_msg"/>
+                </variables>
+                <sequence name="updateCase">
+                  <assign name="assignCase">
+                    <copy>
+                      <from>$caseRef</from>
+                      <to>$updateCaseDbInput.InputParameters/ns11:P_UPDATE_I/ns11:CASE_REFERENCE</to>
+                    </copy>
+                    <copy>
+                      <from>$caseXml</from>
+                      <to>$updateCaseDbInput.InputParameters/ns11:P_UPDATE_I/ns11:CASE_XML</to>
+                    </copy>
+                    <copy>
+                      <from>$hasDocs</from>
+                      <to>$updateCaseDbInput.InputParameters/ns11:P_UPDATE_I/ns11:HAS_DOCUMENTS</to>
+                    </copy>
+                  </assign>
+                  <invoke name="invokeUpdateCaseDb" partnerLink="UpdateCaseDbAdapter"
+                          portType="ns10:UpdateCaseDbAdapter_ptt" operation="UpdateCaseDbAdapter"
+                          inputVariable="updateCaseDbInput" bpelx:invokeAsDetail="no"
+                          outputVariable="updateCaseDbOutput"/>
+                </sequence>
+              </scope>
+            </sequence>
+          </else>
+        </if>
+      </sequence>
+    </scope>
+    <scope name="RegisterDocuments" xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+           xmlns:frm="http://xmlns.amis.nl/edesk/frm/0200" xmlns:docs="http://xmlns.amis.nl/edesk/documentservice"
+           xmlns:com="http://xmlns.amis.nl/edesk/common" xmlns:doc="http://xmlns.amis.nl/edesk/doc/0200">
+      <partnerLinks>
+        <partnerLink name="DocumentService_1." partnerLinkType="docs:DocumentService_1.0"
+                     partnerRole="DocumentService"/>
+      </partnerLinks>
+      <forEach parallel="yes" counterName="documentCounter" name="ForEachDocumentRef">
+        <startCounterValue>1</startCounterValue>
+        <finalCounterValue>$inputVariable.payload/frm:webform/frm:object/frm:formAttachments/frm:attachment</finalCounterValue>
+        <scope name="RegisterDocument">
+          <variables>
+            <variable name="registerDocumentInput" messageType="docs:RegisterDocumentRequest"/>
+            <variable name="registerDocumentOutput" messageType="docs:RegisterDocumentResponse"/>
+          </variables>
+          <sequence name="registerDocument">
+            <assign name="initDocument">
+              <copy>
+                <from>$inputVariable.payload/com:messageDetails</from>
+                <to>$registerDocumentInput.payload/com:messageDetails</to>
+              </copy>
+              <copy>
+                <from>$inputVariable.payload/com:intakeDetails</from>
+                <to>$registerDocumentInput.payload/com:intakeDetails</to>
+              </copy>
+              <copy>
+                <from>$inputVariable.payload/frm:webform/frm:object[1]/frm:subjectDetails</from>
+                <to>$registerDocumentInput.payload/doc:document/doc:object/doc:subjectDetails</to>
+              </copy>
+              <copy>
+                <from>string('DSR')</from>
+                <to>$registerDocumentInput.payload/doc:document/doc:object/doc:documentDetails/doc:documenttype</to>
+              </copy>
+              <copy>
+                <from>substring-before($inputVariable.payload/frm:webform/frm:object[1]/frm:formAttachments/frm:attachment[$documentCounter]/frm:filename, ".")</from>
+                <to>$registerDocumentInput.payload/doc:document/doc:object/doc:documentDetails/doc:fileName</to>
+              </copy>
+              <copy>
+                <from>substring-after($inputVariable.payload/frm:webform/frm:object[1]/frm:formAttachments/frm:attachment[$documentCounter]/frm:filename, ".")</from>
+                <to>$registerDocumentInput.payload/doc:document/doc:object/doc:documentDetails/doc:fileExtension</to>
+              </copy>
+              <copy>
+                <from>0</from>
+                <to>$registerDocumentInput.payload/doc:document/doc:object/doc:documentDetails/doc:fileSize</to>
+              </copy>
+              <copy>
+                <from>$inputVariable.payload/frm:webform/frm:object[1]/frm:formAttachments/frm:attachment[$documentCounter]/frm:filename</from>
+                <to>$registerDocumentInput.payload/doc:document/doc:object/doc:documentDetails/doc:fileReference</to>
+              </copy>
+            </assign>
+            <invoke name="invokeRegisterDocument" partnerLink="DocumentService_1." portType="docs:DocumentService"
+                    operation="RegisterDocument" inputVariable="registerDocumentInput"
+                    outputVariable="registerDocumentOutput" bpelx:invokeAsDetail="no"
+                    xmlns:bpelx="http://schemas.oracle.com/bpel/extension"/>
+          </sequence>
+        </scope>
+      </forEach>
+    </scope>
+    <scope name="SendAnswer">
+      <sequence name="sendAnswer">
+        <assign name="assignOutput">
+          <copy>
+            <from>"Aw01"</from>
+            <to>$outputVariable.payload/com:messageDetails/com:messageType</to>
+          </copy>
+          <copy>
+            <from>"AMIS Services"</from>
+            <to>$outputVariable.payload/com:messageDetails/com:owner</to>
+          </copy>
+          <copy>
+            <from>xp20:current-dateTime()</from>
+            <to>$outputVariable.payload/com:messageDetails/com:sendDate</to>
+          </copy>
+          <copy>
+            <from>"AMIS"</from>
+            <to>$outputVariable.payload/com:messageDetails/com:sender/com:organisation</to>
+          </copy>
+          <copy>
+            <from>"SOA Suite"</from>
+            <to>$outputVariable.payload/com:messageDetails/com:sender/com:application</to>
+          </copy>
+          <copy>
+            <from>ora:getComponentInstanceId()</from>
+            <to>$outputVariable.payload/frm:answer/frm:object/frm:processId</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/com:intakeDetails/com:intakeId</from>
+            <to>$outputVariable.payload/frm:answer/frm:object/frm:intakeId</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/com:intakeDetails/com:caseid</from>
+            <to>$outputVariable.payload/frm:answer/frm:object/frm:caseId</to>
+          </copy>
+          <copy>
+            <from>"SOA-20200"</from>
+            <to>$outputVariable.payload/frm:answer/frm:object/frm:statusDetails/frm:statusCode</to>
+          </copy>
+          <copy>
+            <from>concat("Webform succesfully processed for Case with Ref ID ", $inputVariable.payload/com:intakeDetails/com:caseid)</from>
+            <to>$outputVariable.payload/frm:answer/frm:object/frm:statusDetails/frm:statusMessage</to>
+          </copy>
+        </assign>
+        <reply name="replyOutput" partnerLink="FormService" portType="frms:FormService" operation="RegisterForm"
+               variable="outputVariable"/>
+      </sequence>
+    </scope>
+  </sequence>
+</process>
