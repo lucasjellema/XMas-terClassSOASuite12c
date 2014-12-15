@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sensors xmlns="http://xmlns.oracle.com/bpel/sensor">
+    <sensor sensorName="InputSensor" kind="service" target="undefined" filter="" xmlns:client="my.com/someservice">
+        <serviceConfig service="someservice_client_ep" expression="$in.payload/client:process/client:input" operation="process" outputDataType="string" outputNamespace="http://www.w3.org/2001/XMLSchema"/>
+    </sensor>
+</sensors>

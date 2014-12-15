@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dgm:gDiagram xmlns:dgm="http://xmlns.oracle.com/sca/soadgm">
+    <dgm:gService name="ScheduleJob_ep">
+        <dgm:body borderWidth="2" arcRad="20" X="21" Y="41" width="137" height="96">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="11" Y="34" width="156" height="110">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:outputPort name="ScheduleJob_ep" X="127" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="my.org/asynchjob#wsdl.interface(ExecuteJob)" callbackInterface="my.org/asynchjob#wsdl.interface(ExecuteJobCallback)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/soap_service_20x20.png" X="20" Y="4" width="20" height="20"/>
+        <dgm:operations>
+            <dgm:item>process</dgm:item>
+            <dgm:item>processResponse</dgm:item>
+        </dgm:operations>
+    </dgm:gService>
+    <dgm:gReference name="EssService">
+        <dgm:body borderWidth="2" arcRad="20" X="646" Y="41" width="136" height="168">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="636" Y="34" width="156" height="182">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="EssService" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/scheduler#wsdl.interface(ESSWebService)" callbackInterface="http://xmlns.oracle.com/scheduler#wsdl.interface(ESSWebServiceCallback)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/soap_service_20x20.png" X="27" Y="4" width="20" height="20"/>
+        <dgm:policyIcon URI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/locked_12x12.png" X="118" Y="8" width="12" height="12"/>
+        <dgm:operations>
+            <dgm:item>submitRequest</dgm:item>
+            <dgm:item>submitRecurringRequest</dgm:item>
+            <dgm:item>getCompletionStatus</dgm:item>
+            <dgm:item>getRequestState</dgm:item>
+            <dgm:item>getRequestDetail</dgm:item>
+            <dgm:item>getRequestExecutionContext</dgm:item>
+            <dgm:item>holdRequest</dgm:item>
+            <dgm:item>releaseRequest</dgm:item>
+            <dgm:item>setAsyncRequestStatus</dgm:item>
+            <dgm:item>cancelRequest</dgm:item>
+            <dgm:item>deleteRequest</dgm:item>
+            <dgm:item>purgeRequest</dgm:item>
+            <dgm:item>setSubmitArgs</dgm:item>
+            <dgm:item>setStepsArgs</dgm:item>
+            <dgm:item>addPPActions</dgm:item>
+            <dgm:item>setNLSOptions</dgm:item>
+            <dgm:item>onJobCompletion</dgm:item>
+        </dgm:operations>
+    </dgm:gReference>
+    <dgm:gComponent name="ExecuteJob">
+        <dgm:body borderWidth="2" arcRad="20" X="337" Y="26" width="130" height="61">
+            <dgm:borderColor r="69" g="113" b="140"/>
+            <dgm:lightBgColor r="166" g="208" b="230"/>
+            <dgm:darkBgColor r="99" g="162" b="201"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="327" Y="19" width="150" height="77">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="ScheduleJob" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="my.org/asynchjob#wsdl.interface(ExecuteJob)" callbackInterface="my.org/asynchjob#wsdl.interface(ExecuteJobCallback)"/>
+        <dgm:outputPort name="EssService" X="120" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/scheduler#wsdl.interface(ESSWebService)" callbackInterface="http://xmlns.oracle.com/scheduler#wsdl.interface(ESSWebServiceCallback)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/shared/plugins/resources/images/soa/process_20x20.png" X="10" Y="4" width="20" height="20"/>
+    </dgm:gComponent>
+    <dgm:gWireLink source="ScheduleJob_ep" target="ExecuteJob/ScheduleJob" width="2">
+        <dgm:gSegment X1="168" Y1="51" X2="327" Y2="51"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="ExecuteJob/EssService" target="EssService" width="2">
+        <dgm:gSegment X1="477" Y1="51" X2="636" Y2="51"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+</dgm:gDiagram>
