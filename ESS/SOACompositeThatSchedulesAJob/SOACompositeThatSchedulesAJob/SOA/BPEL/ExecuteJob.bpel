@@ -1,0 +1,156 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Dec 15 18:24:10 CET 2014
+  Author:  lucas_j
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ExecuteJob"
+         targetNamespace="my.org/asynchjob"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="my.org/asynchjob"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/scheduler" xmlns:ns2="http://xmlns.oracle.com/scheduler/types"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <import ui:processWSDL="true" namespace="my.org/asynchjob" location="../WSDLs/ExecuteJob.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="ScheduleJob" partnerLinkType="client:ExecuteJob" myRole="ExecuteJobProvider" partnerRole="ExecuteJobRequester"/>
+        <partnerLink name="EssService" partnerLinkType="ns1:ESSWebService_ESSWebServiceCallback_PLT"
+                     partnerRole="ESSWebService_Role" myRole="ESSWebServiceCallback_Role"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:ExecuteJobRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:ExecuteJobResponseMessage"/>
+    </variables>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in ExecuteJob.wsdl) -->
+        <receive name="receiveInput" partnerLink="ScheduleJob" portType="client:ExecuteJob" operation="process" variable="inputVariable" createInstance="yes"/>
+        <scope name="ScheduleInvokeSomeService">
+            <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:scheduleJob"></bpelx:pattern>
+            </bpelx:annotation>
+            <variables>
+                <variable name="EssInput" messageType="ns1:submitRequestInput"/>
+                <variable name="EssOutput" messageType="ns1:submitRequestOutput"/>
+            </variables>
+            <sequence name="EssSequence">
+                <assign name="EssAssign">
+                    <bpelx:annotation>
+                        <bpelx:general>
+                            <bpelx:property name="InputForSomeService">
+                                <![CDATA[STRING;'Daily Routine';false;AppParam;false]]>
+                            </bpelx:property>
+                            <bpelx:property name="SYS_EXT_wsServiceName">
+                                <![CDATA[STRING;'someservice_client_ep';true;SysParam;false]]>
+                            </bpelx:property>
+                            <bpelx:property name="SYS_EXT_invokeMessage">
+                                <![CDATA[STRING;'<ns1:process xmlns:ns1="my.com/someservice">
+  <ns1:input>${ESS_REQ:InputForSomeService} and more stuff</ns1:input>
+</ns1:process>';false;SysParam;false]]>
+                            </bpelx:property>
+                            <bpelx:property name="SYS_EXT_wsWsdlUrl">
+                                <![CDATA[STRING;'/soa-infra/services/default/SOACompositeToBeScheduled/someservice_client_ep?WSDL';true;SysParam;false]]>
+                            </bpelx:property>
+                            <bpelx:property name="SYS_EXT_wsPortName">
+                                <![CDATA[STRING;'SomeService_pt';true;SysParam;false]]>
+                            </bpelx:property>
+                            <bpelx:property name="SYS_effectiveApplication">
+                                <![CDATA[STRING;'EssNativeHostingApp';true;SysParam;false]]>
+                            </bpelx:property>
+                            <bpelx:property name="SYS_EXT_wsOperationName">
+                                <![CDATA[STRING;'process';true;SysParam;false]]>
+                            </bpelx:property>
+                            <bpelx:property name="SYS_externalJobType">
+                                <![CDATA[STRING;'SOA';true;SysParam;false]]>
+                            </bpelx:property>
+                            <bpelx:property name="SYS_EXT_wsWsdlBaseUrl">
+                                <![CDATA[STRING;'http://soa2admin2.example.com:8001';true;SysParam;false]]>
+                            </bpelx:property>
+                        </bpelx:general>
+                    </bpelx:annotation>
+                    <copy>
+                        <from>'EssNativeHostingApp'</from>
+                        <to>$EssInput.parameters//ns1:submitRequest/ns1:application</to>
+                    </copy>
+                    <copy>
+                        <from><literal><typ:parameter xmlns:typ="http://xmlns.oracle.com/scheduler/types">
+  <typ:dataType>STRING</typ:dataType>
+  <typ:name>InputForSomeService</typ:name>
+  <typ:value>MyParamValue</typ:value>
+</typ:parameter></literal></from>
+                        <to>$EssInput.parameters/ns1:requestParameters/ns2:parameter</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/client:input</from>
+                        <to>$EssInput.parameters/ns1:requestParameters/ns2:parameter/ns2:value</to>
+                    </copy>
+                    <copy>
+                        <from>'InvokeSomeService'</from>
+                        <to>$EssInput.parameters//ns1:submitRequest/ns1:jobDefinitionId/ns2:name</to>
+                    </copy>
+                    <copy>
+                        <from>'/oracle/apps/ess/custom/XMasterClass/housekeeping/'</from>
+                        <to>$EssInput.parameters//ns1:submitRequest/ns1:jobDefinitionId/ns2:packageName</to>
+                    </copy>
+                    <copy>
+                        <from>'JOB_DEFINITION'</from>
+                        <to>$EssInput.parameters//ns1:submitRequest/ns1:jobDefinitionId/ns2:type</to>
+                    </copy>
+                </assign>
+                <invoke name="EssInvoke" portType="ns1:ESSWebService" partnerLink="EssService" inputVariable="EssInput"
+                        outputVariable="EssOutput" operation="submitRequest"/>
+            </sequence>
+        </scope>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="ScheduleJob" portType="client:ExecuteJobCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>
