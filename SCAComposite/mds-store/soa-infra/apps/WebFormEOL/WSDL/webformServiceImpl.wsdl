@@ -1,0 +1,62 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<definitions
+     name="WebFormService"
+     targetNamespace="http://xmlns.amis.nl/edesk/webformservice"
+     xmlns="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:ns2="http://schemas.xmlsoap.org/ws/2003/03/addressing"
+     xmlns:ns1="http://schemas.oracle.com/bpel/extension"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:ns3="http://schemas.oracle.com/service/bpel/common"
+     xmlns:fmr="http://xmlns.amis.nl/edesk/frm/0200"
+     xmlns:tns="http://xmlns.amis.nl/edesk/webformservice"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.amis.nl/edesk/frm/0200" schemaLocation="../Messages/FRM/V2/form.msg.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="RegisterFormRequest">
+        <part name="payload" element="fmr:FormRequest"/>
+    </message>
+    <message name="RegisterFormResponse">
+        <part name="payload" element="fmr:FormAnswer"/>
+    </message>
+    <message name="FormserviceFaultMessage">
+        <part name="fault" element="fmr:FormServiceFault"/>
+    </message>
+    <portType name="FormService">
+        <operation name="RegisterForm">
+            <input message="tns:RegisterFormRequest"/>
+            <output message="tns:RegisterFormResponse"/>
+            <fault name="FormserviceFault" message="tns:FormserviceFaultMessage"/>
+        </operation>
+    </portType>
+    <binding name="FormServiceBinding" type="tns:FormService">
+        <soap:binding style="document"
+                      transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="RegisterForm">
+            <soap:operation style="document" soapAction="RegisterForm"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+            <fault name="FormserviceFault">
+                <soap:fault name="FormserviceFault" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="RegisterFormAsync">
+            <soap:operation style="document" soapAction="RegisterFormAsync"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+    </binding>
+    <service name="FormService">
+        <port name="FormServicePort" binding="tns:FormServiceBinding">
+            <soap:address location="URL_LOCATION_WEBFORMSERVICE"/>
+        </port>
+    </service>
+</definitions>

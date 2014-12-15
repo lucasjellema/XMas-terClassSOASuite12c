@@ -1,0 +1,37 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<definitions
+     name="DocumentService"
+     targetNamespace="http://xmlns.amis.nl/edesk/documentservice"
+     xmlns="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:ns1="http://schemas.xmlsoap.org/ws/2003/03/addressing"
+     xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:ns="http://xmlns.oracle.com/fmw/mft/soap"
+     xmlns:tns="http://xmlns.amis.nl/edesk/documentservice"
+     xmlns:doc="http://xmlns.amis.nl/edesk/doc/0200"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.amis.nl/edesk/doc/0200" schemaLocation="../Messages/DOC/V2/document.msg.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="RegisterDocumentRequest">
+        <part name="payload" element="doc:DocumentRequest"/>
+    </message>
+    <message name="RegisterDocumentResponse">
+        <part name="payload" element="doc:DocumenAnswer"/>
+    </message>
+    <message name="DocumentserviceFaultMessage">
+        <part name="fault" element="doc:DocumentServiceFault"/>
+    </message>
+    <portType name="DocumentService">
+        <operation name="RegisterDocument">
+            <input message="tns:RegisterDocumentRequest"/>
+            <output message="tns:RegisterDocumentResponse"/>
+            <fault name="DocumentserviceFault" message="tns:DocumentserviceFaultMessage"/>
+        </operation>
+        <operation name="RegisterDocumentAsync">
+            <input message="tns:RegisterDocumentRequest"/>
+        </operation>
+    </portType>
+</definitions>

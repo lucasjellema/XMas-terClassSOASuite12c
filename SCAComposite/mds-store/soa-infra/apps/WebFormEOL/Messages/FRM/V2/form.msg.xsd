@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:ED="http://xmlns.amis.nl/edesk/common"
+        xmlns:FMR="http://xmlns.amis.nl/edesk/frm/0200"
+        targetNamespace="http://xmlns.amis.nl/edesk/frm/0200"
+        elementFormDefault="qualified" attributeFormDefault="unqualified"
+        version="020000">
+ <include schemaLocation="../../../BO/FRM/V2/form.xsd"/>
+ <import namespace="http://xmlns.amis.nl/edesk/common"
+         schemaLocation="../../../Core/Common/Datatypes.xsd"/>
+ <element name="FormRequest">
+  <complexType>
+   <sequence>
+    <element minOccurs="1" maxOccurs="1" ref="ED:messageDetails"/>
+    <element maxOccurs="1" minOccurs="1" ref="ED:intakeDetails"/>
+    <element name="webform" minOccurs="0" maxOccurs="1" nillable="false">
+     <complexType>
+      <sequence>
+       <element name="object" type="FMR:FormObjectType" maxOccurs="unbounded"
+                minOccurs="1" nillable="false"/>
+      </sequence>
+     </complexType>
+    </element>
+   </sequence>
+  </complexType>
+ </element>
+ <element name="FormAnswer">
+  <complexType>
+   <sequence>
+    <element ref="ED:messageDetails"/>
+    <element name="answer" minOccurs="0">
+     <complexType>
+      <sequence>
+       <element name="object" maxOccurs="unbounded" type="FMR:AnswerObjectType"/>
+      </sequence>
+     </complexType>
+    </element>
+   </sequence>
+  </complexType>
+ </element>
+ <element name="FormServiceFault">
+  <complexType>
+   <sequence>
+    <element name="serviceFault"
+             type="ED:ServiceFaultType"/>
+   </sequence>
+  </complexType>
+ </element>
+</schema>
