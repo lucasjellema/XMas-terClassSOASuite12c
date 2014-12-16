@@ -1,0 +1,15 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="DocumentService"
+     targetNamespace="http://xmlns.amis.nl/edesk/documentservice"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:tns="http://xmlns.amis.nl/edesk/documentservice"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="DocumentService_1.0">
+        <plnk:role name="DocumentService" portType="tns:DocumentService"/>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.amis.nl/edesk/documentservice" location="oramds:/apps/WebFormEOL/WSDL/documentService.wsdl"/>
+</wsdl:definitions>

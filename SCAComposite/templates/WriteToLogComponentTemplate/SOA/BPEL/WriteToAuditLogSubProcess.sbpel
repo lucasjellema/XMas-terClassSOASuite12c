@@ -1,0 +1,64 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Tue Dec 16 16:05:08 CET 2014
+  Author:  robert_m
+  Type: BPEL 2.0 Subprocess
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<bpelx:subProcess name="WriteToAuditLogSubProcess"
+               targetNamespace="http://xmlns.amis.nl/edesk/auditlogsubprocess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.amis.nl/edesk/auditlogsubprocess"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:ui="http://xmlns.oracle.com/soa/designer"
+               xsi:type="bpel:tProcess" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/file/Integratie/WriteToLogComponentTemplate/WriteToAuditLogFileAdapter"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:ns2="http://xmlns.amis.nl/services/auditlog/logformat"
+                  xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/file/">
+   <!--
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC
+       Set of activities coordinating the flow of messages across the
+       services integrated within this business process
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <partnerLinks>
+    <partnerLink name="WriteToAuditLogFileAdapter" partnerLinkType="ns1:Write_plt" partnerRole="Write_role"/>
+  </partnerLinks>
+  <variables>
+    <variable name="intakeId" type="xsd:decimal"/>
+    <variable name="caseId" type="xsd:string"/>
+    <variable name="logDate" type="xsd:dateTime"/>
+    <variable name="logAction" type="xsd:string"/>
+    <variable name="writeToLogInput" messageType="ns1:Write_msg"/>
+  </variables>
+  <sequence name="main">
+    <assign name="assignLogEntry">
+      <copy>
+        <from>$intakeId</from>
+        <to>$writeToLogInput.body/ns2:intakeId</to>
+      </copy>
+      <copy>
+        <from>$caseId</from>
+        <to>$writeToLogInput.body/ns2:caseId</to>
+      </copy>
+      <copy>
+        <from>$logDate</from>
+        <to>$writeToLogInput.body/ns2:logDate</to>
+      </copy>
+      <copy>
+        <from>$logAction</from>
+        <to>$writeToLogInput.body/ns2:logAction</to>
+      </copy>
+    </assign>
+    <invoke name="invokeWriteToLog" partnerLink="WriteToAuditLogFileAdapter"
+            portType="ns1:Write_ptt" operation="Write" inputVariable="writeToLogInput"
+            outputVariable="writeToLogOutput" bpelx:invokeAsDetail="no"/>
+  </sequence>
+</bpelx:subProcess>
