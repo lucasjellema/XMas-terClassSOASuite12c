@@ -23,7 +23,7 @@
          xmlns:ns10="http://xmlns.oracle.com/pcbpel/adapter/db/Integratie/CaseService_1.0/UpdateCaseDbAdapter"
          xmlns:ns11="http://xmlns.oracle.com/pcbpel/adapter/db/sp/UpdateCaseDbAdapter"
          xmlns:ns12="http://xmlns.oracle.com/pcbpel/adapter/db/Integratie/CaseService_1.0/GetByReferenceDbAdapter"
-         xmlns:ns13="http://xmlns.oracle.com/pcbpel/adapter/db/sp/GetByReferenceDbAdapter"
+         xmlns:ns13="http://xmlns.oracle.com/pcbpel/adapter/db/sp/GetByReferenceDbAdapter">
   
   <import namespace="http://xmlns.amis.nl/edesk/documentservice" location="../WSDLs/documentServiceWrapper.wsdl"
           importType="http://schemas.xmlsoap.org/wsdl/"/>
