@@ -29,7 +29,7 @@
         <operation name="RegisterForm">
             <input message="tns:RegisterFormRequest"/>
             <output message="tns:RegisterFormResponse"/>
-            <fault name="FormserviceFault" message="tns:FormserviceFaultMessage"/>
+            <fault name="fault" message="tns:FormserviceFaultMessage"/>
         </operation>
     </portType>
     <binding name="FormServiceBinding" type="tns:FormService">
@@ -44,7 +44,7 @@
                 <soap:body use="literal"/>
             </output>
             <fault name="FormserviceFault">
-                <soap:fault name="FormserviceFault" use="literal"/>
+                <soap:fault name="fault" use="literal"/>
             </fault>
         </operation>
         <operation name="RegisterFormAsync">

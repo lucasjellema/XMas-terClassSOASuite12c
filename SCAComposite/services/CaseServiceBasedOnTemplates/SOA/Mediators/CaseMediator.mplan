@@ -18,8 +18,8 @@
             <onReply>
               <reply/>
             </onReply>
-            <onFault type="FormserviceFault">
-              <fault type="FormserviceFault"/>
+            <onFault type="fault">
+              <fault type="fault"/>
             </onFault>
           </invoke>
         </action>

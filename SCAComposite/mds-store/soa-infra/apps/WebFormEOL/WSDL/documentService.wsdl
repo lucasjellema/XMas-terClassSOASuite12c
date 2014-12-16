@@ -28,7 +28,7 @@
         <operation name="RegisterDocument">
             <input message="tns:RegisterDocumentRequest"/>
             <output message="tns:RegisterDocumentResponse"/>
-            <fault name="DocumentserviceFault" message="tns:DocumentserviceFaultMessage"/>
+            <fault name="fault" message="tns:DocumentserviceFaultMessage"/>
         </operation>
         <operation name="RegisterDocumentAsync">
             <input message="tns:RegisterDocumentRequest"/>

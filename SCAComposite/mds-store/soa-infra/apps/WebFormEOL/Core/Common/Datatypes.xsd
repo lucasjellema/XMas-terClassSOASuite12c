@@ -42,7 +42,7 @@
    </element>
    <element name="owner" type="ED:Owner" default="AMIS Services"/>
    <element name="sendDate" type="ED:DateAndTime"/>
-   <element name="sender" type="ED:CommonSystemType" minOccurs="0"/>
+   <element name="sender" type="ED:CommonSystemType"/>
   </sequence>
  </complexType>
  <complexType name="CommonIntakeDetailsType">
@@ -52,7 +52,7 @@
    <element name="caseid" type="ED:CaseID" minOccurs="0" />
    <element name="casetype" type="ED:Casetype" minOccurs="0"/>
    <element name="casetypeVersion" type="ED:CasetypeVersion" minOccurs="0"/>
-   <element name="propertyValues" minOccurs="1" type="string"/>
+   <element name="propertyValues" type="string"/>
   </sequence>
  </complexType>
  <complexType name="CommonCaseDetailsType">
