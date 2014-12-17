@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sensors xmlns="http://xmlns.oracle.com/bpel/sensor">
+    <sensor sensorName="intakeId" kind="service" target="undefined" filter="" xmlns:fmr="http://xmlns.amis.nl/edesk/frm/0200" xmlns:ns0="http://xmlns.amis.nl/edesk/common">
+        <serviceConfig service="FormService" expression="$in.payload/fmr:FormRequest/ns0:intakeDetails/ns0:intakeId" operation="RegisterForm" outputDataType="IntakeID" outputNamespace="http://xmlns.amis.nl/edesk/common"/>
+    </sensor>
+    <sensor sensorName="caseId" kind="service" target="undefined" filter="count($in.payload/fmr:FormRequest/ns0:intakeDetails/ns0:caseid) = 1" xmlns:fmr="http://xmlns.amis.nl/edesk/frm/0200" xmlns:ns0="http://xmlns.amis.nl/edesk/common">
+        <serviceConfig service="FormService" expression="$in.payload/fmr:FormRequest/ns0:intakeDetails/ns0:caseid" operation="RegisterForm" outputDataType="CaseID" outputNamespace="http://xmlns.amis.nl/edesk/common"/>
+    </sensor>
+</sensors>

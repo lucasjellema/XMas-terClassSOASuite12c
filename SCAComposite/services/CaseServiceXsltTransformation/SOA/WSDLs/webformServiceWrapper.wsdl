@@ -1,0 +1,17 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="WebFormService"
+     targetNamespace="http://xmlns.amis.nl/edesk/webformservice"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:tns="http://xmlns.amis.nl/edesk/webformservice"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:ns1="http://schemas.oracle.com/bpel/extension"
+    >
+    <plnk:partnerLinkType name="RegisterFormProcess">
+        <plnk:role name="FormService" portType="tns:FormService"/>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.amis.nl/edesk/webformservice" location="oramds:/apps/WebFormEOL/WSDL/webformService.wsdl"/>
+    <wsdl:import namespace="http://schemas.oracle.com/bpel/extension" location="RuntimeFault.wsdl"/>
+</wsdl:definitions>

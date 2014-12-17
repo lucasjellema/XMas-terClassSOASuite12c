@@ -69,8 +69,8 @@
   </component>
   <reference name="DocumentService_1.0" ui:wsdlLocation="oramds:/apps/WebFormEOL/WSDL/documentService.wsdl">
     <interface.wsdl interface="http://xmlns.amis.nl/edesk/documentservice#wsdl.interface(DocumentService)"/>
-    <binding.ws port="http://xmlns.amis.nl/edesk/documentservice#wsdl.endpoint(DocumentService/DocumentServicePort)"
-                location="http://localhost:7101/soa-infra/services/default/DocumentService_1.0/DocumentService" soapVersion="1.1"/>
+    <binding.ws port="http://xmlns.amis.nl/edesk/documentservice#wsdl.endpoint(DocumentService/DocumentService_pt)"
+                location="http://localhost:7101/soa-infra/services/default/DocumentService_1.0/DocumentService?wsdl" soapVersion="1.1"/>
   </reference>
   <reference name="RegisterCaseDbAdapter" ui:wsdlLocation="WSDLs/RegisterCaseDbAdapter.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/Integratie/CaseService_1.0/RegisterCaseDbAdapter#wsdl.interface(RegisterCaseDbAdapter_ptt)"/>
