@@ -1,0 +1,13 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="my.org/pr"
+     xmlns:pr="my.org/pr" xmlns="http://www.w3.org/2001/XMLSchema">
+ 
+    <element name="SpecialEvent" type="pr:specialEventType"/>
+    <complexType name="specialEventType">
+        <sequence>
+            <element name="category" type="string"/>
+            <element name="eventCount" type="string"/>
+            <element name="timestamp" type="dateTime"/>
+        </sequence>
+    </complexType>
+</schema>

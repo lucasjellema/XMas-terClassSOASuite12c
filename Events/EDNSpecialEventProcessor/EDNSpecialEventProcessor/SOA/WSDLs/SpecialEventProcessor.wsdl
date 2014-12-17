@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="SpecialEventProcessor"
+             targetNamespace="http://xmlns.oracle.com/EDNSpecialEventProcessor/EDNSpecialEventProcessor/SpecialEventProcessor"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.oracle.com/EDNSpecialEventProcessor/EDNSpecialEventProcessor/SpecialEventProcessor"
+             xmlns:ns1="my.org/pr"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	TYPE DEFINITION - List of services participating in this BPEL process
+	The default output of the BPEL designer uses strings as input and 
+	output to the BPEL Process. But you can define or import any XML 
+	Schema type and use them as part of the message types.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->   
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="my.org/pr" schemaLocation="../Schemas/SpecialEvents.xsd" />
+		</schema>
+	</wsdl:types>
+
+</wsdl:definitions>

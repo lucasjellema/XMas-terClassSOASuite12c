@@ -1,0 +1,47 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Dec 17 12:16:16 CET 2014
+  Author:  lucas_j
+  Purpose: BPEL Process for event subscription
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="SpecialEventProcessor"
+         targetNamespace="http://xmlns.oracle.com/EDNSpecialEventProcessor/EDNSpecialEventProcessor/SpecialEventProcessor"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.oracle.com/EDNSpecialEventProcessor/EDNSpecialEventProcessor/SpecialEventProcessor"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:ns1="http://xmlns.oracle.com/EDNSpecialEventProcessor/EDNSpecialEventProcessor/SpecialEvents"
+         xmlns:ns2="my.org/pr"
+         xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+
+    <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/EDNSpecialEventProcessor/EDNSpecialEventProcessor/SpecialEventProcessor" location="../WSDLs/SpecialEventProcessor.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="specialEventInputVariable" element="ns2:SpecialEvent"/>
+
+    </variables>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in SpecialEventProcessor.wsdl) -->
+        <receive name="receiveInput0" bpelx:eventName="ns1:MySpecialEvent" variable="specialEventInputVariable" createInstance="yes"/>
+    </sequence></process>
