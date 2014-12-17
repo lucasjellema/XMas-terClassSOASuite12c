@@ -1,0 +1,78 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Dec 17 15:30:18 CET 2014
+  Author:  robert_m
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="RegisterDocumentAsyncProcess"
+               targetNamespace="http://xmlns.amis.nl/edesk/webformservice/registerdocumentprocess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.amis.nl/edesk/webformservice/registerdocumentprocess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="http://xmlns.amis.nl/edesk/documentservice"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer" xmlns:ns3="http://xmlns.amis.nl/edesk/common"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://xmlns.amis.nl/edesk/doc/0200">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.amis.nl/edesk/documentservice" location="../WSDLs/documentServiceWrapper.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="DocumentService" partnerLinkType="ns1:DocumentService_1.0" myRole="DocumentService"/>
+    <partnerLink name="DocumentService_1.0" partnerLinkType="ns1:DocumentService_1.0" partnerRole="DocumentService"/>
+  </partnerLinks>
+  <variables>
+    <variable name="inputVariable" messageType="ns1:RegisterDocumentRequest"/>
+    <variable name="registerDocumentInput" messageType="ns1:RegisterDocumentRequest"/>
+    <variable name="registerDocumentOutput" messageType="ns1:RegisterDocumentResponse"/>
+  </variables>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in RegisterDocumentProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="DocumentService" portType="ns1:DocumentService"
+             operation="RegisterDocumentAsync" variable="inputVariable" createInstance="yes"/>
+    <scope name="RegisterDocument">
+      <sequence name="registerDocument">
+        <assign name="assignDocument">
+          <copy>
+            <from>$inputVariable.payload</from>
+            <to>$registerDocumentInput.payload</to>
+          </copy>
+        </assign>
+        <invoke name="invokeRegisterDocument" partnerLink="DocumentService_1.0"
+                portType="ns1:DocumentService" operation="RegisterDocument" inputVariable="registerDocumentInput"
+                outputVariable="registerDocumentOutput" bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

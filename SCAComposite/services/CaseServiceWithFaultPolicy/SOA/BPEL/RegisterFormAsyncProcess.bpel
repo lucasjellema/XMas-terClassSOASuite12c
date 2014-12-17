@@ -1,0 +1,88 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Dec 16 10:35:57 CET 2014
+  Author:  robert_m
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="RegisterFormAsyncProcess"
+               targetNamespace="http://xmlns.amis.nl/edesk/webformservice/registerformasyncprocess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.amis.nl/edesk/webformservice/registerformasyncprocess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="http://xmlns.amis.nl/edesk/webformservice"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer" xmlns:ns3="http://xmlns.amis.nl/edesk/common"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://xmlns.amis.nl/edesk/frm/0200">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.amis.nl/edesk/webformservice" location="../WSDLs/webformServiceWrapper.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="FormService" partnerLinkType="ns1:RegisterFormProcess" myRole="FormService"/>
+    <partnerLink name="RegisterFormProcess" partnerLinkType="ns1:RegisterFormProcess"
+                 partnerRole="FormService"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:RegisterFormRequest"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:RegisterFormResponse"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in RegisterFormAsyncProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="FormService" portType="ns1:FormService" operation="RegisterFormAsync" variable="inputVariable" createInstance="yes"/>
+    <extensionActivity>
+      <bpelx:dehydrate name="dehydrateInput"/>
+    </extensionActivity>
+    <!-- Generate reply to synchronous request -->
+    <scope name="RegisterFormSync">
+      <variables>
+        <variable name="registerFormInput" messageType="ns1:RegisterFormRequest"/>
+        <variable name="registerFormOutput" messageType="ns1:RegisterFormResponse"/>
+      </variables>
+      <sequence name="registerFormSync">
+        <assign name="assignInput">
+          <copy>
+            <from>$inputVariable.payload</from>
+            <to>$registerFormInput.payload</to>
+          </copy>
+        </assign>
+        <invoke name="invokeRegisterFormProcess" partnerLink="RegisterFormProcess"
+                portType="ns1:FormService" operation="RegisterForm" inputVariable="registerFormInput"
+                outputVariable="registerFormOutput" bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+  </sequence>
+</process>

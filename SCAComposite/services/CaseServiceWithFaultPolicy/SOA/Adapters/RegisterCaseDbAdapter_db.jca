@@ -1,0 +1,13 @@
+<adapter-config name="RegisterCaseDbAdapter" adapter="db" wsdlLocation="../WSDLs/RegisterCaseDbAdapter.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory UIConnectionName="CaseMgmt" location="eis/DB/CaseMgmt"/>
+  <endpoint-interaction portType="RegisterCaseDbAdapter_ptt" operation="RegisterCaseDbAdapter">
+    <interaction-spec className="oracle.tip.adapter.db.DBStoredProcedureInteractionSpec">
+      <property name="SchemaName" value="CASEMGMT"/>
+      <property name="PackageName" value="CASEMGMT_SI_1_0"/>
+      <property name="ProcedureName" value="REGISTER_CASE"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>
