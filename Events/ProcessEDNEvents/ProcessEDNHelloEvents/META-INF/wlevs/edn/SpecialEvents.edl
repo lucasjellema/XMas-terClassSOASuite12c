@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<definitions xmlns="http://schemas.oracle.com/events/edl" targetNamespace="http://xmlns.oracle.com/EDNSpecialEventProcessor/EDNSpecialEventProcessor/SpecialEvents">
+   <schema-import location="../Schemas/SpecialEvents.xsd" namespace="my.org/pr"/>
+   <event-definition name="MySpecialEvent">
+      <content element="ns1:SpecialEvent" xmlns:ns1="my.org/pr"/>
+   </event-definition>
+</definitions>

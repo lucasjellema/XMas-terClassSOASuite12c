@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wlevs:config xmlns:wlevs="http://www.bea.com/ns/wlevs/config/application">
+    <processor>
+        <name>helloEDNEventProcessor</name>
+        <rules>
+            <view id="HelloEventView"><![CDATA[ 
+    select S.properties as properties,
+    cast@java(S.javaContent, org.my.pr.HelloEvent.class).getName() as name,
+    cast@java(S.javaContent, org.my.pr.HelloEvent.class).getCategory() as category,
+    cast@java(S.javaContent, org.my.pr.HelloEvent.class).getValue() as theValue
+    from helloEDNEventChannel as S
+            ]]></view>
+            <query id="CountHelloEventsPerCategoryQuery"><![CDATA[ 
+                select   count(*) as countEvents, hello.category
+                from     HelloEventView [range 5 minute slide 10 second] as hello 
+ `              group by category 
+ ]]></query>
+        </rules>
+    </processor>
+    <processor>
+        <name>ExtraSpecialHelloConclusionProcessor</name>
+        <rules>
+            <query id="ExtraSpecialHelloEventQuery"><![CDATA[ 
+              select countEvents as countEvents, category as category 
+              from helloEventSummaryChannel [now] 
+              where countEvents > 4 
+            ]]></query>
+        </rules>
+    </processor>
+    <processor>
+        <name>SpecialEventToEDNFormatProcessor</name>
+        <rules>
+            <query id="SpecialEDNEventQuery"><![CDATA[ 
+        select XMLELEMENT(
+            NAME "MySpecialEvent",XMLATTRIBUTES('my.org/pr' as "xmlns"),
+            XMLELEMENT(NAME "category"
+            , ''||category), 
+            XMLELEMENT(NAME "eventCount"
+            , ''||countEvents)
+                ) as xmlContent
+        from extraSpecialHelloEventChannel [now] ]]></query>
+        </rules>
+    </processor>
+    <edn-adapter>
+        <name>publish-special-event-edn-outbound-adapter</name>
+        <edl-file>SpecialEvents.edl</edl-file>
+        <raw-xml-content>true</raw-xml-content>
+        <jndi-provider-url>t3://soa2admin2:8001</jndi-provider-url>
+        <jndi-factory>weblogic.jndi.WLInitialContextFactory</jndi-factory>
+        <user>weblogic</user>
+        <password>WEBLOGIC1</password>
+    </edn-adapter>
+    <edn-adapter>
+        <name>hello-event-edn-inbound-adapter</name>
+        <edl-file>MyBusinessEvents.edl</edl-file>
+        <schema-file>HelloEvents.xsd</schema-file>
+        <validate>false</validate>
+        <raw-xml-content>false</raw-xml-content>
+        <jndi-provider-url>t3://soa2admin2:8001</jndi-provider-url>
+        <jndi-factory>weblogic.jndi.WLInitialContextFactory</jndi-factory>
+        <user>weblogic</user>
+        <password>weblogic1</password>
+    </edn-adapter>
+</wlevs:config>

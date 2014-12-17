@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<definitions xmlns="http://schemas.oracle.com/events/edl" targetNamespace="my.com/events">
+   <schema-import location="../Schemas/HelloEvents.xsd" namespace="my.org/pr"/>
+   <event-definition name="HelloEvent">
+      <content element="ns1:HelloEvent" xmlns:ns1="my.org/pr"/>
+   </event-definition>
+</definitions>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:wlevs="http://www.bea.com/ns/wlevs/spring"
+       xmlns:jdbc="http://www.oracle.com/ns/ocep/jdbc"
+       xmlns:hadoop="http://www.oracle.com/ns/oep/hadoop"
+       xmlns:nosqldb="http://www.oracle.com/ns/oep/nosqldb"
+       xsi:schemaLocation="
+  http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/osgi
+  http://www.springframework.org/schema/osgi/spring-osgi.xsd
+  http://www.bea.com/ns/wlevs/spring
+  http://www.bea.com/ns/wlevs/spring/ocep-epn.xsd
+  http://www.oracle.com/ns/ocep/jdbc
+  http://www.oracle.com/ns/ocep/jdbc/ocep-jdbc.xsd
+  http://www.oracle.com/ns/oep/hadoop
+  http://www.oracle.com/ns/oep/hadoop/oep-hadoop.xsd
+  http://www.oracle.com/ns/oep/nosqldb
+  http://www.oracle.com/ns/oep/nosqldb/oep-nosqldb.xsd">
+  <wlevs:event-type-repository>
+    <wlevs:event-type type-name="HelloEventSummary">
+      <wlevs:class>nl.amis.processedn.helloevents.HelloEventSummary</wlevs:class>
+    </wlevs:event-type>
+  </wlevs:event-type-repository>
+  <wlevs:adapter id="hello-event-edn-inbound-adapter" provider="edn-inbound">
+    <wlevs:listener ref="helloEDNEventChannel"/>
+    <wlevs:instance-property name="eventType" value="HelloEvent"/>
+  </wlevs:adapter>
+  <wlevs:channel id="helloEDNEventChannel" event-type="HelloEvent">
+    <wlevs:listener ref="helloEDNEventProcessor"/>
+  </wlevs:channel>
+  <wlevs:processor id="helloEDNEventProcessor"/>
+  <wlevs:channel id="helloEventSummaryChannel" event-type="HelloEventSummary">
+    <wlevs:listener ref="ExtraSpecialHelloConclusionProcessor"/>
+    <wlevs:listener ref="helloEventReporter"/>
+    <wlevs:source ref="helloEDNEventProcessor"/>
+  </wlevs:channel>
+  <wlevs:adapter id="helloEventReporter" class="nl.amis.processedn.HelloEventReporter"/>
+  <wlevs:processor id="ExtraSpecialHelloConclusionProcessor">
+    <wlevs:listener ref="extraSpecialHelloEventChannel"/>
+  </wlevs:processor>
+  <wlevs:adapter id="specialEventReporter" class="nl.amis.processedn.SpecialHelloEventReporter"/>
+  <wlevs:channel id="extraSpecialHelloEventChannel" event-type="HelloEventSummary">
+    <wlevs:listener ref="SpecialEventToEDNFormatProcessor"/>
+    <wlevs:listener ref="specialEventReporter"/>
+  </wlevs:channel>
+  <wlevs:adapter id="publish-special-event-edn-outbound-adapter" provider="edn-outbound">
+    <wlevs:instance-property name="eventType" value="MySpecialEvent"/>
+  </wlevs:adapter>
+  <wlevs:processor id="SpecialEventToEDNFormatProcessor"/>
+  <wlevs:channel id="SpecialEventEDNFormat" event-type="MySpecialEvent">
+    <wlevs:listener ref="publish-special-event-edn-outbound-adapter"/>
+    <wlevs:source ref="SpecialEventToEDNFormatProcessor"/>
+  </wlevs:channel>
+  
+</beans>
