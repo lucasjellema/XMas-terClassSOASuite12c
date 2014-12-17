@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:ED="http://xmlns.amis.nl/edesk/common"
+        targetNamespace="http://xmlns.amis.nl/edesk/common"
+        elementFormDefault="qualified">
+ <element name="messageDetails" type="ED:CommonMessageDetailsType"/>
+ <element name="intakeDetails" type="ED:CommonIntakeDetailsType"/>
+ <element name="caseDetails" type="ED:CommonCaseDetailsType"/>
+ <complexType name="CommonMessageDetailsType">
+  <sequence>
+   <element name="messageType">
+    <simpleType>
+     <restriction base="string">
+      <length value="4"/>
+      <pattern value="Aw01">
+        <annotation>
+            <documentation>Aswer</documentation>
+        </annotation>
+      </pattern>
+      <pattern value="Dd01">
+        <annotation>
+            <documentation>Download document</documentation>
+        </annotation>
+      </pattern>
+      <pattern value="Sd01">
+        <annotation>
+            <documentation>Send document</documentation>
+        </annotation>
+      </pattern>
+      <pattern value="Sf01">
+        <annotation>
+            <documentation>Send form</documentation>
+        </annotation>
+      </pattern>
+      <pattern value="Ss01">
+        <annotation>
+            <documentation>Send status</documentation>
+        </annotation>
+      </pattern>
+     </restriction>
+    </simpleType>
+   </element>
+   <element name="owner" type="ED:Owner" default="AMIS Services"/>
+   <element name="sendDate" type="ED:DateAndTime"/>
+   <element name="sender" type="ED:CommonSystemType"/>
+  </sequence>
+ </complexType>
+ <complexType name="CommonIntakeDetailsType">
+  <sequence>
+   <element name="intakeId" type="ED:IntakeID"/>
+   <element name="intakeDate" type="ED:DateAndTime"/>
+   <element name="caseid" type="ED:CaseID" minOccurs="0" />
+   <element name="casetype" type="ED:Casetype" minOccurs="0"/>
+   <element name="casetypeVersion" type="ED:CasetypeVersion" minOccurs="0"/>
+   <element name="propertyValues" type="string"/>
+  </sequence>
+ </complexType>
+ <complexType name="CommonCaseDetailsType">
+  <sequence>
+   <element name="intakeId" type="ED:IntakeID"/>
+   <element name="caseid" type="ED:CaseID"/>
+   <element name="casetype" type="ED:Casetype"/>
+   <element name="casetypeVersion" type="ED:CasetypeVersion"/>
+   <element name="casetypeCategory" minOccurs="0" type="ED:Category"/>
+  </sequence>
+ </complexType>
+ <complexType name="CommonSystemType">
+  <sequence>
+   <element name="organisation" type="ED:Organisation"/>
+   <element name="application" type="ED:Application"/>
+   <element name="user" type="ED:User" minOccurs="0"/>
+   <element name="action" type="ED:Action" minOccurs="0"/>
+  </sequence>
+ </complexType>
+ <complexType name="CommonProcessType">
+  <sequence>
+   <element name="processId" type="ED:ProcessID"/>
+   <element name="processType" type="ED:ProcessType"/>
+   <element name="processDescription" type="ED:ProcessDescription"/>
+   <element name="processEndpoints" minOccurs="0" type="ED:EndpointDetailsType"/>
+   <element name="processParameters" minOccurs="0" type="ED:ParameterDetailsType"/>
+  </sequence>
+ </complexType>
+ <element name="employee" type="ED:EmployeeDetailsType"/>
+ <complexType name="EmployeeDetailsType">
+  <sequence>
+   <element name="identification" type="ED:Identification"/>
+   <element name="initials" maxOccurs="1" minOccurs="1" nillable="false"
+            type="ED:Initials"/>
+   <element name="givenName" type="ED:GivenName" minOccurs="0"/>
+   <element name="lastname" type="ED:Lastname"/>
+   <element name="gender" type="ED:Gender"/>
+   <element name="function" type="string" nillable="true"/>
+   <element name="phoneNumber" type="ED:PhoneNumber" minOccurs="0"/>
+   <element name="emailAddress" type="ED:EmailAddress" minOccurs="0"/>
+   <element name="dateLeftCompany" minOccurs="0"
+            type="ED:DateWithIndication"/>
+  </sequence>
+ </complexType>
+ <element name="naturalPerson" type="ED:PersonDetailsType"/>
+ <complexType name="PersonDetailsType">
+  <sequence>
+   <element name="ssNumber" type="ED:SocialSecurityNumber" minOccurs="1"
+            maxOccurs="1"/>
+   <element name="firstNames" type="ED:FirstNames" minOccurs="0"/>
+   <element name="initials" type="ED:Initials"/>
+   <element name="prefix" type="ED:PrefixLastName" minOccurs="0"/>
+   <element name="lastname" type="ED:Lastname"/>
+   <element name="dateOfBirth" type="ED:DateWithIndication"/>
+   <element name="placeOfBirth" type="ED:PlaceOfBirth" minOccurs="0"
+            nillable="true"/>
+   <element name="countryOfBirth" minOccurs="0" nillable="true"
+            type="ED:NameOfCountry"/>
+   <element name="gender" type="ED:Gender"/>
+   <element name="phoneNumber" type="ED:PhoneNumber" minOccurs="0"
+            nillable="true"/>
+   <element name="emailAddress" type="ED:EmailAddress" minOccurs="0"
+            nillable="true"/>
+  </sequence>
+ </complexType>
+ <element name="comporateBody" type="ED:CompanyDetailsType"/>
+ <complexType name="CompanyDetailsType">
+  <sequence>
+   <element name="companyName" type="ED:CompanyName"/>
+   <element name="merchantId" type="ED:MerchantId"/>
+   <element name="vatNumber" type="ED:VatNumber"/>
+   <element name="phoneNumber" type="ED:PhoneNumber"
+            minOccurs="0"/>
+   <element name="faxNumber" type="ED:PhoneNumber"
+            minOccurs="0"/>
+   <element name="emailAddress" type="ED:EmailAddress"
+            minOccurs="0"/>
+   <element name="contactPerson" nillable="true">
+    <complexType>
+     <sequence>
+      <element name="subject" minOccurs="0" maxOccurs="unbounded"
+               type="ED:PersonDetailsType"/>
+     </sequence>
+    </complexType>
+   </element>
+  </sequence>
+ </complexType>
+ <complexType name="ParameterDetailsType">
+  <sequence>
+   <element name="parameter" maxOccurs="unbounded" minOccurs="1"
+            nillable="false">
+    <complexType>
+     <sequence>
+      <element name="itemname" type="ED:Itemname"
+               nillable="false"/>
+      <element name="itemvalue" type="ED:Itemvalue"/>
+     </sequence>
+    </complexType>
+   </element>
+  </sequence>
+ </complexType>
+ <complexType name="EndpointDetailsType">
+  <sequence>
+   <element name="endpoint" maxOccurs="unbounded" minOccurs="1"
+            nillable="false">
+    <complexType>
+     <sequence>
+      <element name="serviceName" type="ED:Itemname"/>
+      <element name="serviceAdres" type="ED:Itemvalue"/>
+     </sequence>
+    </complexType>
+   </element>
+  </sequence>
+ </complexType>
+ <complexType name="ServiceFaultType">
+  <sequence>
+   <element name="faultCode"
+            type="integer"/>
+   <element name="faultMessage"
+            type="string"/>
+   <element name="faultDetails" type="string"/>
+  </sequence>
+ </complexType>
+ 
+ <complexType name="DateWithIndication">
+  <simpleContent>
+   <extension base="ED:DateString">
+    <attribute type="ED:IndIncompleteDate" name="IndIncompleteDate"/>
+   </extension>
+  </simpleContent>
+ </complexType>
+
+ <simpleType name="Owner">
+  <restriction base="string">
+   <maxLength value="40"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Versionnr">
+  <restriction base="string">
+   <minLength value="4"/>
+   <maxLength value="4"/>
+   <pattern value="[0-9][1-9][0-9][0-9]"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Date">
+  <restriction base="date"/>
+ </simpleType>
+ <simpleType name="DateAndTime">
+  <restriction base="dateTime"/>
+ </simpleType>
+ <simpleType name="DateString">
+  <restriction base="string">
+   <pattern value="[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="IndIncompleteDate">
+  <restriction base="string">
+   <enumeration value="M">
+    <annotation>
+     <documentation xml:lang="nl">month and day unknown</documentation>
+    </annotation>
+   </enumeration>
+   <enumeration value="D">
+    <annotation>
+     <documentation xml:lang="nl">day unknown</documentation>
+    </annotation>
+   </enumeration>
+   <enumeration value="C">
+    <annotation>
+     <documentation xml:lang="nl">date is complete</documentation>
+    </annotation>
+   </enumeration>
+  </restriction>
+ </simpleType>
+ <simpleType name="Identification">
+  <restriction base="string">
+   <maxLength value="24"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="IdentificationED">
+  <restriction base="decimal">
+   <totalDigits value="15"/>
+   <fractionDigits value="0"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Coordinate">
+  <restriction base="decimal">
+   <totalDigits value="9"/>
+   <fractionDigits value="6"/>
+  </restriction>
+ </simpleType> 
+ <simpleType name="Organisation">
+  <restriction base="string">
+   <pattern value="[a-zA-Z ]{3,25}"/>
+   <pattern value="[0-9]{4}"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Application">
+  <restriction base="string">
+   <minLength value="3"/>
+   <maxLength value="20"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="User">
+  <restriction base="string">
+   <maxLength value="30"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Action">
+  <restriction base="string">
+   <enumeration value="cancel"/>
+   <enumeration value="confirm"/>
+   <enumeration value="process"/>
+   <enumeration value="submit"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="ProcessID">
+  <restriction base="string">
+   <maxLength value="25"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="ProcessType">
+  <restriction base="string">
+   <enumeration value="backoffice"/>
+   <enumeration value="queue"/>
+   <enumeration value="webservice"/>
+   <enumeration value="workflow"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="ProcessDescription">
+  <restriction base="string">
+   <maxLength value="80"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Itemname">
+  <restriction base="string">
+   <minLength value="1"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Itemvalue">
+  <restriction base="string"/>
+ </simpleType>
+ <simpleType name="IntakeID">
+  <restriction base="decimal">
+   <totalDigits value="10"/>
+   <fractionDigits value="0"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="CaseID">
+  <restriction base="string">
+   <minLength value="0"/>
+   <maxLength value="50"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Casetype">
+  <restriction base="string">
+   <minLength value="3"/>
+   <maxLength value="80"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="CasetypeVersion">
+  <restriction base="decimal">
+   <totalDigits value="3"/>
+   <fractionDigits value="1"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Category">
+  <restriction base="string">
+   <minLength value="0"/>
+   <maxLength value="100"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Keyword">
+  <restriction base="string">
+   <minLength value="1"/>
+   <maxLength value="40"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="ReferenceNumber">
+  <restriction base="positiveInteger">
+   <totalDigits value="15"/>
+   <fractionDigits value="0"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="SocialSecurityNumber">
+  <restriction base="nonNegativeInteger">
+   <totalDigits value="9"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Initials">
+  <restriction base="string">
+   <maxLength value="10"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="FirstNames">
+  <restriction base="string">
+   <maxLength value="200"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="GivenName">
+  <restriction base="string">
+   <maxLength value="30"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="PrefixLastName">
+  <restriction base="string">
+   <maxLength value="10"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Lastname">
+  <restriction base="string">
+   <maxLength value="200"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="PlaceOfBirth">
+  <restriction base="string">
+   <maxLength value="40"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="NameOfCountry">
+  <restriction base="string">
+   <maxLength value="40"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="Gender">
+  <restriction base="string">
+   <enumeration value="M">
+     <annotation>
+       <documentation>Male</documentation>
+     </annotation>
+   </enumeration>
+   <enumeration value="F">
+     <annotation>
+       <documentation>Female</documentation>
+     </annotation>
+   </enumeration>
+   <enumeration value="U">
+    <annotation>
+       <documentation>Unknown</documentation>
+     </annotation>
+   </enumeration>
+  </restriction>
+ </simpleType>
+ <simpleType name="PhoneNumber">
+  <restriction base="string">
+   <maxLength value="20"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="EmailAddress">
+  <restriction base="string">
+   <maxLength value="80"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="CompanyName">
+  <restriction base="string">
+   <maxLength value="60"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="MerchantId">
+  <restriction base="nonNegativeInteger">
+   <totalDigits value="13"/>
+   <fractionDigits value="0"/>
+  </restriction>
+ </simpleType>
+ <simpleType name="VatNumber">
+  <restriction base="string">
+   <pattern value="[A-Z]{2}[0-9]{8,10}[A-Z][0-9]{2}"/>
+   <pattern value="[A-Z]{2}[0-9]{8,10}"/>
+   <pattern value="[0-9]{8,10}"/>
+  </restriction>
+ </simpleType>
+</schema>

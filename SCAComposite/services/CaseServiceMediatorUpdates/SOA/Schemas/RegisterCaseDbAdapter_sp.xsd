@@ -1,0 +1,48 @@
+<schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/sp/RegisterCaseDbAdapter" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:db="http://xmlns.oracle.com/pcbpel/adapter/db/sp/RegisterCaseDbAdapter" elementFormDefault="qualified">
+   <element name="InputParameters">
+      <complexType>
+         <sequence>
+            <element name="P_REGISTER_I" type="db:CASEMGMT.CAS_REGISTER_IT_1_0" db:index="1" db:type="Struct" minOccurs="0" nillable="true"/>
+         </sequence>
+      </complexType>
+   </element>
+   <element name="OutputParameters">
+      <complexType>
+         <sequence>
+            <element name="P_REGISTER_O" type="db:CASEMGMT.CAS_REGISTER_OT_1_0" db:index="2" db:type="Struct" minOccurs="0" nillable="true"/>
+         </sequence>
+      </complexType>
+   </element>
+   <complexType name="CASEMGMT.CAS_REGISTER_OT_1_0">
+      <sequence>
+         <element name="CASE_ID" type="decimal" db:type="NUMBER" minOccurs="0" nillable="true"/>
+         <element name="CASE_REFERENCE" type="db:string50" db:type="VARCHAR2" minOccurs="0" nillable="true"/>
+      </sequence>
+   </complexType>
+   <complexType name="CASEMGMT.CAS_REGISTER_IT_1_0">
+      <sequence>
+         <element name="CASE_REFERENCE" type="db:string50" db:type="VARCHAR2" minOccurs="0" nillable="true"/>
+         <element name="CASE_TYPE" type="db:string5" db:type="VARCHAR2" minOccurs="0" nillable="true"/>
+         <element name="CASE_VERSION" type="decimal" db:type="NUMBER" minOccurs="0" nillable="true"/>
+         <element name="CASE_XML" type="string" db:type="CLOB" minOccurs="0" nillable="true"/>
+         <element name="INTAKE_ID" type="decimal" db:type="NUMBER" minOccurs="0" nillable="true"/>
+         <element name="INTAKE_DATE" type="dateTime" db:type="TIMESTAMP" minOccurs="0" nillable="true"/>
+         <element name="HAS_DOCUMENTS" type="db:string1" db:type="VARCHAR2" minOccurs="0" nillable="true"/>
+      </sequence>
+   </complexType>
+   <simpleType name="string50">
+      <restriction base="string">
+         <maxLength value="50"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="string5">
+      <restriction base="string">
+         <maxLength value="5"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="string1">
+      <restriction base="string">
+         <maxLength value="1"/>
+      </restriction>
+   </simpleType>
+</schema>
