@@ -1,0 +1,13 @@
+<adapter-config name="RemoveCacheEntry" adapter="coherence" wsdlLocation="RemoveCacheEntry.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/Coherence/Local"/>
+  <endpoint-interaction portType="Remove_ptt" operation="Remove">
+    <interaction-spec className="oracle.tip.adapter.coherence.jca.CoherenceInteractionSpec">
+      <property name="KeyType" value="java.lang.String"/>
+      <property name="CacheName" value="adapter-local"/>
+      <property name="Key" value="AnyValue"/>
+      <property name="CacheOperation" value="remove"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>
