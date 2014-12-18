@@ -4,11 +4,14 @@
    <annotationfile/>
    <iconize/>
    <partnerlink_locations>
-      <partnerlink name="dummy_client" x="8" y="191" side="left"/>
+      <partnerlink name="FormService" x="15" y="90" side="left"/>
+      <partnerlink name="RegisterFormProcess" x="957" y="430" side="right"/>
    </partnerlink_locations>
-   <graph_layout viewport="0,0,1130,617" show_swimlanes="true">
+   <graph_layout viewport="0,0,1115,617" show_swimlanes="true">
       <layout_item collapsed="false" xpath="/process" type="process" showhandlers="true"/>
       <layout_item collapsed="false" xpath="/process/sequence" type="sequence"/>
+      <layout_item collapsed="false" xpath="/process/sequence/scope" type="scope" showhandlers="true"/>
+      <layout_item collapsed="false" xpath="/process/sequence/scope/sequence" type="sequence"/>
    </graph_layout>
    <bookmarks/>
 </graphics>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions xmlns="http://xmlns.oracle.com/bpel/sensor">
+    <action name="JMSSensorAction_intakeId" enabled="false" publishType="JMSQueue" publishTarget="">
+        <property name="JMSConnectionFactory"/>
+    </action>
+    <action name="DBSensorAction" enabled="true" publishType="BpelReportsSchema" publishName="" filter="" publishTarget="">
+        <sensorName>intakeId</sensorName>
+        <sensorName>caseId</sensorName>
+    </action>
+    <action name="JMSSensorAction_caseId" enabled="false" publishType="JMSQueue" publishTarget="">
+        <property name="JMSConnectionFactory"/>
+    </action>
+</actions>

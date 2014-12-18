@@ -4,10 +4,9 @@
    <annotationfile/>
    <iconize/>
    <partnerlink_locations>
-      <partnerlink name="dummy_client" x="8" y="191" side="left"/>
+      <partnerlink name="WriteToAuditLogFileAdapter" x="933" y="161" side="right"/>
    </partnerlink_locations>
    <graph_layout viewport="0,0,1130,617" show_swimlanes="true">
-      <layout_item collapsed="false" xpath="/process" type="process" showhandlers="true"/>
       <layout_item collapsed="false" xpath="/process/sequence" type="sequence"/>
    </graph_layout>
    <bookmarks/>
