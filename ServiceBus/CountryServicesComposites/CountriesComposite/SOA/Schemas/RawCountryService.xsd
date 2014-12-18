@@ -1,0 +1,27 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<xsd:schema targetNamespace="saibot.airport/services/utility/reference" elementFormDefault="qualified"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:common="saibot.airport/data/common"
+     xmlns:refMsg="saibot.airport/services/utility/reference" xmlns:refData="saibot.airport/data/reference">
+    <xsd:import namespace="saibot.airport/data/common" schemaLocation="common_1.xsd"/>
+    <xsd:import namespace="saibot.airport/data/reference" schemaLocation="reference_1.xsd"/>
+    <xsd:element name="getAllCountriesRequestMessage" type="refMsg:getAllCountriesRequestType"/>
+    <xsd:element name="getAllCountriesResponseMessage" type="refMsg:getAllCountriesResponseType"/>
+    <xsd:complexType name="getAllCountriesRequestType">
+        <xsd:sequence>
+<!-- <xsd:element name="code" nillable="false" type="common:alpha2Type" minOccurs="0" maxOccurs="1"/>
+-->
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="getAllCountriesResponseType">
+        <xsd:sequence>
+            <xsd:element name="Countries" minOccurs="1" maxOccurs="1">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Country" nillable="false" type="refData:countryType" minOccurs="0"
+                             maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

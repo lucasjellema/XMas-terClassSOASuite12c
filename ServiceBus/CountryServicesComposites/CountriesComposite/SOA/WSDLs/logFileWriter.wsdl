@@ -1,0 +1,29 @@
+<wsdl:definitions
+     name="logFileWriter"
+     targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesComposites/SOACompositeTemplates/logFileWriter"
+     xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesComposites/SOACompositeTemplates/logFileWriter"
+     xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
+     xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:imp1="http://TargetNamespace.com/logFileWriter"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+  <plt:partnerLinkType name="WriteLogEntry_plt" >
+    <plt:role name="WriteLogEntry_role" >
+      <plt:portType name="tns:WriteLogEntry_ptt" />
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesComposites/SOACompositeTemplates/logFileWriter"
+              xmlns="http://www.w3.org/2001/XMLSchema" >
+        <import namespace="http://TargetNamespace.com/logFileWriter" schemaLocation="../Schemas/nxsd_logfile.xsd" />
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="WriteLogEntry_msg">
+        <wsdl:part name="body" element="imp1:LogFileEntries"/>
+    </wsdl:message>
+    <wsdl:portType name="WriteLogEntry_ptt">
+        <wsdl:operation name="WriteLogEntry">
+            <wsdl:input message="tns:WriteLogEntry_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

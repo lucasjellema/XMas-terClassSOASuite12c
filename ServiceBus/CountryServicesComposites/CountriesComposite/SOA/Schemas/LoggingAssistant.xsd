@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<schema attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/LoggingAssistant"
+	xmlns="http://www.w3.org/2001/XMLSchema">
+	<element name="process">
+		<complexType>
+			<sequence>
+				<element name="logMessage" type="string"/>
+				<element name="logSource" type="string"/>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

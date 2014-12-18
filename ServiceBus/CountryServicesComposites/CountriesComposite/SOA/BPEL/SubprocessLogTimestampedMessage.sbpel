@@ -1,0 +1,72 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Mon Aug 11 18:51:02 CEST 2014
+  Author:  oracle
+  Type: BPEL 2.0 Subprocess
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<bpelx:subProcess name="SubprocessLogTimestampedMessage"
+               targetNamespace="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/SubprocessLogTimestampedMessage"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/SubprocessLogTimestampedMessage"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:ui="http://xmlns.oracle.com/soa/designer"
+               xsi:type="bpel:tProcess" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesComposites/SOACompositeTemplates/logFileWriter"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://TargetNamespace.com/logFileWriter"
+                  xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+                  xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+                  xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+                  xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+                  xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+                  xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+                  xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+                  xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+                  xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+                  xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap">
+   <!--
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC
+       Set of activities coordinating the flow of messages across the
+       services integrated within this business process
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <partnerLinks>
+    <partnerLink name="logFileWriter" partnerLinkType="ns1:WriteLogEntry_plt" partnerRole="WriteLogEntry_role"/>
+  </partnerLinks>
+  <variables>
+    <variable name="LogMessage" type="xsd:string"/>
+    <variable name="LoggingSourceComponent" type="xsd:string"/>
+  </variables>
+  <sequence name="main">
+    <scope name="Scope1">
+      <variables>
+        <variable name="LogFileWriter_WriteLogEntry_InputVariable" messageType="ns1:WriteLogEntry_msg"/>
+      </variables>
+      <sequence name="Sequence1">
+        <assign name="SetLogFileEntry">
+          <copy>
+            <from>$LogMessage</from>
+            <to>$LogFileWriter_WriteLogEntry_InputVariable.body/ns2:LogFileEntry/ns2:entry</to>
+          </copy>
+          <copy>
+            <from>$LoggingSourceComponent</from>
+            <to>$LogFileWriter_WriteLogEntry_InputVariable.body/ns2:LogFileEntry/ns2:source</to>
+          </copy>
+          <copy>
+            <from>xp20:current-dateTime()</from>
+            <to>$LogFileWriter_WriteLogEntry_InputVariable.body/ns2:LogFileEntry/ns2:timestamp</to>
+          </copy>
+        </assign>
+        <invoke name="LogFileWriter" bpelx:invokeAsDetail="no" partnerLink="logFileWriter"
+                portType="ns1:WriteLogEntry_ptt" operation="WriteLogEntry"
+                inputVariable="LogFileWriter_WriteLogEntry_InputVariable"/>
+      </sequence>
+    </scope>
+  </sequence>
+</bpelx:subProcess>

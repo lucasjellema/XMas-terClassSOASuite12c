@@ -1,0 +1,5 @@
+timestamp,entry,source
+18:23:12 09-09-2014,processed string Mr. Smith,BPEL
+Component HelloWorld in SOA Composite HelloWorld composite  
+18:24:56 15-09-2014,happy birthday,Organizer BPEL Component
+

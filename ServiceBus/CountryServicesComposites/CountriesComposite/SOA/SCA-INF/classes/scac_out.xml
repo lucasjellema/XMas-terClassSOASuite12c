@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Faults>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line>31</line>
+      <col/>
+      <file>BPEL/SubprocessLogTimestampedMessage.sbpel</file>
+      <name>BPEL/SubprocessLogTimestampedMessage.sbpel</name>
+      <fix>You should place all explicit &lt;bpel:import> statements in a BPEL 2.0 process.</fix>
+      <msg>There are no explicit "import" statements in &lt;bpelx:subProcess> "SubprocessLogTimestampedMessage" as required by BPEL 2.0 standard.</msg>
+   </Fault>
+</Faults>

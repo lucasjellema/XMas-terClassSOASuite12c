@@ -1,0 +1,131 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Aug 11 17:55:00 CEST 2014
+  Author:  oracle
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CountryCompositeProcess"
+               targetNamespace="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/CountryCompositeProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/CountryCompositeProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="saibot.airport/services/utility/reference"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns2="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/PirvateCountryRestReference"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns3="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/LoggingAssistant">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="saibot.airport/services/utility/reference" location="../WSDLs/CountryServiceWrapper1.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="countrycompositeprocess_client" partnerLinkType="ns1:CountryCompositeProcess" myRole="CountryServicePortType"/>
+    <partnerLink name="PrivateCountryRestReference" partnerLinkType="ns2:PirvateCountryRestReference"
+                 partnerRole="PirvateCountryRestReferenceProvider"/>
+    <partnerLink name="LoggingAssistant.loggingassistant_client" partnerLinkType="ns3:LoggingAssistant"
+                 partnerRole="LoggingAssistantProvider"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:findCountriesRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:findCountriesResponseMessage"/>
+    <variable name="InvokeInternalCountryService_getAllCountries_OutputVariable"
+              messageType="ns2:getAllCountries_outputMessage"/>
+    <variable name="InvokeInternalCountryService_getAllCountries_InputVariable" messageType="ns2:Rest_EmptyMessage"/>
+    <variable name="countryName" type="xsd:string"/>
+    <variable name="countryCode" type="xsd:string"/>
+    <variable name="continent" type="xsd:string"/>
+    <variable name="Invoke1_process_InputVariable" messageType="ns3:LoggingAssistantRequestMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in CountryCompositeProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="countrycompositeprocess_client" portType="ns1:CountryServicePortType" operation="findCountries" variable="inputVariable" createInstance="yes"/>
+    <invoke name="InvokeInternalCountryService" partnerLink="PrivateCountryRestReference"
+            portType="ns2:PirvateCountryRestReference_ptt" operation="getAllCountries"
+            outputVariable="InvokeInternalCountryService_getAllCountries_OutputVariable" bpelx:invokeAsDetail="no"
+            inputVariable="InvokeInternalCountryService_getAllCountries_InputVariable"/>
+    <assign name="AssignXSLTInput">
+      <copy>
+        <from>concat('',$inputVariable.in/ns1:name)</from>
+        <to>$countryName</to>
+      </copy>
+      <copy>
+        <from>concat('',$inputVariable.in/ns1:code)</from>
+        <to>$countryCode</to>
+      </copy>
+      <copy>
+        <from>concat('',$inputVariable.in/ns1:continent)</from>
+        <to>$continent</to>
+      </copy>
+    </assign>
+    <assign name="FilterAndTransformRawCountries">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+      </bpelx:annotation>
+      <copy>
+<!--       <from>ora:doXSLTransformForDoc("../Transformations/RawCountriesToFilteredRefinedCountries.xsl", $InvokeInternalCountryService_getAllCountries_OutputVariable.reply,"countryCode",$inputVariable.in/ns1:code,"countryName",$countryName, "continent",$inputVariable.in/ns1:continent)</from>
+-->
+        <from>ora:doXSLTransformForDoc("../Transformations/RawCountriesToFilteredRefinedCountries.xsl", $InvokeInternalCountryService_getAllCountries_OutputVariable.reply,"countryCode",$countryCode,"countryName",$countryName, "continent",$continent)</from>
+        <to variable="outputVariable" part="return"/>
+      </copy>
+    </assign>
+    <assign name="Assign1">
+      <copy>
+        <from>' here we are'</from>
+        <to>$Invoke1_process_InputVariable.payload/ns3:logMessage</to>
+      </copy>
+      <copy>
+        <from>' BPEL Component CountryProcess'</from>
+        <to>$Invoke1_process_InputVariable.payload/ns3:logSource</to>
+      </copy>
+    </assign>
+    <invoke name="Invoke1" bpelx:invokeAsDetail="no" partnerLink="LoggingAssistant.loggingassistant_client"
+            portType="ns3:LoggingAssistant" operation="process" inputVariable="Invoke1_process_InputVariable"/>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="countrycompositeprocess_client" portType="ns1:CountryServicePortType" operation="findCountries" variable="outputVariable"/>
+  </sequence>
+</process>
