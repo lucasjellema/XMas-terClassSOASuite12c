@@ -1,0 +1,13 @@
+<adapter-config name="GetByReferenceDbAdapter" adapter="db" wsdlLocation="../WSDLs/GetByReferenceDbAdapter.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory UIConnectionName="CaseMgmt" location="eis/DB/CaseMgmt"/>
+  <endpoint-interaction portType="GetByReferenceDbAdapter_ptt" operation="GetByReferenceDbAdapter">
+    <interaction-spec className="oracle.tip.adapter.db.DBStoredProcedureInteractionSpec">
+      <property name="SchemaName" value="CASEMGMT"/>
+      <property name="PackageName" value="CASEMGMT_SI_1_0"/>
+      <property name="ProcedureName" value="GET_BY_REFERENCE"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

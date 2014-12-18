@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faultPolicyBindings version="2.0.1" xmlns="http://schemas.oracle.com/bpel/faultpolicy">
+
+    <reference faultPolicy="DefaultPolicy">
+        <name>DocumentService_1.0</name>
+    </reference>
+</faultPolicyBindings>

@@ -1,0 +1,6 @@
+<view_states>
+   <function arity="1" name="mediatorTransform">
+      <source_tree_view last.visible.row="14" last.visible.path="/sourceRoot[[0]]/FormAnswer[[0]]/answer[[1]]/object[[0]]/statusDetails[[4]]/statusMessage[[1]]" expanded.paths="/sourceRoot[[0]]/FormAnswer[[0]]&#xA;/sourceRoot[[0]]/FormAnswer[[0]]/messageDetails[[0]]&#xA;/sourceRoot[[0]]/FormAnswer[[0]]/answer[[1]]&#xA;/sourceRoot[[0]]/FormAnswer[[0]]/answer[[1]]/object[[0]]&#xA;/sourceRoot[[0]]/FormAnswer[[0]]/answer[[1]]/object[[0]]/statusDetails[[4]]" selected.paths="" first.visible.path="/sourceRoot[[0]]/FormAnswer[[0]]" first.visible.row="0"/>
+      <target_tree_view last.visible.row="6" last.visible.path="/TargetRoot[[0]]/FormAnswer[[0]]/Conditional[[1]]" expanded.paths="/TargetRoot[[0]]/FormAnswer[[0]]&#xA;/TargetRoot[[0]]/FormAnswer[[0]]/messageDetails[[0]]" selected.paths="" first.visible.path="/TargetRoot[[0]]/FormAnswer[[0]]" first.visible.row="0"/>
+   </function>
+</view_states>
