@@ -1,0 +1,191 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Sun Dec 14 08:13:35 CET 2014
+  Author:  lucas_j
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="SlowServiceBoostProcessor"
+               targetNamespace="my.org/slow"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="my.org/slow"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="my.org/services"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/coherence/QuickSlowServiceComposite/QuickSlowServiceComposite/CacheReader"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/coherence/QuickSlowServiceComposite/QuickSlowServiceComposite/CacheWriter"
+         xmlns:ns4="http://xmlns.oracle.com/pcbpel/adapter/coherence/CacheReader/request" xmlns:ns5="my.org/cache"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="my.org/services"
+          location="file:/C:/acm/XMas-terClassSOASuite12c/CoherenceAdapter/QuickSlowServiceComposite/QuickSlowServiceComposite/SOA/WSDLs/SlowServiceBoostProcessor.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <import namespace="my.org/cache" location="../Schemas/Cache.xsd" importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="my.org/services"
+          location="http://localhost:7101/soa-infra/services/default/SlowService!1.0/WSDLs/SlowBPELProcess.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="slowserviceboostprocessor_client" partnerLinkType="ns1:SlowBPELProcess" myRole="SlowBPELProcessProvider"/>
+    <partnerLink name="SlowServiceReference" partnerLinkType="ns1:SlowBPELProcess"
+                 partnerRole="SlowBPELProcessProvider"/>
+    <partnerLink name="CacheReader" partnerLinkType="ns2:Get_plt" partnerRole="Get_role"/>
+    <partnerLink name="CacheWriter" partnerLinkType="ns3:Put_plt" partnerRole="Put_role"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:SlowBPELProcessRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:SlowBPELProcessResponseMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in SlowServiceBoostProcessor.wsdl) -->
+    <receive name="receiveInput" partnerLink="slowserviceboostprocessor_client" portType="ns1:SlowBPELProcess" operation="process" variable="inputVariable" createInstance="yes"/>
+    <scope name="TryGetResultFromCache">
+      <variables>
+        <variable name="InvokeCacheReader_Get_InputVariable" messageType="ns2:Get_msg"/>
+        <variable name="InvokeCacheReader_Get_OutputVariable" messageType="ns2:GetResponse_msg"/>
+        <variable name="cacheResult" type="ns5:cachedObjectType"/>
+      </variables>
+      <sequence name="Sequence2">
+        <assign name="AssignInputCacheReader">
+          <copy>
+            <from>$inputVariable.payload/ns1:input</from>
+            <to>$InvokeCacheReader_Get_InputVariable.body</to>
+          </copy>
+        </assign>
+    
+    <!--    <invoke name="InvokeCacheReader" partnerLink="CacheReader" portType="ns2:Get_ptt"
+                operation="Get" inputVariable="InvokeCacheReader_Get_InputVariable"
+                outputVariable="InvokeCacheReader_Get_OutputVariable" bpelx:invokeAsDetail="no">
+          <bpelx:toProperties>
+            <bpelx:toProperty name="jca.coherence.Key" variable="inputVariable" part="payload">
+              <bpelx:query>ns1:input</bpelx:query>
+            </bpelx:toProperty>
+          </bpelx:toProperties>
+        </invoke>
+        
+        -->
+<!--        <assign name="SetResult">
+    
+          <copy>
+            <from>$InvokeCacheReader_Get_OutputVariable.body</from>
+            <to>$cacheResult</to>
+          </copy>
+      <extensionAssignOperation>
+                <bpelx:append>
+                  <bpelx:from>$cacheResult/ns5:payload</bpelx:from>
+                  <bpelx:to>$outputVariable</bpelx:to>
+                </bpelx:append>
+              </extensionAssignOperation>
+            
+        </assign>
+        -->
+      </sequence>
+    </scope>
+<!--
+    <if name="IfDataInCache">
+      <condition>$outputVariable.payload/ns1:result</condition>
+      <empty name="Continue"/>
+      <else>
+        <sequence name="Sequence1">
+          <scope name="InvokeSlowService">
+            <variables>
+              <variable name="InvokeSlowService_process_InputVariable" messageType="ns1:SlowBPELProcessRequestMessage"/>
+              <variable name="InvokeSlowService_process_OutputVariable"
+                        messageType="ns1:SlowBPELProcessResponseMessage"/>
+            </variables>
+            <sequence name="Sequence3">
+              <assign name="AssignInputSlowService">
+                <copy>
+                  <from>$inputVariable.payload/ns1:input</from>
+                  <to>$InvokeSlowService_process_InputVariable.payload/ns1:input</to>
+                </copy>
+              </assign>
+              <invoke name="InvokeSlowService" partnerLink="SlowServiceReference" portType="ns1:SlowBPELProcess"
+                      operation="process" inputVariable="InvokeSlowService_process_InputVariable"
+                      bpelx:invokeAsDetail="no" outputVariable="InvokeSlowService_process_OutputVariable"/>
+              <assign name="AssignResultSlowService">
+                <copy>
+                  <from>$InvokeSlowService_process_OutputVariable.payload</from>
+                  <to>$outputVariable.payload</to>
+                </copy>
+              </assign>
+            </sequence>
+          </scope>
+          <scope name="PutResultInCache">
+            <variables>
+              <variable name="InvokeCacheWriter_Put_InputVariable" messageType="ns3:Put_msg"/>
+              <variable name="InvokeCacheWriter_Put_OutputVariable" messageType="ns3:PutResponse_msg"/>
+            </variables>
+            <sequence name="Sequence4">
+              <assign name="AssignCacheInput">
+                <copy>
+                  <from>xp20:current-dateTime()</from>
+                  <to>$InvokeCacheWriter_Put_InputVariable.body/ns5:creationTimestamp</to>
+                </copy>
+                <copy>
+                  <from>$outputVariable.payload</from>
+                  <to>$InvokeCacheWriter_Put_InputVariable.body/ns5:payload</to>
+                </copy>
+              </assign>
+              <invoke name="InvokeCacheWriter" partnerLink="CacheWriter"
+                      portType="ns3:Put_ptt" operation="Put" inputVariable="InvokeCacheWriter_Put_InputVariable"
+                      outputVariable="InvokeCacheWriter_Put_OutputVariable" bpelx:invokeAsDetail="no">
+                <bpelx:toProperties>
+                  <bpelx:toProperty name="jca.coherence.Key" variable="inputVariable" part="payload">
+                    <bpelx:query>ns1:input</bpelx:query>
+                  </bpelx:toProperty>
+                </bpelx:toProperties>
+              </invoke>
+            </sequence>
+          </scope>
+        </sequence>
+      </else>
+    </if>
+    -->
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="slowserviceboostprocessor_client" portType="ns1:SlowBPELProcess" operation="process" variable="outputVariable"/>
+  </sequence>
+</process>

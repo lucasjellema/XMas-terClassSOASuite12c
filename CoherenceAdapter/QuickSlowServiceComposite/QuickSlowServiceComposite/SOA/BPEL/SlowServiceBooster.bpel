@@ -1,0 +1,107 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Sun Dec 14 10:44:44 CET 2014
+  Author:  lucas_j
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="SlowServiceBooster"
+               targetNamespace="http://xmlns.oracle.com/QuickSlowServiceComposite/QuickSlowServiceComposite/SlowServiceBooster"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/QuickSlowServiceComposite/QuickSlowServiceComposite/SlowServiceBooster"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="my.org/services"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/coherence/QuickSlowServiceComposite/QuickSlowServiceComposite/CacheWriter"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/coherence/QuickSlowServiceComposite/QuickSlowServiceComposite/CacheReader"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="my.org/services"
+          location="http://localhost:7101/soa-infra/services/default/SlowService!1.0/WSDLs/SlowBPELProcess.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="slowservicebooster_client" partnerLinkType="ns1:SlowBPELProcess" myRole="SlowBPELProcessProvider"/>
+    <partnerLink name="CacheWriter" partnerLinkType="ns2:Put_plt" partnerRole="Put_role"/>
+    <partnerLink name="CacheReader" partnerLinkType="ns3:Get_plt" partnerRole="Get_role"/>
+    <partnerLink name="SlowServiceReference" partnerLinkType="ns1:SlowBPELProcess"
+                 partnerRole="SlowBPELProcessProvider"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:SlowBPELProcessRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:SlowBPELProcessResponseMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in SlowServiceBooster.wsdl) -->
+    <receive name="receiveInput" partnerLink="slowservicebooster_client" portType="ns1:SlowBPELProcess" operation="process" variable="inputVariable" createInstance="yes"/>
+    <scope name="InvokeSlowService">
+      <variables>
+        <variable name="InvokeSlowService_process_InputVariable" messageType="ns1:SlowBPELProcessRequestMessage"/>
+        <variable name="InvokeSlowService_process_OutputVariable" messageType="ns1:SlowBPELProcessResponseMessage"/>
+      </variables>
+      <sequence name="Sequence1">
+        <assign name="Assign1">
+          <copy>
+            <from>$inputVariable.payload</from>
+            <to>$InvokeSlowService_process_InputVariable.payload</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeSlowService" bpelx:invokeAsDetail="no" partnerLink="SlowServiceReference"
+                portType="ns1:SlowBPELProcess" operation="process"
+                inputVariable="InvokeSlowService_process_InputVariable"
+                outputVariable="InvokeSlowService_process_OutputVariable"/>
+      </sequence>
+    </scope>
+    <assign name="Assign2">
+      <copy>
+        <from>'hehe'</from>
+        <to>$outputVariable.payload/ns1:result</to>
+      </copy>
+    </assign>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="slowservicebooster_client" portType="ns1:SlowBPELProcess" operation="process" variable="outputVariable"/>
+  </sequence>
+</process>

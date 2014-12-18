@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+     name="SlowBPELProcess"
+     targetNamespace="my.org/services"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="my.org/services"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://localhost:7101/soa-infra/services/default/SlowService!1.0/WSDLs/SlowBPELProcess.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <plnk:partnerLinkType name="SlowBPELProcess">
+        <plnk:role name="SlowBPELProcessProvider" portType="client:SlowBPELProcess"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="my.org/services" schemaLocation="../SlowBPELProcess.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="SlowBPELProcessRequestMessage">
+        <wsdl:part name="payload" element="client:process"/>
+    </wsdl:message>
+    <wsdl:message name="SlowBPELProcessResponseMessage">
+        <wsdl:part name="payload" element="client:processResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="SlowBPELProcess">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:SlowBPELProcessRequestMessage"/>
+            <wsdl:output message="client:SlowBPELProcessResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SlowBPELProcessBinding" type="client:SlowBPELProcess">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="process">
+            <soap:operation style="document" soapAction="process"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="slowbpelprocess_client_ep">
+        <wsdl:port name="SlowBPELProcess_pt" binding="client:SlowBPELProcessBinding">
+            <soap:address location="http://localhost:7101/soa-infra/services/default/SlowService/slowbpelprocess_client_ep"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
