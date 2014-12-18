@@ -1,0 +1,15 @@
+<wsdl:definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesServiceBus/InternalCountryService/countriesReader" name="countriesReader-concrete" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <wsdl:import location="countriesReader.wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesServiceBus/InternalCountryService/countriesReader"/>
+    <wsdl:binding name="readCountriesCSV_ptt-binding" type="coun:readCountriesCSV_ptt" xmlns:coun="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesServiceBus/InternalCountryService/countriesReader">
+        <soap:binding style="document" transport="http://www.bea.com/wli/sb/transports/jca"/>
+        <wsdl:operation name="readCountriesCSV">
+            <soap:operation soapAction="readCountriesCSV"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>

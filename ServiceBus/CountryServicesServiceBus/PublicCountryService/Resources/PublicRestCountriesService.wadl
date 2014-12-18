@@ -1,0 +1,24 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<application xmlns:soa="http://www.oracle.com/soa/rest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="saibot.airport/services/utility/reference" xmlns="http://wadl.dev.java.net/2009/02">
+   <doc title="PublicRestCountriesService">RestService</doc>
+   <grammars>
+      <xsd:schema elementFormDefault="qualified" xmlns:tns="saibot.airport/services/utility/reference" xmlns:reference="saibot.airport/services/utility/reference" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+      <xsd:import namespace="saibot.airport/services/utility/reference" schemaLocation="../Schemas/CountryService.xsd"/>
+    </xsd:schema>
+   </grammars>
+   <resources>
+      <resource path="/countries">
+         <method name="GET" soa:wsdlOperation="findCountries">
+            <request>
+               <param name="code" style="query" soa:expression="$msg.in/tns:code" default="" type="xsd:string"/>
+               <param name="name" style="query" soa:expression="$msg.in/tns:name" default="" type="xsd:string"/>
+               <param name="tailcode" style="query" soa:expression="$msg.in/tns:tailcode" default="" type="xsd:string"/>
+               <param name="continent" style="query" soa:expression="$msg.in/tns:continent" default="" type="xsd:string"/>
+            </request>
+            <response status="200">
+               <representation mediaType="application/json" element="cns:findCountriesResponseMessage" xmlns:cns="saibot.airport/services/utility/reference"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>

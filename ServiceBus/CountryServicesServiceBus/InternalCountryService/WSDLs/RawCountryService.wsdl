@@ -1,0 +1,35 @@
+<definitions targetNamespace="saibot.airport/services/utility/reference" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="saibot.airport/services/utility/reference" xmlns:reference="saibot.airport/services/utility/reference" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <types>
+   <xsd:schema elementFormDefault="qualified">
+      <xsd:import namespace="saibot.airport/services/utility/reference" schemaLocation="../Schemas/RawCountryService.xsd"/>
+    </xsd:schema>
+  </types>
+ 
+
+  <message name="getAllCountriesRequestMessage">
+    <part name="in" element="reference:getAllCountriesRequestMessage"/>
+  </message>
+  <message name="getAllCountriesResponseMessage">
+    <part name="return" element="reference:getAllCountriesResponseMessage"/>
+  </message>
+  <portType name="RawCountryServicePortType">
+    <operation name="getAllCountries">
+      <input message="tns:getAllCountriesRequestMessage"/>
+      <output message="tns:getAllCountriesResponseMessage"/>
+    </operation>
+   
+    
+  </portType>
+  <binding name="RawCountryServicePortTypeSOAP11Binding1" type="tns:RawCountryServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="getAllCountries">
+      <soap:operation style="document" soapAction="saibot.airport/services/utility/reference/getAllCountries"/>
+      <input>
+        <soap:body use="literal" parts="in"/>
+      </input>
+      <output>
+        <soap:body use="literal" parts="return"/>
+      </output>
+    </operation>
+  </binding>
+</definitions>

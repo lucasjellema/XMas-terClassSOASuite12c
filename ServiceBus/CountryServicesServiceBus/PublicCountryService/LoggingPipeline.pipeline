@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con:wsdl ref="PublicCountryService/WSDLs/CountryService"/>
+            <con:binding>
+                <con:name>CountryServicePortTypeSOAP11Binding</con:name>
+                <con:namespace>saibot.airport/services/utility/reference</con:namespace>
+            </con:binding>
+        </con:binding>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:router>
+        <con:template-overrides>
+            <con:action-override id="_ActionId-7f000001.544666de.0.147c6e97109.N7ff4">
+                <con1:route xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config">
+                    <con1:service ref="PublicCountryService/WSDLs/CountryServicePipeline" xsi:type="con:PipelineRef"/>
+                    <con1:operation>getCountryDetails</con1:operation>
+                </con1:route>
+            </con:action-override>
+            <con:action-override id="_ActionId-7f000001.544666de.0.147c6e97109.N7fef">
+                <con1:assign xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                    <con1:expr>
+                        <con2:xqueryText xmlns:con2="http://www.bea.com/wli/sb/stages/config">'mymessageReportKey'</con2:xqueryText>
+                    </con1:expr>
+                </con1:assign>
+            </con:action-override>
+        </con:template-overrides>
+    </con:router>
+    <con:template ref="ServiceBusTemplates/LoggingPipelineTemplate"/>
+</con:pipelineEntry>

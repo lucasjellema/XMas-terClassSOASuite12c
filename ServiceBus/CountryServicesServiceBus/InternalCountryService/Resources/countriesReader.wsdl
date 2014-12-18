@@ -1,0 +1,25 @@
+<wsdl:definitions name="countriesReader" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesServiceBus/InternalCountryService/countriesReader" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesServiceBus/InternalCountryService/countriesReader" xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:imp1="http://TargetNamespace.com/countriesReader" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <plt:partnerLinkType name="readCountriesCSV_plt">
+    <plt:role name="readCountriesCSV_role">
+      <plt:portType name="tns:readCountriesCSV_ptt"/>
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesServiceBus/InternalCountryService/countriesReader" xmlns="http://www.w3.org/2001/XMLSchema">
+        <import namespace="http://TargetNamespace.com/countriesReader" schemaLocation="../Schemas/nxsd_countriesCSV.xsd"/>
+      <element name="empty"><complexType/></element>
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="Empty_msg">
+        <wsdl:part name="Empty" element="tns:empty"/>
+    </wsdl:message>
+    <wsdl:message name="readCountriesCSV_msg">
+        <wsdl:part name="body" element="imp1:Countries"/>
+    </wsdl:message>
+    <wsdl:portType name="readCountriesCSV_ptt">
+        <wsdl:operation name="readCountriesCSV">
+            <wsdl:input message="tns:Empty_msg"/>
+            <wsdl:output message="tns:readCountriesCSV_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con:wsdl ref="InternalCountryService/WSDLs/RawCountryService"/>
+            <con:binding>
+                <con:name>RawCountryServicePortTypeSOAP11Binding1</con:name>
+                <con:namespace>saibot.airport/services/utility/reference</con:namespace>
+            </con:binding>
+        </con:binding>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:router>
+        <con:flow>
+            <con:route-node name="RouteNode1" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+                <con:context>
+                    <con2:userNsDecl prefix="ref" namespace="saibot.airport/services/utility/reference"/>
+                </con:context>
+                <con:actions>
+                    <con1:route>
+                        <con2:id>_ActionId-7f000001.635133e.0.147c41ff3f7.N7fff</con2:id>
+                        <con1:service ref="InternalCountryService/countriesReader" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con1:operation>readCountriesCSV</con1:operation>
+                        <con1:outboundTransform/>
+                        <con1:responseTransform>
+                            <con3:assign varName="responseContent" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                                <con2:id>_ActionId-7f000001.635133e.0.147c41ff3f7.N7ff9</con2:id>
+                                <con2:disabled>true</con2:disabled>
+                                <con3:expr>
+                                    <con2:xqueryText>$body/*[1]</con2:xqueryText>
+                                </con3:expr>
+                            </con3:assign>
+                            <con3:replace varName="responseContent" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                                <con2:id>_ActionId-7f000001.635133e.0.147c41ff3f7.N7ff6</con2:id>
+                                <con2:disabled>true</con2:disabled>
+                                <con3:expr>
+                                    <con2:xqueryTransform>
+                                        <con2:resource ref="InternalCountryService/rawCountriesToCanonicalFormat"/>
+                                        <con2:param name="rawCountries">
+                                            <con2:path>$responseContent</con2:path>
+                                        </con2:param>
+                                    </con2:xqueryTransform>
+                                </con3:expr>
+                            </con3:replace>
+                            <con3:replace varName="body" contents-only="true" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                                <con2:id>_ActionId-7f000001.635133e.0.147c41ff3f7.N7ffc</con2:id>
+                                <con3:expr>
+                                    <con2:xqueryTransform>
+                                        <con2:resource ref="InternalCountryService/rawCountriesToCanonicalFormat"/>
+                                        <con2:param name="rawCountries">
+                                            <con2:path>$body/*[1]</con2:path>
+                                        </con2:param>
+                                    </con2:xqueryTransform>
+                                </con3:expr>
+                            </con3:replace>
+                        </con1:responseTransform>
+                    </con1:route>
+                </con:actions>
+            </con:route-node>
+        </con:flow>
+    </con:router>
+</con:pipelineEntry>
