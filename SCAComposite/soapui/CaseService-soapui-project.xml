@@ -1,0 +1,1657 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="CaseService" resourceRoot="" soapui-version="5.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="FormServiceBinding" type="wsdl" bindingName="{http://xmlns.amis.nl/edesk/webformservice}FormServiceBinding" soapVersion="1_1" anonymous="optional" definition="file:/C:/Development/Sources/Persoonlijk/SVNRepo/12c/mds-store/soa-infra/apps/WebFormEOL/WSDL/webformServiceImpl.wsdl" id="89e82020-0ab0-40e6-b8e0-3ef78cb07bbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/Development/Sources/Persoonlijk/SVNRepo/12c/mds-store/soa-infra/apps/WebFormEOL/WSDL/webformServiceImpl.wsdl"><con:part><con:url>file:/C:/Development/Sources/Persoonlijk/SVNRepo/12c/mds-store/soa-infra/apps/WebFormEOL/WSDL/webformServiceImpl.wsdl</con:url><con:content><![CDATA[<definitions name="WebFormService" targetNamespace="http://xmlns.amis.nl/edesk/webformservice" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ns2="http://schemas.xmlsoap.org/ws/2003/03/addressing" xmlns:ns1="http://schemas.oracle.com/bpel/extension" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns3="http://schemas.oracle.com/service/bpel/common" xmlns:fmr="http://xmlns.amis.nl/edesk/frm/0200" xmlns:tns="http://xmlns.amis.nl/edesk/webformservice" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://xmlns.amis.nl/edesk/frm/0200" schemaLocation="../Messages/FRM/V2/form.msg.xsd"/>
+    </xsd:schema>
+  </types>
+  <message name="RegisterFormRequest">
+    <part name="payload" element="fmr:FormRequest"/>
+  </message>
+  <message name="RegisterFormResponse">
+    <part name="payload" element="fmr:FormAnswer"/>
+  </message>
+  <message name="FormserviceFaultMessage">
+    <part name="fault" element="fmr:FormServiceFault"/>
+  </message>
+  <portType name="FormService">
+    <operation name="RegisterForm">
+      <input message="tns:RegisterFormRequest"/>
+      <output message="tns:RegisterFormResponse"/>
+      <fault name="fault" message="tns:FormserviceFaultMessage"/>
+    </operation>
+  </portType>
+  <binding name="FormServiceBinding" type="tns:FormService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="RegisterForm">
+      <soap:operation style="document" soapAction="RegisterForm"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="FormserviceFault">
+        <soap:fault name="fault" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="RegisterFormAsync">
+      <soap:operation style="document" soapAction="RegisterFormAsync"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+    </operation>
+  </binding>
+  <service name="FormService">
+    <port name="FormServicePort" binding="tns:FormServiceBinding">
+      <soap:address location="URL_LOCATION_WEBFORMSERVICE"/>
+    </port>
+  </service>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:\C:\Development\Sources\Persoonlijk\SVNRepo\12c\mds-store\soa-infra\apps\WebFormEOL\Messages\FRM\V2\form.msg.xsd</con:url><con:content><![CDATA[<schema targetNamespace="http://xmlns.amis.nl/edesk/frm/0200" elementFormDefault="qualified" attributeFormDefault="unqualified" version="020000" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ED="http://xmlns.amis.nl/edesk/common" xmlns:FMR="http://xmlns.amis.nl/edesk/frm/0200">
+  <include schemaLocation="../../../BO/FRM/V2/form.xsd"/>
+  <import namespace="http://xmlns.amis.nl/edesk/common" schemaLocation="../../../Core/Common/Datatypes.xsd"/>
+  <element name="FormRequest">
+    <complexType>
+      <sequence>
+        <element minOccurs="1" maxOccurs="1" ref="ED:messageDetails"/>
+        <element maxOccurs="1" minOccurs="1" ref="ED:intakeDetails"/>
+        <element name="webform" minOccurs="0" maxOccurs="1" nillable="false">
+          <complexType>
+            <sequence>
+              <element name="object" type="FMR:FormObjectType" maxOccurs="unbounded" minOccurs="1" nillable="false"/>
+            </sequence>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="FormAnswer">
+    <complexType>
+      <sequence>
+        <element ref="ED:messageDetails"/>
+        <element name="answer" minOccurs="0">
+          <complexType>
+            <sequence>
+              <element name="object" maxOccurs="unbounded" type="FMR:AnswerObjectType"/>
+            </sequence>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="FormServiceFault">
+    <complexType>
+      <sequence>
+        <element name="serviceFault" type="ED:ServiceFaultType"/>
+      </sequence>
+    </complexType>
+  </element>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:\C:\Development\Sources\Persoonlijk\SVNRepo\12c\mds-store\soa-infra\apps\WebFormEOL\Core\Common\Datatypes.xsd</con:url><con:content><![CDATA[<schema targetNamespace="http://xmlns.amis.nl/edesk/common" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ED="http://xmlns.amis.nl/edesk/common">
+  <element name="messageDetails" type="ED:CommonMessageDetailsType"/>
+  <element name="intakeDetails" type="ED:CommonIntakeDetailsType"/>
+  <element name="caseDetails" type="ED:CommonCaseDetailsType"/>
+  <complexType name="CommonMessageDetailsType">
+    <sequence>
+      <element name="messageType">
+        <simpleType>
+          <restriction base="string">
+            <length value="4"/>
+            <pattern value="Aw01">
+              <annotation>
+                <documentation>Aswer</documentation>
+              </annotation>
+            </pattern>
+            <pattern value="Dd01">
+              <annotation>
+                <documentation>Download document</documentation>
+              </annotation>
+            </pattern>
+            <pattern value="Sd01">
+              <annotation>
+                <documentation>Send document</documentation>
+              </annotation>
+            </pattern>
+            <pattern value="Sf01">
+              <annotation>
+                <documentation>Send form</documentation>
+              </annotation>
+            </pattern>
+            <pattern value="Ss01">
+              <annotation>
+                <documentation>Send status</documentation>
+              </annotation>
+            </pattern>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="owner" type="ED:Owner" default="AMIS Services"/>
+      <element name="sendDate" type="ED:DateAndTime"/>
+      <element name="sender" type="ED:CommonSystemType"/>
+    </sequence>
+  </complexType>
+  <complexType name="CommonIntakeDetailsType">
+    <sequence>
+      <element name="intakeId" type="ED:IntakeID"/>
+      <element name="intakeDate" type="ED:DateAndTime"/>
+      <element name="caseid" type="ED:CaseID" minOccurs="0"/>
+      <element name="casetype" type="ED:Casetype" minOccurs="0"/>
+      <element name="casetypeVersion" type="ED:CasetypeVersion" minOccurs="0"/>
+      <element name="propertyValues" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="CommonCaseDetailsType">
+    <sequence>
+      <element name="intakeId" type="ED:IntakeID"/>
+      <element name="caseid" type="ED:CaseID"/>
+      <element name="casetype" type="ED:Casetype"/>
+      <element name="casetypeVersion" type="ED:CasetypeVersion"/>
+      <element name="casetypeCategory" minOccurs="0" type="ED:Category"/>
+    </sequence>
+  </complexType>
+  <complexType name="CommonSystemType">
+    <sequence>
+      <element name="organisation" type="ED:Organisation"/>
+      <element name="application" type="ED:Application"/>
+      <element name="user" type="ED:User" minOccurs="0"/>
+      <element name="action" type="ED:Action" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <complexType name="CommonProcessType">
+    <sequence>
+      <element name="processId" type="ED:ProcessID"/>
+      <element name="processType" type="ED:ProcessType"/>
+      <element name="processDescription" type="ED:ProcessDescription"/>
+      <element name="processEndpoints" minOccurs="0" type="ED:EndpointDetailsType"/>
+      <element name="processParameters" minOccurs="0" type="ED:ParameterDetailsType"/>
+    </sequence>
+  </complexType>
+  <element name="employee" type="ED:EmployeeDetailsType"/>
+  <complexType name="EmployeeDetailsType">
+    <sequence>
+      <element name="identification" type="ED:Identification"/>
+      <element name="initials" maxOccurs="1" minOccurs="1" nillable="false" type="ED:Initials"/>
+      <element name="givenName" type="ED:GivenName" minOccurs="0"/>
+      <element name="lastname" type="ED:Lastname"/>
+      <element name="gender" type="ED:Gender"/>
+      <element name="function" type="string" nillable="true"/>
+      <element name="phoneNumber" type="ED:PhoneNumber" minOccurs="0"/>
+      <element name="emailAddress" type="ED:EmailAddress" minOccurs="0"/>
+      <element name="dateLeftCompany" minOccurs="0" type="ED:DateWithIndication"/>
+    </sequence>
+  </complexType>
+  <element name="naturalPerson" type="ED:PersonDetailsType"/>
+  <complexType name="PersonDetailsType">
+    <sequence>
+      <element name="ssNumber" type="ED:SocialSecurityNumber" minOccurs="1" maxOccurs="1"/>
+      <element name="firstNames" type="ED:FirstNames" minOccurs="0"/>
+      <element name="initials" type="ED:Initials"/>
+      <element name="prefix" type="ED:PrefixLastName" minOccurs="0"/>
+      <element name="lastname" type="ED:Lastname"/>
+      <element name="dateOfBirth" type="ED:DateWithIndication"/>
+      <element name="placeOfBirth" type="ED:PlaceOfBirth" minOccurs="0" nillable="true"/>
+      <element name="countryOfBirth" minOccurs="0" nillable="true" type="ED:NameOfCountry"/>
+      <element name="gender" type="ED:Gender"/>
+      <element name="phoneNumber" type="ED:PhoneNumber" minOccurs="0" nillable="true"/>
+      <element name="emailAddress" type="ED:EmailAddress" minOccurs="0" nillable="true"/>
+    </sequence>
+  </complexType>
+  <element name="comporateBody" type="ED:CompanyDetailsType"/>
+  <complexType name="CompanyDetailsType">
+    <sequence>
+      <element name="companyName" type="ED:CompanyName"/>
+      <element name="merchantId" type="ED:MerchantId"/>
+      <element name="vatNumber" type="ED:VatNumber"/>
+      <element name="phoneNumber" type="ED:PhoneNumber" minOccurs="0"/>
+      <element name="faxNumber" type="ED:PhoneNumber" minOccurs="0"/>
+      <element name="emailAddress" type="ED:EmailAddress" minOccurs="0"/>
+      <element name="contactPerson" nillable="true">
+        <complexType>
+          <sequence>
+            <element name="subject" minOccurs="0" maxOccurs="unbounded" type="ED:PersonDetailsType"/>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ParameterDetailsType">
+    <sequence>
+      <element name="parameter" maxOccurs="unbounded" minOccurs="1" nillable="false">
+        <complexType>
+          <sequence>
+            <element name="itemname" type="ED:Itemname" nillable="false"/>
+            <element name="itemvalue" type="ED:Itemvalue"/>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="EndpointDetailsType">
+    <sequence>
+      <element name="endpoint" maxOccurs="unbounded" minOccurs="1" nillable="false">
+        <complexType>
+          <sequence>
+            <element name="serviceName" type="ED:Itemname"/>
+            <element name="serviceAdres" type="ED:Itemvalue"/>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ServiceFaultType">
+    <sequence>
+      <element name="faultCode" type="integer"/>
+      <element name="faultMessage" type="string"/>
+      <element name="faultDetails" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="DateWithIndication">
+    <simpleContent>
+      <extension base="ED:DateString">
+        <attribute type="ED:IndIncompleteDate" name="IndIncompleteDate"/>
+      </extension>
+    </simpleContent>
+  </complexType>
+  <simpleType name="Owner">
+    <restriction base="string">
+      <maxLength value="40"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Versionnr">
+    <restriction base="string">
+      <minLength value="4"/>
+      <maxLength value="4"/>
+      <pattern value="[0-9][1-9][0-9][0-9]"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Date">
+    <restriction base="date"/>
+  </simpleType>
+  <simpleType name="DateAndTime">
+    <restriction base="dateTime"/>
+  </simpleType>
+  <simpleType name="DateString">
+    <restriction base="string">
+      <pattern value="[1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="IndIncompleteDate">
+    <restriction base="string">
+      <enumeration value="M">
+        <annotation>
+          <documentation xml:lang="nl">month and day unknown</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="D">
+        <annotation>
+          <documentation xml:lang="nl">day unknown</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="C">
+        <annotation>
+          <documentation xml:lang="nl">date is complete</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="Identification">
+    <restriction base="string">
+      <maxLength value="24"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="IdentificationED">
+    <restriction base="decimal">
+      <totalDigits value="15"/>
+      <fractionDigits value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Coordinate">
+    <restriction base="decimal">
+      <totalDigits value="9"/>
+      <fractionDigits value="6"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Organisation">
+    <restriction base="string">
+      <pattern value="[a-zA-Z ]{3,25}"/>
+      <pattern value="[0-9]{4}"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Application">
+    <restriction base="string">
+      <minLength value="3"/>
+      <maxLength value="20"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="User">
+    <restriction base="string">
+      <maxLength value="30"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Action">
+    <restriction base="string">
+      <enumeration value="cancel"/>
+      <enumeration value="confirm"/>
+      <enumeration value="process"/>
+      <enumeration value="submit"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ProcessID">
+    <restriction base="string">
+      <maxLength value="25"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ProcessType">
+    <restriction base="string">
+      <enumeration value="backoffice"/>
+      <enumeration value="queue"/>
+      <enumeration value="webservice"/>
+      <enumeration value="workflow"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ProcessDescription">
+    <restriction base="string">
+      <maxLength value="80"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Itemname">
+    <restriction base="string">
+      <minLength value="1"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Itemvalue">
+    <restriction base="string"/>
+  </simpleType>
+  <simpleType name="IntakeID">
+    <restriction base="decimal">
+      <totalDigits value="10"/>
+      <fractionDigits value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="CaseID">
+    <restriction base="string">
+      <minLength value="0"/>
+      <maxLength value="50"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Casetype">
+    <restriction base="string">
+      <minLength value="3"/>
+      <maxLength value="80"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="CasetypeVersion">
+    <restriction base="decimal">
+      <totalDigits value="3"/>
+      <fractionDigits value="1"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Category">
+    <restriction base="string">
+      <minLength value="0"/>
+      <maxLength value="100"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Keyword">
+    <restriction base="string">
+      <minLength value="1"/>
+      <maxLength value="40"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ReferenceNumber">
+    <restriction base="positiveInteger">
+      <totalDigits value="15"/>
+      <fractionDigits value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SocialSecurityNumber">
+    <restriction base="nonNegativeInteger">
+      <totalDigits value="9"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Initials">
+    <restriction base="string">
+      <maxLength value="10"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FirstNames">
+    <restriction base="string">
+      <maxLength value="200"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="GivenName">
+    <restriction base="string">
+      <maxLength value="30"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="PrefixLastName">
+    <restriction base="string">
+      <maxLength value="10"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Lastname">
+    <restriction base="string">
+      <maxLength value="200"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="PlaceOfBirth">
+    <restriction base="string">
+      <maxLength value="40"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="NameOfCountry">
+    <restriction base="string">
+      <maxLength value="40"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Gender">
+    <restriction base="string">
+      <enumeration value="M">
+        <annotation>
+          <documentation>Male</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="F">
+        <annotation>
+          <documentation>Female</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="U">
+        <annotation>
+          <documentation>Unknown</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="PhoneNumber">
+    <restriction base="string">
+      <maxLength value="20"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="EmailAddress">
+    <restriction base="string">
+      <maxLength value="80"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="CompanyName">
+    <restriction base="string">
+      <maxLength value="60"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="MerchantId">
+    <restriction base="nonNegativeInteger">
+      <totalDigits value="13"/>
+      <fractionDigits value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="VatNumber">
+    <restriction base="string">
+      <pattern value="[A-Z]{2}[0-9]{8,10}[A-Z][0-9]{2}"/>
+      <pattern value="[A-Z]{2}[0-9]{8,10}"/>
+      <pattern value="[0-9]{8,10}"/>
+    </restriction>
+  </simpleType>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:\C:\Development\Sources\Persoonlijk\SVNRepo\12c\mds-store\soa-infra\apps\WebFormEOL\BO\FRM\V2\form.xsd</con:url><con:content><![CDATA[<schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://xmlns.amis.nl/edesk/frm/0200" version="020000" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:FRM="http://xmlns.amis.nl/edesk/frm/0200" xmlns:ED="http://xmlns.amis.nl/edesk/common">
+  <import namespace="http://xmlns.amis.nl/edesk/common" schemaLocation="../../../Core/Common/Datatypes.xsd"/>
+  <complexType name="AnswerObjectType">
+    <sequence>
+      <element name="processId" type="ED:ProcessID"/>
+      <element name="intakeId" type="ED:IntakeID"/>
+      <element name="caseId" type="ED:CaseID" minOccurs="0"/>
+      <element name="properties" type="FRM:ItemDetailsType" minOccurs="0"/>
+      <element name="statusDetails" type="FRM:StatusDetailsType"/>
+    </sequence>
+  </complexType>
+  <complexType final="extension" name="FormObjectType">
+    <sequence>
+      <element maxOccurs="1" minOccurs="0" name="paymentDetails" nillable="false" type="FRM:PaymentDetailsType"/>
+      <element maxOccurs="1" minOccurs="0" name="geolocationDetails" nillable="false" type="FRM:GeoDetailsType"/>
+      <element name="subjectDetails" nillable="false">
+        <complexType>
+          <choice>
+            <element maxOccurs="2" ref="ED:naturalPerson"></element>
+            <element ref="ED:comporateBody"></element>
+          </choice>
+        </complexType>
+      </element>
+      <element name="engagedSubjects" minOccurs="0">
+        <complexType>
+          <sequence>
+            <element name="engadgetSubject" maxOccurs="unbounded">
+              <complexType>
+                <choice>
+                  <element ref="ED:employee"></element>
+                  <element ref="ED:naturalPerson"></element>
+                  <element ref="ED:comporateBody"></element>
+                </choice>
+                <attribute name="role" type="FRM:Roles" use="required"/>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element maxOccurs="1" minOccurs="1" name="formDetails" nillable="false" type="FRM:FormDetailsType"/>
+      <element name="formAttachments" type="FRM:AttachmentDetailsType" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <complexType name="AttachmentDetailsType">
+    <sequence>
+      <element name="attachment" maxOccurs="unbounded">
+        <complexType>
+          <sequence>
+            <element name="filename" type="FRM:Filename"/>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="FormDetailsType">
+    <sequence>
+      <element maxOccurs="unbounded" name="item">
+        <complexType>
+          <choice>
+            <element name="singleType">
+              <complexType>
+                <sequence>
+                  <element name="itemname" type="FRM:Itemname"/>
+                  <element maxOccurs="1" minOccurs="0" name="itemlabel" nillable="false" type="FRM:Itemlabel"/>
+                  <element name="itemvalue" type="FRM:Itemvalue"/>
+                </sequence>
+              </complexType>
+            </element>
+            <element name="multipleType">
+              <complexType>
+                <sequence>
+                  <element name="itemname" type="FRM:Itemname"/>
+                  <element maxOccurs="1" minOccurs="0" name="itemlabel" nillable="false" type="FRM:Itemlabel"/>
+                  <element maxOccurs="unbounded" name="itemchoice">
+                    <complexType>
+                      <simpleContent>
+                        <extension base="boolean">
+                          <attribute name="answer" type="FRM:Itemvalue" use="required"/>
+                        </extension>
+                      </simpleContent>
+                    </complexType>
+                  </element>
+                </sequence>
+              </complexType>
+            </element>
+          </choice>
+          <attributeGroup ref="FRM:FormItemgroup"/>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="GeoDetailsType">
+    <sequence>
+      <element name="xCoordinate" type="ED:Coordinate"/>
+      <element name="yCoordinate" type="ED:Coordinate"/>
+    </sequence>
+  </complexType>
+  <complexType name="ItemDetailsType">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="1" name="item" nillable="false">
+        <complexType>
+          <sequence>
+            <element maxOccurs="1" minOccurs="1" name="itemname" nillable="false" type="FRM:Itemname"/>
+            <element maxOccurs="1" minOccurs="0" name="itemtype" nillable="false" type="FRM:Itemtype"/>
+            <element maxOccurs="1" minOccurs="1" name="itemvalue" nillable="true" type="FRM:Itemvalue"/>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="PaymentDetailsType">
+    <sequence>
+      <element name="paymentReference" nillable="false" type="FRM:PaymentReference"/>
+      <element name="paymentMethod" nillable="false" type="FRM:PaymentMethod"/>
+      <element name="totalAmount" nillable="false" type="FRM:Amount"/>
+      <element name="transactionDate" nillable="false" type="ED:DateAndTime"/>
+      <element name="resultCode" nillable="false" type="FRM:ResultCode"/>
+    </sequence>
+  </complexType>
+  <complexType name="StatusDetailsType">
+    <sequence>
+      <element name="statusCode" type="FRM:ResultCode"/>
+      <element name="statusMessage" type="FRM:StatusMessage"/>
+    </sequence>
+  </complexType>
+  <attributeGroup name="FormItemgroup">
+    <attribute name="sequencenumber" type="integer" use="required"/>
+    <attribute name="groupname" type="string" use="optional"/>
+    <attribute name="groupnumber" type="integer" use="optional"/>
+  </attributeGroup>
+  <simpleType name="Amount">
+    <restriction base="decimal">
+      <totalDigits value="10"/>
+      <fractionDigits value="2"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Filename">
+    <restriction base="string">
+      <minLength value="5"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="PaymentReference">
+    <restriction base="string">
+      <maxLength value="40"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="PaymentMethod">
+    <restriction base="string">
+      <enumeration value="ideal"/>
+      <enumeration value="mastercard"/>
+      <enumeration value="maestro"/>
+      <enumeration value="paypal"/>
+      <enumeration value="visa"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ResultCode">
+    <restriction base="integer">
+      <minInclusive value="1"/>
+      <maxInclusive value="99"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Itemlabel">
+    <restriction base="string">
+      <maxLength value="255"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Itemname">
+    <restriction base="string">
+      <minLength value="1"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Itemtype">
+    <restriction base="string">
+      <enumeration value="base64"/>
+      <enumeration value="date"/>
+      <enumeration value="decimal"/>
+      <enumeration value="integer"/>
+      <enumeration value="string"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="Itemvalue">
+    <restriction base="string"/>
+  </simpleType>
+  <simpleType name="Roles">
+    <restriction base="string">
+      <enumeration value="Interested"/>
+      <enumeration value="Representative"/>
+      <enumeration value="Petitioner"/>
+      <enumeration value="Initiator"/>
+      <enumeration value="Supervisor"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="StatusMessage">
+    <restriction base="string">
+      <maxLength value="250"/>
+    </restriction>
+  </simpleType>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceDebugBreakpoints/FormService</con:endpoint><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceMediatorUpdates/FormService</con:endpoint><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceSubProcess/FormService</con:endpoint><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceWithFaultPolicy/FormService</con:endpoint><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceXqueryTransformation/FormService</con:endpoint><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceXsltTransformation/FormService</con:endpoint><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseService_1.0/FormService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="RegisterForm" name="RegisterForm" bindingOperationName="RegisterForm" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional" id="1af00d59-3358-49d7-b0ed-a2d00487e8e9"><con:settings/><con:call name="Building Permit" id="e144ee13-1343-4585-ba87-4f15d0e6ba2c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseService_1.0/FormService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <FormRequest xmlns="http://xmlns.amis.nl/edesk/frm/0200">
+         <messageDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <messageType>Sf01</messageType>
+            <owner>AMIS Services</owner>
+            <sendDate>2014-07-17T14:39:57</sendDate>
+            <sender>
+               <organisation>AMIS</organisation>
+               <application>MFT OOW Example</application>
+            </sender>
+         </messageDetails>
+         <intakeDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <intakeId>8587</intakeId>
+            <intakeDate>2014-07-17T14:39:57</intakeDate>
+            <casetype>BDP</casetype>
+            <casetypeVersion>2.0</casetypeVersion>
+            <propertyValues>web.amis.nl,moelkenr,SSL</propertyValues>
+         </intakeDetails>
+         <webform>
+            <object>
+               <subjectDetails>
+                  <naturalPerson xmlns="http://xmlns.amis.nl/edesk/common">
+                     <ssNumber>381077918</ssNumber>
+                     <initials>RC</initials>
+                     <prefix>van</prefix>
+                     <lastname>Molken</lastname>
+                     <dateOfBirth IndIncompleteDate="C">1985-04-23</dateOfBirth>
+                     <gender>M</gender>
+                     <phoneNumber>+31645106069</phoneNumber>
+                     <emailAddress>robert.van.molken@amis.nl</emailAddress>
+                  </naturalPerson>
+               </subjectDetails>
+               <formDetails>
+                  <item sequencenumber="1" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>postalcode</itemname>
+                        <itemlabel>Postalcode</itemlabel>
+                        <itemvalue>3526WT</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>housenumber</itemname>
+                        <itemlabel>Housenumber</itemlabel>
+                        <itemvalue>929</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>housenumberAddition</itemname>
+                        <itemlabel>Housenumber Addition</itemlabel>
+                        <itemvalue>A</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="4" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>streetname</itemname>
+                        <itemlabel>Streetname</itemlabel>
+                        <itemvalue>Europaplein</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="5" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>city</itemname>
+                        <itemlabel>City</itemlabel>
+                        <itemvalue>Utrecht</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="6" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>multipleLocations</itemname>
+                        <itemlabel>Does the work in this application covering several addresses?</itemlabel>
+                        <itemvalue>Yes</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="7" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>specificationOfLocation</itemname>
+                        <itemlabel>Specification of location</itemlabel>
+                        <itemvalue>Europaplein 930</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="locationOwner" groupnumber="1">
+                      <singleType>
+                        <itemname>ownership</itemname>
+                        <itemlabel>Ownership of the location</itemlabel>
+                        <itemvalue>You own the plot</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="locationOwner" groupnumber="1">
+                      <singleType>
+                        <itemname>requestInterests</itemname>
+                        <itemlabel>Your interest in this request</itemlabel>
+                        <itemvalue>Construction on own plot</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="constructionDetails" groupnumber="1">
+                     <multipleType>
+                        <itemname>constructionType</itemname>
+                        <itemlabel>What will you build?</itemlabel>
+                        <itemchoice answer="Dormer">false</itemchoice>
+                        <itemchoice answer="Attach blinds, shutter or rolling grilles">true</itemchoice>
+                     </multipleType>
+                  </item>
+                  <item sequencenumber="2" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>construction</itemname>
+                        <itemlabel>What is applicable on structure?</itemlabel>
+                        <itemvalue>It is newly placed</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>explanation</itemname>
+                        <itemlabel>Possible explanation</itemlabel>
+                        <itemvalue></itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="4" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>previouslyApplied</itemname>
+                        <itemlabel>Have you previously applied for a license for such construction work?</itemlabel>
+                        <itemvalue>No</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="5" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>constructionLocation</itemname>
+                        <itemlabel>Where will you build?</itemlabel>
+                        <itemvalue>To or on the main building</itemvalue>
+                     </singleType>
+                  </item>
+                  <!--item sequencenumber="6" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>annexBuildingName</itemname>
+                        <itemlabel>Name of the annex building or structure</itemlabel>
+                        <itemvalue>Shed</itemvalue>
+                     </singleType>
+                  </item-->
+                  <item sequencenumber="1" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>part</itemname>
+                        <itemlabel>Part</itemlabel>
+                        <itemvalue>Facade</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>material</itemname>
+                        <itemlabel>Material</itemlabel>
+                        <itemvalue>Wood</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>color</itemname>
+                        <itemlabel>Color</itemlabel>
+                        <itemvalue>Oak</itemvalue>
+                     </singleType>
+                  </item> 
+                  <item sequencenumber="1" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>part</itemname>
+                        <itemlabel>Part</itemlabel>
+                        <itemvalue>Blind</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>material</itemname>
+                        <itemlabel>Material</itemlabel>
+                        <itemvalue>Plastic</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>color</itemname>
+                        <itemlabel>Color</itemlabel>
+                        <itemvalue>Orange</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="costs" groupnumber="1">
+                      <singleType>
+                        <itemname>materialCosts</itemname>
+                        <itemlabel>Total costs of materials</itemlabel>
+                        <itemvalue>1399.00</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="costs" groupnumber="1">
+                      <singleType>
+                        <itemname>projectCosts</itemname>
+                        <itemlabel>Total costs of project</itemlabel>
+                        <itemvalue>1625.50</itemvalue>
+                     </singleType>
+                  </item>                    
+               </formDetails>
+               <formAttachments>
+                  <attachment>
+                     <filename>8587_submitted_form.pdf</filename>
+                  </attachment>
+                  <attachment>
+                     <filename>8587_building_plan.pdf</filename>
+                  </attachment>
+               </formAttachments>
+            </object>
+         </webform>
+      </FormRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="RegisterForm"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Building Permit - Existing Case" id="50f95fd6-695d-4cfc-8fb3-ef2d24af2c7b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceSubProcess/FormService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <FormRequest xmlns="http://xmlns.amis.nl/edesk/frm/0200">
+         <messageDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <messageType>Sf01</messageType>
+            <owner>AMIS Services</owner>
+            <sendDate>2014-07-17T14:39:57</sendDate>
+            <sender>
+               <organisation>AMIS</organisation>
+               <application>MFT OOW Example</application>
+            </sender>
+         </messageDetails>
+         <intakeDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <intakeId>8587</intakeId>
+            <intakeDate>2014-07-17T14:39:57</intakeDate>
+            <caseid>7d9c7cc1cfcfc5bb:-60990893:14a534d09b7:-7fd8</caseid>
+            <casetype>BDP</casetype>
+            <casetypeVersion>2.0</casetypeVersion>
+            <propertyValues>web.amis.nl,moelkenr,SSL</propertyValues>
+         </intakeDetails>
+         <webform>
+            <object>
+               <subjectDetails>
+                  <naturalPerson xmlns="http://xmlns.amis.nl/edesk/common">
+                     <ssNumber>381077918</ssNumber>
+                     <initials>RC</initials>
+                     <prefix>van</prefix>
+                     <lastname>Molken</lastname>
+                     <dateOfBirth IndIncompleteDate="C">1985-04-23</dateOfBirth>
+                     <gender>M</gender>
+                     <phoneNumber>+31645106069</phoneNumber>
+                     <emailAddress>robert.van.molken@amis.nl</emailAddress>
+                  </naturalPerson>
+               </subjectDetails>
+               <formDetails>
+                  <item sequencenumber="1" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>postalcode</itemname>
+                        <itemlabel>Postalcode</itemlabel>
+                        <itemvalue>3526WT</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>housenumber</itemname>
+                        <itemlabel>Housenumber</itemlabel>
+                        <itemvalue>929</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>housenumberAddition</itemname>
+                        <itemlabel>Housenumber Addition</itemlabel>
+                        <itemvalue>A</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="4" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>streetname</itemname>
+                        <itemlabel>Streetname</itemlabel>
+                        <itemvalue>Europaplein</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="5" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>city</itemname>
+                        <itemlabel>City</itemlabel>
+                        <itemvalue>Utrecht</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="6" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>multipleLocations</itemname>
+                        <itemlabel>Does the work in this application covering several addresses?</itemlabel>
+                        <itemvalue>Yes</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="7" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>specificationOfLocation</itemname>
+                        <itemlabel>Specification of location</itemlabel>
+                        <itemvalue>Europaplein 930</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="locationOwner" groupnumber="1">
+                      <singleType>
+                        <itemname>ownership</itemname>
+                        <itemlabel>Ownership of the location</itemlabel>
+                        <itemvalue>You own the plot</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="locationOwner" groupnumber="1">
+                      <singleType>
+                        <itemname>requestInterests</itemname>
+                        <itemlabel>Your interest in this request</itemlabel>
+                        <itemvalue>Construction on own plot</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="constructionDetails" groupnumber="1">
+                     <multipleType>
+                        <itemname>constructionType</itemname>
+                        <itemlabel>What will you build?</itemlabel>
+                        <itemchoice answer="Dormer">false</itemchoice>
+                        <itemchoice answer="Attach blinds, shutter or rolling grilles">true</itemchoice>
+                     </multipleType>
+                  </item>
+                  <item sequencenumber="2" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>construction</itemname>
+                        <itemlabel>What is applicable on structure?</itemlabel>
+                        <itemvalue>It is newly placed</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>explanation</itemname>
+                        <itemlabel>Possible explanation</itemlabel>
+                        <itemvalue></itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="4" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>previouslyApplied</itemname>
+                        <itemlabel>Have you previously applied for a license for such construction work?</itemlabel>
+                        <itemvalue>No</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="5" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>constructionLocation</itemname>
+                        <itemlabel>Where will you build?</itemlabel>
+                        <itemvalue>To or on the main building</itemvalue>
+                     </singleType>
+                  </item>
+                  <!--item sequencenumber="6" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>annexBuildingName</itemname>
+                        <itemlabel>Name of the annex building or structure</itemlabel>
+                        <itemvalue>Shed</itemvalue>
+                     </singleType>
+                  </item-->
+                  <item sequencenumber="1" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>part</itemname>
+                        <itemlabel>Part</itemlabel>
+                        <itemvalue>Facade</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>material</itemname>
+                        <itemlabel>Material</itemlabel>
+                        <itemvalue>Wood</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>color</itemname>
+                        <itemlabel>Color</itemlabel>
+                        <itemvalue>Oak</itemvalue>
+                     </singleType>
+                  </item> 
+                  <item sequencenumber="1" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>part</itemname>
+                        <itemlabel>Part</itemlabel>
+                        <itemvalue>Blind</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>material</itemname>
+                        <itemlabel>Material</itemlabel>
+                        <itemvalue>Plastic</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>color</itemname>
+                        <itemlabel>Color</itemlabel>
+                        <itemvalue>Orange</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="costs" groupnumber="1">
+                      <singleType>
+                        <itemname>materialCosts</itemname>
+                        <itemlabel>Total costs of materials</itemlabel>
+                        <itemvalue>1399.00</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="costs" groupnumber="1">
+                      <singleType>
+                        <itemname>projectCosts</itemname>
+                        <itemlabel>Total costs of project</itemlabel>
+                        <itemvalue>1625.50</itemvalue>
+                     </singleType>
+                  </item>                    
+               </formDetails>
+               <formAttachments>
+                  <attachment>
+                     <filename>8587_submitted_form.pdf</filename>
+                  </attachment>
+                  <attachment>
+                     <filename>8587_building_plan.pdf</filename>
+                  </attachment>
+               </formAttachments>
+            </object>
+         </webform>
+      </FormRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="RegisterForm"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="RegisterFormAsync" name="RegisterFormAsync" bindingOperationName="RegisterFormAsync" inputName="" sendsAttachments="false" anonymous="optional" id="065a38cc-20b7-4e39-9394-b6810727cc34" type="Request-Response"><con:settings/><con:call name="Building Permit - AMIS" id="ca4bcc8d-a2e7-467f-b167-b6149cd546cc"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseService_1.0/FormService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <FormRequest xmlns="http://xmlns.amis.nl/edesk/frm/0200">
+         <messageDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <messageType>Sf01</messageType>
+            <owner>AMIS Services</owner>
+            <sendDate>2014-07-17T14:39:57</sendDate>
+            <sender>
+               <organisation>AMIS</organisation>
+               <application>MFT OOW Example</application>
+            </sender>
+         </messageDetails>
+         <intakeDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <intakeId>8587</intakeId>
+            <intakeDate>2014-07-17T14:39:57</intakeDate>
+            <casetype>BDP</casetype>
+            <casetypeVersion>2.0</casetypeVersion>
+            <propertyValues>web.amis.nl,moelkenr,SSL</propertyValues>
+         </intakeDetails>
+         <webform>
+            <object>
+               <subjectDetails>
+                  <naturalPerson xmlns="http://xmlns.amis.nl/edesk/common">
+                     <ssNumber>381077918</ssNumber>
+                     <initials>RC</initials>
+                     <prefix>van</prefix>
+                     <lastname>Molken</lastname>
+                     <dateOfBirth IndIncompleteDate="C">1985-04-23</dateOfBirth>
+                     <gender>M</gender>
+                     <phoneNumber>+31645106069</phoneNumber>
+                     <emailAddress>robert.van.molken@amis.nl</emailAddress>
+                  </naturalPerson>
+               </subjectDetails>
+               <formDetails>
+                  <item sequencenumber="1" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>postalcode</itemname>
+                        <itemlabel>Postalcode</itemlabel>
+                        <itemvalue>3526WT</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>housenumber</itemname>
+                        <itemlabel>Housenumber</itemlabel>
+                        <itemvalue>929</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>housenumberAddition</itemname>
+                        <itemlabel>Housenumber Addition</itemlabel>
+                        <itemvalue>A</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="4" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>streetname</itemname>
+                        <itemlabel>Streetname</itemlabel>
+                        <itemvalue>Europaplein</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="5" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>city</itemname>
+                        <itemlabel>City</itemlabel>
+                        <itemvalue>Utrecht</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="6" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>multipleLocations</itemname>
+                        <itemlabel>Does the work in this application covering several addresses?</itemlabel>
+                        <itemvalue>Yes</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="7" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>specificationOfLocation</itemname>
+                        <itemlabel>Specification of location</itemlabel>
+                        <itemvalue>Europaplein 930</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="locationOwner" groupnumber="1">
+                      <singleType>
+                        <itemname>ownership</itemname>
+                        <itemlabel>Ownership of the location</itemlabel>
+                        <itemvalue>You own the plot</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="locationOwner" groupnumber="1">
+                      <singleType>
+                        <itemname>requestInterests</itemname>
+                        <itemlabel>Your interest in this request</itemlabel>
+                        <itemvalue>Construction on own plot</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="constructionDetails" groupnumber="1">
+                     <multipleType>
+                        <itemname>constructionType</itemname>
+                        <itemlabel>What will you build?</itemlabel>
+                        <itemchoice answer="Dormer">false</itemchoice>
+                        <itemchoice answer="Attach blinds, shutter or rolling grilles">true</itemchoice>
+                     </multipleType>
+                  </item>
+                  <item sequencenumber="2" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>construction</itemname>
+                        <itemlabel>What is applicable on structure?</itemlabel>
+                        <itemvalue>It is newly placed</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>explanation</itemname>
+                        <itemlabel>Possible explanation</itemlabel>
+                        <itemvalue></itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="4" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>previouslyApplied</itemname>
+                        <itemlabel>Have you previously applied for a license for such construction work?</itemlabel>
+                        <itemvalue>No</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="5" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>constructionLocation</itemname>
+                        <itemlabel>Where will you build?</itemlabel>
+                        <itemvalue>To or on the main building</itemvalue>
+                     </singleType>
+                  </item>
+                  <!--item sequencenumber="6" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>annexBuildingName</itemname>
+                        <itemlabel>Name of the annex building or structure</itemlabel>
+                        <itemvalue>Shed</itemvalue>
+                     </singleType>
+                  </item-->
+                  <item sequencenumber="1" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>part</itemname>
+                        <itemlabel>Part</itemlabel>
+                        <itemvalue>Facade</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>material</itemname>
+                        <itemlabel>Material</itemlabel>
+                        <itemvalue>Wood</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>color</itemname>
+                        <itemlabel>Color</itemlabel>
+                        <itemvalue>Oak</itemvalue>
+                     </singleType>
+                  </item> 
+                  <item sequencenumber="1" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>part</itemname>
+                        <itemlabel>Part</itemlabel>
+                        <itemvalue>Blind</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>material</itemname>
+                        <itemlabel>Material</itemlabel>
+                        <itemvalue>Plastic</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>color</itemname>
+                        <itemlabel>Color</itemlabel>
+                        <itemvalue>Orange</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="costs" groupnumber="1">
+                      <singleType>
+                        <itemname>materialCosts</itemname>
+                        <itemlabel>Total costs of materials</itemlabel>
+                        <itemvalue>1399.00</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="costs" groupnumber="1">
+                      <singleType>
+                        <itemname>projectCosts</itemname>
+                        <itemlabel>Total costs of project</itemlabel>
+                        <itemvalue>1625.50</itemvalue>
+                     </singleType>
+                  </item>                    
+               </formDetails>
+               <formAttachments>
+                  <attachment>
+                     <filename>8587_submitted_form.pdf</filename>
+                  </attachment>
+                  <attachment>
+                     <filename>8587_building_plan.pdf</filename>
+                  </attachment>
+               </formAttachments>
+            </object>
+         </webform>
+      </FormRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="RegisterFormAsync"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Building Permit - GBR" id="9b2d3269-75ac-4453-882d-73036586ec71"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceMediatorUpdates/FormService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <FormRequest xmlns="http://xmlns.amis.nl/edesk/frm/0200">
+         <messageDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <messageType>Sf01</messageType>
+            <owner>AMIS Services</owner>
+            <sendDate>2014-07-17T14:39:57</sendDate>
+            <sender>
+               <organisation>GBR</organisation>
+               <application>MFT OOW Example</application>
+            </sender>
+         </messageDetails>
+         <intakeDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <intakeId>8587</intakeId>
+            <intakeDate>2014-07-17T14:39:57</intakeDate>
+            <casetype>BDP</casetype>
+            <casetypeVersion>2.0</casetypeVersion>
+            <propertyValues>web.amis.nl,moelkenr,SSL</propertyValues>
+         </intakeDetails>
+         <webform>
+            <object>
+               <subjectDetails>
+                  <comporateBody xmlns="http://xmlns.amis.nl/edesk/common">
+                     <companyName>Forest Groomers</companyName>
+                     <merchantId>123456789</merchantId>
+                     <vatNumber>1113331122</vatNumber>                     
+                     <contactPerson/>
+                  </comporateBody>
+               </subjectDetails>
+               <formDetails>
+                  <item sequencenumber="1" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>postalcode</itemname>
+                        <itemlabel>Postalcode</itemlabel>
+                        <itemvalue>3526WT</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>housenumber</itemname>
+                        <itemlabel>Housenumber</itemlabel>
+                        <itemvalue>929</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>housenumberAddition</itemname>
+                        <itemlabel>Housenumber Addition</itemlabel>
+                        <itemvalue>A</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="4" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>streetname</itemname>
+                        <itemlabel>Streetname</itemlabel>
+                        <itemvalue>Europaplein</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="5" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>city</itemname>
+                        <itemlabel>City</itemlabel>
+                        <itemvalue>Utrecht</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="6" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>multipleLocations</itemname>
+                        <itemlabel>Does the work in this application covering several addresses?</itemlabel>
+                        <itemvalue>Yes</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="7" groupname="location" groupnumber="1">
+                      <singleType>
+                        <itemname>specificationOfLocation</itemname>
+                        <itemlabel>Specification of location</itemlabel>
+                        <itemvalue>Europaplein 930</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="locationOwner" groupnumber="1">
+                      <singleType>
+                        <itemname>ownership</itemname>
+                        <itemlabel>Ownership of the location</itemlabel>
+                        <itemvalue>You own the plot</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="locationOwner" groupnumber="1">
+                      <singleType>
+                        <itemname>requestInterests</itemname>
+                        <itemlabel>Your interest in this request</itemlabel>
+                        <itemvalue>Construction on own plot</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="constructionDetails" groupnumber="1">
+                     <multipleType>
+                        <itemname>constructionType</itemname>
+                        <itemlabel>What will you build?</itemlabel>
+                        <itemchoice answer="Dormer">false</itemchoice>
+                        <itemchoice answer="Attach blinds, shutter or rolling grilles">true</itemchoice>
+                     </multipleType>
+                  </item>
+                  <item sequencenumber="2" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>construction</itemname>
+                        <itemlabel>What is applicable on structure?</itemlabel>
+                        <itemvalue>It is newly placed</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>explanation</itemname>
+                        <itemlabel>Possible explanation</itemlabel>
+                        <itemvalue></itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="4" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>previouslyApplied</itemname>
+                        <itemlabel>Have you previously applied for a license for such construction work?</itemlabel>
+                        <itemvalue>No</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="5" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>constructionLocation</itemname>
+                        <itemlabel>Where will you build?</itemlabel>
+                        <itemvalue>To or on the main building</itemvalue>
+                     </singleType>
+                  </item>
+                  <!--item sequencenumber="6" groupname="constructionDetails" groupnumber="1">
+                      <singleType>
+                        <itemname>annexBuildingName</itemname>
+                        <itemlabel>Name of the annex building or structure</itemlabel>
+                        <itemvalue>Shed</itemvalue>
+                     </singleType>
+                  </item-->
+                  <item sequencenumber="1" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>part</itemname>
+                        <itemlabel>Part</itemlabel>
+                        <itemvalue>Facade</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>material</itemname>
+                        <itemlabel>Material</itemlabel>
+                        <itemvalue>Wood</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="contructionAppearance" groupnumber="1">
+                      <singleType>
+                        <itemname>color</itemname>
+                        <itemlabel>Color</itemlabel>
+                        <itemvalue>Oak</itemvalue>
+                     </singleType>
+                  </item> 
+                  <item sequencenumber="1" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>part</itemname>
+                        <itemlabel>Part</itemlabel>
+                        <itemvalue>Blind</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>material</itemname>
+                        <itemlabel>Material</itemlabel>
+                        <itemvalue>Plastic</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="3" groupname="contructionAppearance" groupnumber="2">
+                      <singleType>
+                        <itemname>color</itemname>
+                        <itemlabel>Color</itemlabel>
+                        <itemvalue>Orange</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="1" groupname="costs" groupnumber="1">
+                      <singleType>
+                        <itemname>materialCosts</itemname>
+                        <itemlabel>Total costs of materials</itemlabel>
+                        <itemvalue>1399.00</itemvalue>
+                     </singleType>
+                  </item>
+                  <item sequencenumber="2" groupname="costs" groupnumber="1">
+                      <singleType>
+                        <itemname>projectCosts</itemname>
+                        <itemlabel>Total costs of project</itemlabel>
+                        <itemvalue>1625.50</itemvalue>
+                     </singleType>
+                  </item>                    
+               </formDetails>
+               <formAttachments>
+                  <attachment>
+                     <filename>8587_submitted_form.pdf</filename>
+                  </attachment>
+                  <attachment>
+                     <filename>8587_building_plan.pdf</filename>
+                  </attachment>
+               </formAttachments>
+            </object>
+         </webform>
+      </FormRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="RegisterFormAsync"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite name="TC01 - RegisterForm" id="04cf1ce3-bf99-4f3b-b27a-1a1e616385c5" disabled="true"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TS0101 - Register form with attachments" searchProperties="true" id="ac321e10-2b94-4ab8-8044-6458ac5f5b01"><con:settings/><con:testStep type="delay" name="Delay" id="cd6cd2bb-dda5-41a2-b533-b2f5bf93a101"><con:settings/><con:config><delay>1000</delay></con:config></con:testStep><con:testStep type="request" name="SOAP Test Request" id="7198eb01-32f0-4dce-a2af-f90c1383d5cf"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>FormServiceBinding</con:interface><con:operation>RegisterForm</con:operation><con:request name="SOAP Test Request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8088/Mock/CaseService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://xmlns.amis.nl/edesk/frm/0200" xmlns:com="http://xmlns.amis.nl/edesk/common">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:FormRequest>
+         <com:messageDetails>
+            <com:messageType>Sf01</com:messageType>
+            <com:owner>Spir-IT</com:owner>
+            <com:sendDate>2014-01-17T12:00:00</com:sendDate>
+            <com:sender>
+               <com:organisation>KEI</com:organisation>
+               <com:application>eKanton Rechter</com:application>
+            </com:sender>
+         </com:messageDetails>
+         <com:intakeDetails>
+            <com:intakeId>${#TestCase#intakeId}</com:intakeId>
+            <com:intakeDate>${=new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date())}</com:intakeDate>
+         </com:intakeDetails>
+         <ns:webform>
+            <ns:object>
+               <ns:subjectDetails>
+                  <com:naturalPerson>
+                     <com:ssNumber>101303987</com:ssNumber>
+                     <com:initials>C.</com:initials>
+                     <com:lastname>Jansen</com:lastname>
+                     <com:dateOfBirth IndIncompleteDate="C">1969-07-14</com:dateOfBirth>
+                     <com:gender>M</com:gender>
+                  </com:naturalPerson>                  
+               </ns:subjectDetails>
+               <ns:formDetails>
+                  <ns:item sequencenumber="1">
+                     <ns:singleType>
+                        <ns:itemname>Subject</ns:itemname>
+                        <ns:itemlabel>Subject:</ns:itemlabel>
+                        <ns:itemvalue>Building Permit</ns:itemvalue>
+                     </ns:singleType>
+                  </ns:item>
+               </ns:formDetails>
+            </ns:object>
+         </ns:webform>
+      </ns:FormRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="1f9bb95d-6188-418a-b360-952e861e0677"/><con:assertion type="Schema Compliance" id="626acf71-25e3-4c30-ac66-0fbe4ed55950"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="6f092f70-8019-413e-ba53-2d35fa88a6f6"/><con:assertion type="XPath Match" name="XPath Match" id="e0e6b990-40c9-4111-99b3-c4274a764ee0"><con:configuration><path>declare namespace ns1='http://xmlns.amis.nl/edesk/common';
+declare namespace env='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://xmlns.amis.nl/edesk/frm/0200';
+declare namespace wsa='http://www.w3.org/2005/08/addressing';
+
+//ns2:intakeId = ${#TestCase#intakeId}</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="mockresponse" name="Mock Response" id="c03c503e-1fb6-4ed6-bba3-5b914ebe9c50" disabled="true"><con:settings/><con:config xsi:type="con:MockResponseStep" startStep="SOAP Test Request" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>FormServiceBinding</con:interface><con:operation>RegisterForm</con:operation><con:path>/Mock/CaseService</con:path><con:port>8088</con:port><con:response><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://xmlns.amis.nl/edesk/frm/0200" xmlns:com="http://xmlns.amis.nl/edesk/common">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <FormAnswer xmlns="http://xmlns.amis.nl/edesk/frm/0200">
+         <messageDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <messageType>Aw01</messageType>
+            <owner>AMIS Services</owner>
+            <sendDate>${=new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date())}</sendDate>
+         </messageDetails>
+         <answer>
+            <object>
+               <processId>CaseService</processId>
+               <intakeId>63471</intakeId>
+               <caseId>10026</caseId>
+               <statusDetails>
+                  <statusCode>1</statusCode>
+                  <statusMessage>Case succesfully created!</statusMessage>
+               </statusDetails>
+            </object>
+         </answer>
+      </FormAnswer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508"/></con:response><con:assertion type="Schema Compliance" id="7bde8da0-3609-47a0-8c16-eabaf5744386"><con:configuration><definition/></con:configuration></con:assertion><con:assertion type="XPath Match" name="intakeId = 63471" id="050a34d4-1162-4d6a-8cc1-31f0459ea6c2"><con:configuration><path>declare namespace com='http://xmlns.amis.nl/edesk/common';
+declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns='http://xmlns.amis.nl/edesk/frm/0200';
+
+//com:intakeId = "63471"</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="bbd0e479-e068-4d32-b1d1-6e851fb16f09"><con:settings/><con:config><script>// create groovyUtils and XmlHolder for response of SOAP Test request
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils( context )
+def holder = groovyUtils.getXmlHolder( "SOAP Test Request#Response" )
+
+// define namespace
+holder.namespaces["ns"] = "http://xmlns.amis.nl/edesk/frm/0200"
+
+// loop item nodes in response message
+for( item in holder.getNodeValues( "//ns:caseId" ))
+   log.info "caseId : [$item]"</script></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer" id="51131355-1d46-4ef7-b0d8-a290eca934f8"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" useXQuery="false" entitize="false" transferChildNodes="false"><con:name>copyCaseId</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>SOAP Test Request</con:sourceStep><con:sourcePath>declare namespace ns1='http://xmlns.amis.nl/edesk/common';
+declare namespace frm='http://xmlns.amis.nl/edesk/frm/0200';
+
+//frm:caseId</con:sourcePath><con:targetType>caseId</con:targetType><con:targetStep>#TestCase#</con:targetStep></con:transfers></con:config></con:testStep><con:testStep type="calltestcase" name="Run TestCase" id="42c827f6-b5ea-40bf-8892-89d988467693"><con:settings/><con:config xsi:type="con:RunTestCaseStep" ignoreEmptyProperties="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:targetTestCase>9cfbb4a0-7dc1-400d-9788-3128007ed54f</con:targetTestCase><con:properties><con:property><con:name>documentId</con:name><con:value>201401063</con:value></con:property></con:properties><con:returnProperties><con:entry>documentId</con:entry></con:returnProperties><con:runMode>PARALLELL</con:runMode></con:config></con:testStep><con:testStep type="request" name="Test Request" id="98145601-23b5-4ec0-b73e-8d9c3381446f"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>FormServiceBinding</con:interface><con:operation>RegisterForm</con:operation><con:request name="Test Request"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:7101/soa-infra/services/default/CaseServiceMediatorUpdates/FormService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://xmlns.amis.nl/edesk/frm/0200" xmlns:com="http://xmlns.amis.nl/edesk/common">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:FormRequest>
+         <com:messageDetails>
+            <com:messageType>?</com:messageType>
+            <com:owner>AMIS Services</com:owner>
+            <com:sendDate>?</com:sendDate>
+         </com:messageDetails>
+         <com:intakeDetails>
+            <com:intakeId>?</com:intakeId>
+            <com:intakeDate>?</com:intakeDate>
+         </com:intakeDetails>
+      </ns:FormRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="27ca41ae-16a8-46d1-a55a-d1854dcb3d64"/><con:assertion type="Schema Compliance" id="ab583963-4e16-43e3-9562-5b1f864e5139"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="75cbbe74-2c94-47ae-8c20-d579f542a855"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:setupScript/><con:properties><con:property><con:name>intakeId</con:name><con:value>63471</con:value></con:property><con:property><con:name>caseId</con:name><con:value>10026</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:testSuite name="TC02 - RegisterDocuments" disabled="true" id="e238a6a3-76ca-48da-9b5b-f0d8abda15b3"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TS0201 - register document" searchProperties="true" id="9cfbb4a0-7dc1-400d-9788-3128007ed54f"><con:settings/><con:testStep type="manualTestStep" name="Place document on FTP"><con:settings/><con:config xsi:type="con:ManualTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:expectedResult>201401063</con:expectedResult></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" useXQuery="false" entitize="false" transferChildNodes="false"><con:name>copyDocumentId</con:name><con:sourceType>ExpectedResult</con:sourceType><con:sourceStep>Place document on FTP</con:sourceStep><con:sourcePath/><con:targetType>documentId</con:targetType><con:targetStep>#TestCase#</con:targetStep></con:transfers></con:config></con:testStep><con:properties><con:property><con:name>documentId</con:name><con:value>201401063</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:mockService port="8088" path="/Mock/CaseService" host="14-311-313" name="FormServiceMock" bindToHostOnly="false" docroot=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="RegisterForm" interface="FormServiceBinding" operation="RegisterForm"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8" httpResponseStatus="200"><con:settings/><con:responseContent><![CDATA[<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <env:Header>
+      <wsa:MessageID>urn:64AEFCA0133911E3BF2F0D87808465E8</wsa:MessageID>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:FaultTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:FaultTo>
+   </env:Header>
+   <env:Body>
+      <FormAnswer xmlns="http://xmlns.amis.nl/edesk/frm/0200">
+         <messageDetails xmlns="http://xmlns.amis.nl/edesk/common">
+            <messageType>Aw01</messageType>
+            <owner>AMIS Services</owner>
+            <sendDate>${=new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date())}</sendDate>
+         </messageDetails>
+         <answer>
+            <object>
+               <processId>CaseService</processId>
+               <intakeId>63471</intakeId>
+               <caseId>10026</caseId>
+               <statusDetails>
+                  <statusCode>1</statusCode>
+                  <statusMessage>Case succesfully created!</statusMessage>
+               </statusDetails>
+            </object>
+         </answer>
+      </FormAnswer>
+   </env:Body>
+</env:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="RegisterForm"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
